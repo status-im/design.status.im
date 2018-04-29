@@ -25032,7 +25032,53 @@ let pattern = document.querySelectorAll(".pattern")[0];
 let homeCover = document.querySelectorAll(".home-cover")[0];
 let header = document.querySelectorAll(".header")[0];
 let intro = document.querySelectorAll(".intro")[0];
-let logo = document.querySelectorAll(".logo")[0];
+
+/* Popups */
+
+let vacancys = document.querySelectorAll(".positions-item");
+let popups = document.querySelectorAll(".popup");
+let overlays = document.querySelectorAll(".overlay");
+let closeButtons = document.querySelectorAll(".popup__button--close");
+let activePopup = null;
+let activeOverlay = null;
+
+vacancys[0].addEventListener('click', function (event) {
+  showPopup(overlays[0], popups[0]);
+  event.preventDefault();
+});
+
+vacancys[1].addEventListener('click', function (event) {
+  showPopup(overlays[1], popups[1]);
+  event.preventDefault();
+});
+
+vacancys[2].addEventListener('click', function (event) {
+  showPopup(overlays[2], popups[2]);
+  event.preventDefault();
+});
+
+vacancys[3].addEventListener('click', function (event) {
+  showPopup(overlays[3], popups[3]);
+  event.preventDefault();
+});
+
+closeButtons.forEach(button => {
+  button.addEventListener('click', closeActivePopup);
+});
+
+function showPopup(whichOverlay, whichPopup) {
+  activePopup = whichPopup;
+  activeOverlay = whichOverlay;
+  addClassToElement(whichOverlay, "overlay--shown");
+  addClassToElement(whichPopup, "popup--shown");
+}
+
+function closeActivePopup() {
+  removeClassFromElement(activeOverlay, "overlay--shown");
+  removeClassFromElement(activePopup, "popup--shown");
+  activePopup = null;
+  activeOverlay = null;
+}
 
 new ScrollOver({
   keyframes: [{
@@ -25054,14 +25100,14 @@ new ScrollOver({
     }
   }, {
     element: homeCover,
-    domain: [200, 400],
+    domain: [250, 400],
     animate: [{
       property: "backgroundColor",
       range: ["rgb(67, 96, 223)", "rgb(238, 242, 245)"]
     }]
   }, {
     element: pattern,
-    domain: [100, 300],
+    domain: [200, 250],
     animate: [{
       property: "opacity",
       range: ["1", "0"]
@@ -25078,13 +25124,13 @@ new ScrollOver({
     }]
   }, {
     element: header,
-    domain: [0, 650],
+    domain: [300, 400],
     animate: [{
       property: "opacity",
       range: ["1", "0"]
     }, {
       property: "translateY",
-      range: ["0", "-20"]
+      range: ["0", "-50"]
     }]
   }]
 }).init();

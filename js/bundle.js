@@ -25032,6 +25032,7 @@ let pattern = document.querySelectorAll(".pattern")[0];
 let homeCover = document.querySelectorAll(".home-cover")[0];
 let header = document.querySelectorAll(".header")[0];
 let intro = document.querySelectorAll(".intro")[0];
+let wrap = document.querySelectorAll(".wrap")[0];
 
 /* Popups */
 
@@ -25099,7 +25100,7 @@ new ScrollOver({
       className: "section--shown"
     }
   }, {
-    element: homeCover,
+    element: wrap,
     domain: [250, 400],
     animate: [{
       property: "backgroundColor",
@@ -25130,7 +25131,7 @@ new ScrollOver({
       range: ["1", "0"]
     }, {
       property: "translateY",
-      range: ["0", "-50"]
+      range: ["0", "-30"]
     }]
   }]
 }).init();

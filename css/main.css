@@ -1186,43 +1186,59 @@ body {
   line-height: 25px;
   color: #000000;
   text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased; }
+  -webkit-font-smoothing: antialiased;
+  background-color: #EEF2F5; }
 
-.home-cover {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: transparent;
-  background-color: #4360DF;
-  width: 100%;
-  height: 100vh;
+.wrap {
   position: fixed;
   left: 0;
   top: 0;
   right: 0;
-  bottom: 0; }
+  bottom: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background-color: #4360DF; }
 
 .pattern {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   right: 0;
   bottom: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
   background-image: url("../img/pattern.png"); }
+
+.home-cover {
+  background-color: transparent;
+  width: 100%;
+  height: 600px; }
 
 .home-cover.no-pattern {
   background-image: none; }
 
 .home-wrap {
+  background-color: #EEF2F5;
+  position: relative;
+  z-index: 5;
   width: 1200px;
-  margin: 70vh auto 0;
+  border-radius: 12px;
+  margin: 0 auto;
   position: relative;
   align-content: center;
   display: flex;
   flex-direction: column; }
 
+@media (max-width: 1248px) {
+  .home-wrap {
+    width: 100%;
+    background-color: transparent;
+    padding: 0 24px; } }
+
 .header {
-  position: absolute;
+  position: fixed;
   display: flex;
   justify-content: space-between;
   width: 1200px;
@@ -1306,18 +1322,31 @@ body {
 .secondary-nav li:last-child {
   margin-right: 0; }
 
+@media (max-width: 1248px) {
+  .header {
+    width: 100%;
+    left: 0;
+    top: 0;
+    margin: 32px 0 0 0;
+    padding: 0 24px; } }
+
 .intro {
+  position: fixed;
+  top: 280px;
+  left: 50%;
+  margin: 0 0 0 -270px;
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding: 0px 0 160px;
+  padding: 0px 0 32px;
   color: #FFFFFF;
   text-align: center;
-  width: 540px; }
+  width: 540px;
+  z-index: 4; }
 
 .intro h1 {
   font-family: "PostGrotesk-Medium", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-  font-size: 32px;
+  font-size: 30px;
   padding: 0 0 12px 0; }
 
 .intro p {
@@ -1468,7 +1497,7 @@ body {
 
 .section-header p {
   font-size: 16px;
-  width: 960px;
+  width: 900px;
   color: #8D99A4;
   line-height: 24px; }
 
@@ -1543,6 +1572,42 @@ body {
 .section:nth-child(odd) .section__image {
   order: 0; }
 
+@media (max-width: 1248px) {
+  .sections {
+    width: 100%; }
+  .section {
+    width: 900px; } }
+
+@media (max-width: 996px) {
+  .section {
+    width: 100%;
+    padding: 0 24px; } }
+
+@media (max-width: 740px) {
+  .section__text {
+    padding: 0 16px; }
+  .section__text h2 {
+    font-size: 20px;
+    line-height: 24px; }
+  .section__image {
+    transform: scale(0.9); } }
+
+@media (max-width: 640px) {
+  .section {
+    height: auto;
+    flex-direction: column;
+    padding: 32px 0; }
+  .section__image {
+    height: 260px; }
+  .section__text {
+    width: 100%;
+    padding: 0 24px 24px 24px; }
+  .section .section__text {
+    order: 1; }
+  .section .section__image {
+    order: 0; } }
+
+/* People */
 .people {
   display: flex;
   flex-wrap: wrap;

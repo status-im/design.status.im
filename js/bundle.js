@@ -25121,15 +25121,20 @@ function showCircles() {
   };
 
   let ticked = function (o) {
+    disturbanceNodes.map((o, i) => {
+      o.vx += Math.sin(Date.now() * 0.0001 + i * 2) * (0.42 + i * 0.1);
+      o.vy += Math.cos(Date.now() * 0.0001 + i * 2) * (0.42 + i * 0.1);
+      o.radius += Math.cos(Date.now() * 0.001 + i * 2) * 0.1;
+    });
+
+    simulation.force("charge", d3.forceCollide().radius(d => d.radius * 1.1));
+
     circles.selectAll("circle").attr("cx", function (d) {
       return d.x;
     }).attr("cy", function (d) {
       return d.y;
-    });
-
-    disturbanceNodes.map((o, i) => {
-      o.fx += Math.sin(Date.now() * 0.004 + i) * 0.22; // Play with me (speed of and distance of invisible particles)
-      o.fy += Math.cos(Date.now() * 0.004 + i) * 0.22; // Play with me (speed of and distance of invisible particles)
+    }).attr("r", function (d) {
+      return d.radius;
     });
   };
 
@@ -25138,7 +25143,9 @@ function showCircles() {
     if (batch.length === 0) return;
     lastIndex += 10;
     publishedNodes = publishedNodes.concat(batch);
+
     circles.selectAll("circle").data(publishedNodes).enter().append("circle").attr("cx", d => d.x).attr("cy", d => d.y).attr("r", d => d.radius).attr("opacity", 0).attr("fill", d => "#4360DF").call(drag).transition(d3.transition().duration(750)).attr("opacity", d => d.invisible ? 0 : d.opacity);
+
     setTimeout(addNext, 100);
   };
 
@@ -25149,24 +25156,14 @@ function showCircles() {
 
   let disturbanceNodes = [];
 
-  d3.range(18).map(o => {
-    // Play with me (12)
-    let node = {
-      invisible: true,
-      radius: Math.random() * 2 + 5, // Play with me
-      fx: (Math.random() - 0.5) * 300, // Play with me
-      fy: (Math.random() - 0.5) * 300 // Play with me
-    };
-    nodes.push(node);
-    disturbanceNodes.push(node);
-  });
+  nodes.filter(o => o.radius > 12).map(o => disturbanceNodes.push(o));
 
   var simulation = d3.forceSimulation(nodes).alphaDecay(0).alpha(0.42) // Play with me (total speed)
   .force("charge", d3.forceCollide().radius(d => d.radius * 1.1)).force("x", d3.forceX(d => d.originX).strength(0.08)) // Play with me (force for target position)
   .force("y", d3.forceY(d => d.originY).strength(0.08)) // Play with me (force for target position)
   .on("tick", ticked);
 
-  let svg = d3.select("svg.bubbles");
+  let svg = d3.select("svg");
   let circles = svg.append("g");
 
   let drag = d3.drag().on("drag", dragged).on("end", dragended);

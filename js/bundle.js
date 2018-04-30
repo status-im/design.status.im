@@ -25171,7 +25171,7 @@ function showCircles() {
     disturbanceNodes.map((o, i) => {
       o.vx += Math.sin(Date.now() * 0.0001 + i * 2) * (0.42 + i * 0.1);
       o.vy += Math.cos(Date.now() * 0.0001 + i * 2) * (0.42 + i * 0.1);
-      o.radius += Math.cos(Date.now() * 0.001 + i * 2) * 0.1;
+      o.radius += Math.cos(Date.now() * 0.001 + i * 2) * .03;
     });
 
     simulation.force("charge", d3.forceCollide().radius(d => d.radius * 1.1));

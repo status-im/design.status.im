@@ -25024,7 +25024,6 @@ let animateScroll = require("./lib/animatescroll.js");
 let d3 = require("d3");
 
 let sectionOne = document.querySelectorAll(".section--one")[0];
-
 let sectionThree = document.querySelectorAll(".section--three")[0];
 
 let button = document.querySelectorAll(".intro .button")[0];
@@ -25033,6 +25032,18 @@ let homeCover = document.querySelectorAll(".home-cover")[0];
 let header = document.querySelectorAll(".header")[0];
 let intro = document.querySelectorAll(".intro")[0];
 let wrap = document.querySelectorAll(".wrap")[0];
+
+/* Scroll Buttons */
+
+let buttonPositions = document.querySelectorAll(".button--positions")[0];
+let sectionPositions = document.querySelectorAll(".section-header--positions")[0];
+
+if (buttonPositions) {
+  buttonPositions.addEventListener('click', function (event) {
+    animateScroll(sectionPositions, 2000, "easeInOutCubic", 0);
+    event.preventDefault();
+  });
+}
 
 /* Popups */
 

@@ -1649,7 +1649,7 @@ input[type=checkbox] {
   justify-content: center;
   background-color: #262A39;
   position: relative;
-  z-index: 999; }
+  z-index: 998; }
 
 .footer-inner {
   display: flex;

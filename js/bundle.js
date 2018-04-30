@@ -25035,12 +25035,36 @@ let wrap = document.querySelectorAll(".wrap")[0];
 
 /* Scroll Buttons */
 
+let navLinkPositions = document.querySelectorAll(".nav-link--positions")[0];
+let navLinkPeople = document.querySelectorAll(".nav-link--people")[0];
+let navLinkBlog = document.querySelectorAll(".nav-link--blog")[0];
 let buttonPositions = document.querySelectorAll(".button--positions")[0];
+
 let sectionPositions = document.querySelectorAll(".section-header--positions")[0];
+let sectionPeople = document.querySelectorAll(".section-header--people")[0];
+let sectionBlog = document.querySelectorAll(".section-header--blog")[0];
 
 if (buttonPositions) {
   buttonPositions.addEventListener('click', function (event) {
-    animateScroll(sectionPositions, 2000, "easeInOutCubic", 0);
+    animateScroll(sectionPositions, 1800, "easeInOutCubic", 0);
+    event.preventDefault();
+  });
+}
+if (navLinkPositions) {
+  navLinkPositions.addEventListener('click', function (event) {
+    animateScroll(sectionPositions, 1800, "easeInOutCubic", 0);
+    event.preventDefault();
+  });
+}
+if (navLinkPeople) {
+  navLinkPeople.addEventListener('click', function (event) {
+    animateScroll(sectionPeople, 1800, "easeInOutCubic", 0);
+    event.preventDefault();
+  });
+}
+if (navLinkBlog) {
+  navLinkBlog.addEventListener('click', function (event) {
+    animateScroll(sectionBlog, 1800, "easeInOutCubic", 0);
     event.preventDefault();
   });
 }
@@ -25107,7 +25131,7 @@ new ScrollOver({
   }, {
     element: sectionThree,
     reveal: {
-      when: 1300,
+      when: 1200,
       className: "section--shown"
     }
   }, {
@@ -25136,13 +25160,13 @@ new ScrollOver({
     }]
   }, {
     element: header,
-    domain: [300, 400],
+    domain: [300, 480],
     animate: [{
       property: "opacity",
       range: ["1", "0"]
     }, {
       property: "translateY",
-      range: ["0", "-30"]
+      range: ["0", "-40"]
     }]
   }]
 }).init();
@@ -25182,10 +25206,7 @@ function showCircles() {
     disturbanceNodes.map((o, i) => {
       o.vx += Math.sin(Date.now() * 0.0001 + i * 2) * (0.42 + i * 0.1);
       o.vy += Math.cos(Date.now() * 0.0001 + i * 2) * (0.42 + i * 0.1);
-      o.radius += Math.cos(Date.now() * 0.001 + i * 2) * .03;
     });
-
-    simulation.force("charge", d3.forceCollide().radius(d => d.radius * 1.1));
 
     circles.selectAll("circle").attr("cx", function (d) {
       return d.x;

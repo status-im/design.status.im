@@ -655,7 +655,8 @@ select[multiple] {
 .bubbles-wrap {
   width: 300px;
   height: 300px;
-  position: relative; }
+  position: relative;
+  transform: translate3d(0, 0, 0); }
 
 .bubbles-wrap .bubbles {
   position: absolute;
@@ -1122,6 +1123,9 @@ select[multiple] {
   cursor: pointer;
   text-align: center; }
 
+.social-block a {
+  text-decoration: none; }
+
 .social-block:nth-child(1) {
   padding-left: 0; }
 
@@ -1129,6 +1133,7 @@ select[multiple] {
   padding-right: 0; }
 
 .social-block p {
+  text-decoration: none;
   font-size: 16px;
   line-height: 20px;
   color: #8D99A4; }
@@ -1138,12 +1143,12 @@ select[multiple] {
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
-  height: 200px;
+  height: 140px;
   position: relative;
   background-color: #FFFFFF;
   border-radius: 12px;
-  width: 100%;
-  padding: 36px 24px 24px 24px; }
+  padding: 36px 24px 24px 24px;
+  text-decoration: none; }
 
 .social-block-logo {
   display: block;
@@ -1255,6 +1260,22 @@ select[multiple] {
   letter-spacing: 1px;
   color: #49555F;
   margin: 16px 0 0 0; }
+
+.popup__text h3 {
+  font-size: 18px;
+  color: #000000;
+  font-family: "PostGrotesk-Medium", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  padding: 8px 0 4px 0; }
+
+.popup__text p {
+  padding: 0 0 8px 0; }
+
+h3.terms-header {
+  font-size: 18px;
+  line-height: 26px;
+  padding: 0 32px 8px 32px;
+  color: #000000;
+  font-family: "PostGrotesk-Medium", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
 
 .popup__button {
   position: absolute;

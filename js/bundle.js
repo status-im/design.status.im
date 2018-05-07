@@ -25044,6 +25044,20 @@ let sectionPositions = document.querySelectorAll(".section-header--positions")[0
 let sectionPeople = document.querySelectorAll(".section-header--people")[0];
 let sectionBlog = document.querySelectorAll(".section-header--blog")[0];
 
+/* Demo Scroll */
+
+// setTimeout(function(){
+//   animateScroll(1400, 5000, "easeInOutCubic", 0, null, animateBack)
+// }, 12000)
+//
+// function animateBack() {
+//   setTimeout(function(){
+//     console.log("hi");
+//     animateScroll(-1398, 2000, "easeInOutCubic", 0)
+//   }, 100)
+// }
+
+
 if (buttonPositions) {
   buttonPositions.addEventListener('click', function (event) {
     animateScroll(sectionPositions, 1800, "easeInOutCubic", 0);
@@ -25206,9 +25220,9 @@ let selection = circles.selectAll("circle").data(nodes).enter().append("circle")
 
 window.circles = circles;
 
-var simulation = d3.forceSimulation(nodes).alphaDecay(0).alpha(0.42) // Play with me (total speed)
-.force("charge", d3.forceCollide().radius(d => d.radius * 1.1)).force("x", d3.forceX(d => d.originX).strength(0.08)) // Play with me (force for target position)
-.force("y", d3.forceY(d => d.originY).strength(0.08)) // Play with me (force for target position)
+var simulation = d3.forceSimulation(nodes).alphaDecay(0).alpha(0.62) // Play with me (total speed)
+.force("charge", d3.forceCollide().radius(d => d.radius * 1.1)).force("x", d3.forceX(d => d.originX).strength(0.084)) // Play with me (force for target position)
+.force("y", d3.forceY(d => d.originY).strength(0.084)) // Play with me (force for target position)
 .on("tick", ticked).stop();
 
 function dragged(d) {

@@ -1973,7 +1973,7 @@ a.section-link {
   display: block;
   color: #4360DF;
   text-decoration: none;
-  padding: 0 8px 0 0; }
+  padding: 0 10px 0 0; }
 
 a.section-link-icon {
   display: block;
@@ -1984,18 +1984,13 @@ a.section-link-icon {
   background-image: url(../img/link-arrow.svg);
   background-size: 24px;
   background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0;
-  transform: scale(0.1);
-  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0, 1.105), opacity 0.4s ease; }
+  background-repeat: no-repeat; }
 
 .section__text .text:hover a.section-link-icon {
   opacity: 1;
   transform: scale(1); }
 
 .section-link-wrap:hover a.section-link-icon {
-  opacity: 1;
-  transform: scale(1);
   background-color: rgba(67, 96, 223, 0.14); }
 
 .section:nth-child(odd) .section__text {

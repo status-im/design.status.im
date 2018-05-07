@@ -206,6 +206,9 @@ select[multiple] {
 .header .social-link a:hover {
   opacity: 1; }
 
+.header a.logo:hover {
+  opacity: 1; }
+
 .main-nav a {
   color: #FFFFFF;
   text-decoration: none; }
@@ -1115,9 +1118,9 @@ a.blog-post-inner {
     margin: 0 0 12px 0; }
   .blog-post:last-child {
     margin-bottom: 0; }
-  .blog-post-inner {
+  a.blog-post-inner {
     height: auto; }
-  .blog-post a {
+  .blog-post span {
     position: static;
     margin: 24px 0 0 0;
     color: #4360DF; } }
@@ -1918,7 +1921,7 @@ a:visited {
 @media (max-width: 948px) {
   .section-header {
     width: 100%;
-    padding: 60px 0 16px 0; }
+    padding: 42px 0 16px 0; }
   .section-header h2 {
     font-size: 22px;
     padding: 0 0 4px 0; }

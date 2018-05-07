@@ -2035,7 +2035,7 @@ a.section-link-icon {
     order: 1; }
   .section .section__image {
     order: 0;
-    margin: 12px 0 0 0; } }
+    margin: 36px 0 0 0; } }
 
 @media (max-width: 640px) {
   .inner-header {
@@ -2048,4 +2048,5 @@ a.section-link-icon {
     padding: 16px 32px 32px; }
   .section__image {
     width: 260px;
-    height: 300px; } }
+    height: 300px;
+    margin: 12px 0 0 0; } }

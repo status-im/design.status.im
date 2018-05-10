@@ -833,10 +833,7 @@ select[multiple] {
   z-index: 200; }
 
 .positions-item:hover .positions-arrow {
-  opacity: 1; }
-
-.positions-item:hover .positions-arrow svg path {
-  fill: #4360DF; }
+  background-color: rgba(67, 96, 223, 0.14); }
 
 .positions-item:hover {
   z-index: 998; }
@@ -850,13 +847,19 @@ select[multiple] {
   padding: 24px 64px 24px 24px; }
 
 .positions-arrow {
+  display: block;
   position: absolute;
   width: 24px;
   height: 24px;
   right: 16px;
   top: 50%;
   margin: -12px 0 0 0;
-  opacity: .6; }
+  border-radius: 50%;
+  background-color: rgba(67, 96, 223, 0.1);
+  background-image: url(../img/link-arrow.svg);
+  background-size: 24px;
+  background-position: center;
+  background-repeat: no-repeat; }
 
 .positions-item h2 {
   font-size: 18px;
@@ -879,6 +882,7 @@ select[multiple] {
 .reward {
   padding: 16px 24px;
   border-top: 1px solid #E8EBED;
+  border-radius: 0 0 12px 12px;
   display: flex;
   align-items: center; }
 
@@ -909,6 +913,9 @@ select[multiple] {
     height: auto; } }
 
 @media (max-width: 760px) {
+  .positions-arrow {
+    margin: 0;
+    top: 24px; }
   .positions-item-top {
     padding-right: 48px; }
   .reward-description {

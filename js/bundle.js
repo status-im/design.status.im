@@ -25096,10 +25096,11 @@ vacancys[0].addEventListener('click', function (event) {
   event.preventDefault();
 });
 
-vacancys[1].addEventListener('click', function (event) {
-  showPopup(overlays[1], popups[1]);
-  event.preventDefault();
-});
+// vacancys[1].addEventListener('click', function(event){
+//     showPopup(overlays[1], popups[1])
+//     event.preventDefault()
+// })
+
 
 closeButtons.forEach(button => {
   button.addEventListener('click', closeActivePopup);

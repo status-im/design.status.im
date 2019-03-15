@@ -1,16 +1,16 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-// https://d3js.org/d3-array/ v1.2.4 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-array/ Version 1.2.1. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-typeof define === 'function' && define.amd ? define(['exports'], factory) :
-(factory((global.d3 = global.d3 || {})));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.d3 = global.d3 || {})));
 }(this, (function (exports) { 'use strict';
 
-function ascending(a, b) {
+var ascending = function(a, b) {
   return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
-}
+};
 
-function bisector(compare) {
+var bisector = function(compare) {
   if (compare.length === 1) compare = ascendingComparator(compare);
   return {
     left: function(a, x, lo, hi) {
@@ -34,7 +34,7 @@ function bisector(compare) {
       return lo;
     }
   };
-}
+};
 
 function ascendingComparator(f) {
   return function(d, x) {
@@ -46,18 +46,18 @@ var ascendingBisect = bisector(ascending);
 var bisectRight = ascendingBisect.right;
 var bisectLeft = ascendingBisect.left;
 
-function pairs(array, f) {
+var pairs = function(array, f) {
   if (f == null) f = pair;
   var i = 0, n = array.length - 1, p = array[0], pairs = new Array(n < 0 ? 0 : n);
   while (i < n) pairs[i] = f(p, p = array[++i]);
   return pairs;
-}
+};
 
 function pair(a, b) {
   return [a, b];
 }
 
-function cross(values0, values1, reduce) {
+var cross = function(values0, values1, reduce) {
   var n0 = values0.length,
       n1 = values1.length,
       values = new Array(n0 * n1),
@@ -75,17 +75,17 @@ function cross(values0, values1, reduce) {
   }
 
   return values;
-}
+};
 
-function descending(a, b) {
+var descending = function(a, b) {
   return b < a ? -1 : b > a ? 1 : b >= a ? 0 : NaN;
-}
+};
 
-function number(x) {
+var number = function(x) {
   return x === null ? NaN : +x;
-}
+};
 
-function variance(values, valueof) {
+var variance = function(values, valueof) {
   var n = values.length,
       m = 0,
       i = -1,
@@ -115,14 +115,14 @@ function variance(values, valueof) {
   }
 
   if (m > 1) return sum / (m - 1);
-}
+};
 
-function deviation(array, f) {
+var deviation = function(array, f) {
   var v = variance(array, f);
   return v ? Math.sqrt(v) : v;
-}
+};
 
-function extent(values, valueof) {
+var extent = function(values, valueof) {
   var n = values.length,
       i = -1,
       value,
@@ -158,24 +158,24 @@ function extent(values, valueof) {
   }
 
   return [min, max];
-}
+};
 
 var array = Array.prototype;
 
 var slice = array.slice;
 var map = array.map;
 
-function constant(x) {
+var constant = function(x) {
   return function() {
     return x;
   };
-}
+};
 
-function identity(x) {
+var identity = function(x) {
   return x;
-}
+};
 
-function range(start, stop, step) {
+var range = function(start, stop, step) {
   start = +start, stop = +stop, step = (n = arguments.length) < 2 ? (stop = start, start = 0, 1) : n < 3 ? 1 : +step;
 
   var i = -1,
@@ -187,13 +187,13 @@ function range(start, stop, step) {
   }
 
   return range;
-}
+};
 
-var e10 = Math.sqrt(50),
-    e5 = Math.sqrt(10),
-    e2 = Math.sqrt(2);
+var e10 = Math.sqrt(50);
+var e5 = Math.sqrt(10);
+var e2 = Math.sqrt(2);
 
-function ticks(start, stop, count) {
+var ticks = function(start, stop, count) {
   var reverse,
       i = -1,
       n,
@@ -220,7 +220,7 @@ function ticks(start, stop, count) {
   if (reverse) ticks.reverse();
 
   return ticks;
-}
+};
 
 function tickIncrement(start, stop, count) {
   var step = (stop - start) / Math.max(0, count),
@@ -241,11 +241,11 @@ function tickStep(start, stop, count) {
   return stop < start ? -step1 : step1;
 }
 
-function sturges(values) {
+var sturges = function(values) {
   return Math.ceil(Math.log(values.length) / Math.LN2) + 1;
-}
+};
 
-function histogram() {
+var histogram = function() {
   var value = identity,
       domain = extent,
       threshold = sturges;
@@ -268,7 +268,7 @@ function histogram() {
     // Convert number of thresholds into uniform thresholds.
     if (!Array.isArray(tz)) {
       tz = tickStep(x0, x1, tz);
-      tz = range(Math.ceil(x0 / tz) * tz, x1, tz); // exclusive
+      tz = range(Math.ceil(x0 / tz) * tz, Math.floor(x1 / tz) * tz, tz); // exclusive
     }
 
     // Remove any thresholds outside the domain.
@@ -310,9 +310,9 @@ function histogram() {
   };
 
   return histogram;
-}
+};
 
-function quantile(values, p, valueof) {
+var quantile = function(values, p, valueof) {
   if (valueof == null) valueof = number;
   if (!(n = values.length)) return;
   if ((p = +p) <= 0 || n < 2) return +valueof(values[0], 0, values);
@@ -323,18 +323,18 @@ function quantile(values, p, valueof) {
       value0 = +valueof(values[i0], i0, values),
       value1 = +valueof(values[i0 + 1], i0 + 1, values);
   return value0 + (value1 - value0) * (i - i0);
-}
+};
 
-function freedmanDiaconis(values, min, max) {
+var freedmanDiaconis = function(values, min, max) {
   values = map.call(values, number).sort(ascending);
   return Math.ceil((max - min) / (2 * (quantile(values, 0.75) - quantile(values, 0.25)) * Math.pow(values.length, -1 / 3)));
-}
+};
 
-function scott(values, min, max) {
+var scott = function(values, min, max) {
   return Math.ceil((max - min) / (3.5 * deviation(values) * Math.pow(values.length, -1 / 3)));
-}
+};
 
-function max(values, valueof) {
+var max = function(values, valueof) {
   var n = values.length,
       i = -1,
       value,
@@ -367,9 +367,9 @@ function max(values, valueof) {
   }
 
   return max;
-}
+};
 
-function mean(values, valueof) {
+var mean = function(values, valueof) {
   var n = values.length,
       m = n,
       i = -1,
@@ -391,9 +391,9 @@ function mean(values, valueof) {
   }
 
   if (m) return sum / m;
-}
+};
 
-function median(values, valueof) {
+var median = function(values, valueof) {
   var n = values.length,
       i = -1,
       value,
@@ -416,9 +416,9 @@ function median(values, valueof) {
   }
 
   return quantile(numbers.sort(ascending), 0.5);
-}
+};
 
-function merge(arrays) {
+var merge = function(arrays) {
   var n = arrays.length,
       m,
       i = -1,
@@ -438,9 +438,9 @@ function merge(arrays) {
   }
 
   return merged;
-}
+};
 
-function min(values, valueof) {
+var min = function(values, valueof) {
   var n = values.length,
       i = -1,
       value,
@@ -473,15 +473,15 @@ function min(values, valueof) {
   }
 
   return min;
-}
+};
 
-function permute(array, indexes) {
+var permute = function(array, indexes) {
   var i = indexes.length, permutes = new Array(i);
   while (i--) permutes[i] = array[indexes[i]];
   return permutes;
-}
+};
 
-function scan(values, compare) {
+var scan = function(values, compare) {
   if (!(n = values.length)) return;
   var n,
       i = 0,
@@ -498,9 +498,9 @@ function scan(values, compare) {
   }
 
   if (compare(xj, xj) === 0) return j;
-}
+};
 
-function shuffle(array, i0, i1) {
+var shuffle = function(array, i0, i1) {
   var m = (i1 == null ? array.length : i1) - (i0 = i0 == null ? 0 : +i0),
       t,
       i;
@@ -513,9 +513,9 @@ function shuffle(array, i0, i1) {
   }
 
   return array;
-}
+};
 
-function sum(values, valueof) {
+var sum = function(values, valueof) {
   var n = values.length,
       i = -1,
       value,
@@ -534,9 +534,9 @@ function sum(values, valueof) {
   }
 
   return sum;
-}
+};
 
-function transpose(matrix) {
+var transpose = function(matrix) {
   if (!(n = matrix.length)) return [];
   for (var i = -1, m = min(matrix, length), transpose = new Array(m); ++i < m;) {
     for (var j = -1, n, row = transpose[i] = new Array(n); ++j < n;) {
@@ -544,15 +544,15 @@ function transpose(matrix) {
     }
   }
   return transpose;
-}
+};
 
 function length(d) {
   return d.length;
 }
 
-function zip() {
+var zip = function() {
   return transpose(arguments);
-}
+};
 
 exports.bisect = bisectRight;
 exports.bisectRight = bisectRight;
@@ -591,24 +591,24 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{}],2:[function(require,module,exports){
-// https://d3js.org/d3-axis/ v1.0.12 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-axis/ Version 1.0.8. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-typeof define === 'function' && define.amd ? define(['exports'], factory) :
-(factory((global.d3 = global.d3 || {})));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.d3 = global.d3 || {})));
 }(this, (function (exports) { 'use strict';
 
 var slice = Array.prototype.slice;
 
-function identity(x) {
+var identity = function(x) {
   return x;
-}
+};
 
-var top = 1,
-    right = 2,
-    bottom = 3,
-    left = 4,
-    epsilon = 1e-6;
+var top = 1;
+var right = 2;
+var bottom = 3;
+var left = 4;
+var epsilon = 1e-6;
 
 function translateX(x) {
   return "translate(" + (x + 0.5) + ",0)";
@@ -665,16 +665,16 @@ function axis(orient, scale) {
 
     path = path.merge(path.enter().insert("path", ".tick")
         .attr("class", "domain")
-        .attr("stroke", "currentColor"));
+        .attr("stroke", "#000"));
 
     tick = tick.merge(tickEnter);
 
     line = line.merge(tickEnter.append("line")
-        .attr("stroke", "currentColor")
+        .attr("stroke", "#000")
         .attr(x + "2", k * tickSizeInner));
 
     text = text.merge(tickEnter.append("text")
-        .attr("fill", "currentColor")
+        .attr("fill", "#000")
         .attr(x, k * spacing)
         .attr("dy", orient === top ? "0em" : orient === bottom ? "0.71em" : "0.32em"));
 
@@ -697,8 +697,8 @@ function axis(orient, scale) {
 
     path
         .attr("d", orient === left || orient == right
-            ? (tickSizeOuter ? "M" + k * tickSizeOuter + "," + range0 + "H0.5V" + range1 + "H" + k * tickSizeOuter : "M0.5," + range0 + "V" + range1)
-            : (tickSizeOuter ? "M" + range0 + "," + k * tickSizeOuter + "V0.5H" + range1 + "V" + k * tickSizeOuter : "M" + range0 + ",0.5H" + range1));
+            ? "M" + k * tickSizeOuter + "," + range0 + "H0.5V" + range1 + "H" + k * tickSizeOuter
+            : "M" + range0 + "," + k * tickSizeOuter + "V0.5H" + range1 + "V" + k * tickSizeOuter);
 
     tick
         .attr("opacity", 1)
@@ -786,38 +786,38 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{}],3:[function(require,module,exports){
-// https://d3js.org/d3-brush/ v1.0.6 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-brush/ Version 1.0.4. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-selection'), require('d3-dispatch'), require('d3-drag'), require('d3-interpolate'), require('d3-transition')) :
-typeof define === 'function' && define.amd ? define(['exports', 'd3-selection', 'd3-dispatch', 'd3-drag', 'd3-interpolate', 'd3-transition'], factory) :
-(factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3));
-}(this, (function (exports,d3Selection,d3Dispatch,d3Drag,d3Interpolate,d3Transition) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-dispatch'), require('d3-drag'), require('d3-interpolate'), require('d3-selection'), require('d3-transition')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-drag', 'd3-interpolate', 'd3-selection', 'd3-transition'], factory) :
+	(factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3));
+}(this, (function (exports,d3Dispatch,d3Drag,d3Interpolate,d3Selection,d3Transition) { 'use strict';
 
-function constant(x) {
+var constant = function(x) {
   return function() {
     return x;
   };
-}
+};
 
-function BrushEvent(target, type, selection) {
+var BrushEvent = function(target, type, selection) {
   this.target = target;
   this.type = type;
   this.selection = selection;
-}
+};
 
 function nopropagation() {
   d3Selection.event.stopImmediatePropagation();
 }
 
-function noevent() {
+var noevent = function() {
   d3Selection.event.preventDefault();
   d3Selection.event.stopImmediatePropagation();
-}
+};
 
-var MODE_DRAG = {name: "drag"},
-    MODE_SPACE = {name: "space"},
-    MODE_HANDLE = {name: "handle"},
-    MODE_CENTER = {name: "center"};
+var MODE_DRAG = {name: "drag"};
+var MODE_SPACE = {name: "space"};
+var MODE_HANDLE = {name: "handle"};
+var MODE_CENTER = {name: "center"};
 
 var X = {
   name: "x",
@@ -935,9 +935,9 @@ function brushY() {
   return brush$1(Y);
 }
 
-function brush() {
+var brush = function() {
   return brush$1(XY);
-}
+};
 
 function brush$1(dim) {
   var extent = defaultExtent,
@@ -1355,11 +1355,11 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{"d3-dispatch":8,"d3-drag":9,"d3-interpolate":17,"d3-selection":24,"d3-transition":29}],4:[function(require,module,exports){
-// https://d3js.org/d3-chord/ v1.0.6 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-chord/ Version 1.0.4. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-array'), require('d3-path')) :
-typeof define === 'function' && define.amd ? define(['exports', 'd3-array', 'd3-path'], factory) :
-(factory((global.d3 = global.d3 || {}),global.d3,global.d3));
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-array'), require('d3-path')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'd3-array', 'd3-path'], factory) :
+  (factory((global.d3 = global.d3 || {}),global.d3,global.d3));
 }(this, (function (exports,d3Array,d3Path) { 'use strict';
 
 var cos = Math.cos;
@@ -1378,7 +1378,7 @@ function compareValue(compare) {
   };
 }
 
-function chord() {
+var chord = function() {
   var padAngle = 0,
       sortGroups = null,
       sortSubgroups = null,
@@ -1486,15 +1486,15 @@ function chord() {
   };
 
   return chord;
-}
+};
 
 var slice = Array.prototype.slice;
 
-function constant(x) {
+var constant = function(x) {
   return function() {
     return x;
   };
-}
+};
 
 function defaultSource(d) {
   return d.source;
@@ -1516,7 +1516,7 @@ function defaultEndAngle(d) {
   return d.endAngle;
 }
 
-function ribbon() {
+var ribbon = function() {
   var source = defaultSource,
       target = defaultTarget,
       radius = defaultRadius,
@@ -1577,7 +1577,7 @@ function ribbon() {
   };
 
   return ribbon;
-}
+};
 
 exports.chord = chord;
 exports.ribbon = ribbon;
@@ -1587,11 +1587,11 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{"d3-array":1,"d3-path":18}],5:[function(require,module,exports){
-// https://d3js.org/d3-collection/ v1.0.7 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-collection/ Version 1.0.4. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-typeof define === 'function' && define.amd ? define(['exports'], factory) :
-(factory((global.d3 = global.d3 || {})));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.d3 = global.d3 || {})));
 }(this, (function (exports) { 'use strict';
 
 var prefix = "$";
@@ -1668,7 +1668,7 @@ function map(object, f) {
   return map;
 }
 
-function nest() {
+var nest = function() {
   var keys = [],
       sortKeys = [],
       sortValues,
@@ -1722,7 +1722,7 @@ function nest() {
     sortValues: function(order) { sortValues = order; return nest; },
     rollup: function(f) { rollup = f; return nest; }
   };
-}
+};
 
 function createObject() {
   return {};
@@ -1776,23 +1776,23 @@ function set(object, f) {
   return set;
 }
 
-function keys(map) {
+var keys = function(map) {
   var keys = [];
   for (var key in map) keys.push(key);
   return keys;
-}
+};
 
-function values(map) {
+var values = function(map) {
   var values = [];
   for (var key in map) values.push(map[key]);
   return values;
-}
+};
 
-function entries(map) {
+var entries = function(map) {
   var entries = [];
   for (var key in map) entries.push({key: key, value: map[key]});
   return entries;
-}
+};
 
 exports.nest = nest;
 exports.set = set;
@@ -1806,17 +1806,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{}],6:[function(require,module,exports){
-// https://d3js.org/d3-color/ v1.2.3 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-color/ Version 1.1.0. Copyright 2018 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-typeof define === 'function' && define.amd ? define(['exports'], factory) :
-(factory((global.d3 = global.d3 || {})));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.d3 = global.d3 || {})));
 }(this, (function (exports) { 'use strict';
 
-function define(constructor, factory, prototype) {
+var define = function(constructor, factory, prototype) {
   constructor.prototype = factory.prototype = prototype;
   prototype.constructor = constructor;
-}
+};
 
 function extend(parent, definition) {
   var prototype = Object.create(parent.prototype);
@@ -1829,17 +1829,17 @@ function Color() {}
 var darker = 0.7;
 var brighter = 1 / darker;
 
-var reI = "\\s*([+-]?\\d+)\\s*",
-    reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
-    reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
-    reHex3 = /^#([0-9a-f]{3})$/,
-    reHex6 = /^#([0-9a-f]{6})$/,
-    reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$"),
-    reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$"),
-    reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$"),
-    reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$"),
-    reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$"),
-    reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
+var reI = "\\s*([+-]?\\d+)\\s*";
+var reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*";
+var reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*";
+var reHex3 = /^#([0-9a-f]{3})$/;
+var reHex6 = /^#([0-9a-f]{6})$/;
+var reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$");
+var reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$");
+var reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$");
+var reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$");
+var reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$");
+var reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
 
 var named = {
   aliceblue: 0xf0f8ff,
@@ -1996,9 +1996,6 @@ define(Color, color, {
   displayable: function() {
     return this.rgb().displayable();
   },
-  hex: function() {
-    return this.rgb().hex();
-  },
   toString: function() {
     return this.rgb() + "";
   }
@@ -2065,9 +2062,6 @@ define(Rgb, rgb, extend(Color, {
         && (0 <= this.b && this.b <= 255)
         && (0 <= this.opacity && this.opacity <= 1);
   },
-  hex: function() {
-    return "#" + hex(this.r) + hex(this.g) + hex(this.b);
-  },
   toString: function() {
     var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
     return (a === 1 ? "rgb(" : "rgba(")
@@ -2077,11 +2071,6 @@ define(Rgb, rgb, extend(Color, {
         + (a === 1 ? ")" : ", " + a + ")");
   }
 }));
-
-function hex(value) {
-  value = Math.max(0, Math.min(255, Math.round(value) || 0));
-  return (value < 16 ? "0" : "") + value.toString(16);
-}
 
 function hsla(h, s, l, a) {
   if (a <= 0) h = s = l = NaN;
@@ -2168,14 +2157,14 @@ var deg2rad = Math.PI / 180;
 var rad2deg = 180 / Math.PI;
 
 // https://beta.observablehq.com/@mbostock/lab-and-rgb
-var K = 18,
-    Xn = 0.96422,
-    Yn = 1,
-    Zn = 0.82521,
-    t0 = 4 / 29,
-    t1 = 6 / 29,
-    t2 = 3 * t1 * t1,
-    t3 = t1 * t1 * t1;
+var K = 18;
+var Xn = 0.96422;
+var Yn = 1;
+var Zn = 0.82521;
+var t0 = 4 / 29;
+var t1 = 6 / 29;
+var t2 = 3 * t1 * t1;
+var t3 = t1 * t1 * t1;
 
 function labConvert(o) {
   if (o instanceof Lab) return new Lab(o.l, o.a, o.b, o.opacity);
@@ -2285,14 +2274,14 @@ define(Hcl, hcl, extend(Color, {
   }
 }));
 
-var A = -0.14861,
-    B = +1.78277,
-    C = -0.29227,
-    D = -0.90649,
-    E = +1.97294,
-    ED = E * D,
-    EB = E * B,
-    BC_DA = B * C - D * A;
+var A = -0.14861;
+var B = +1.78277;
+var C = -0.29227;
+var D = -0.90649;
+var E = +1.97294;
+var ED = E * D;
+var EB = E * B;
+var BC_DA = B * C - D * A;
 
 function cubehelixConvert(o) {
   if (o instanceof Cubehelix) return new Cubehelix(o.h, o.s, o.l, o.opacity);
@@ -2357,38 +2346,38 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{}],7:[function(require,module,exports){
-// https://d3js.org/d3-contour/ v1.3.2 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-contour/ Version 1.2.0. Copyright 2018 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-array')) :
-typeof define === 'function' && define.amd ? define(['exports', 'd3-array'], factory) :
-(factory((global.d3 = global.d3 || {}),global.d3));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-array')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'd3-array'], factory) :
+	(factory((global.d3 = global.d3 || {}),global.d3));
 }(this, (function (exports,d3Array) { 'use strict';
 
 var array = Array.prototype;
 
 var slice = array.slice;
 
-function ascending(a, b) {
+var ascending = function(a, b) {
   return a - b;
-}
+};
 
-function area(ring) {
+var area = function(ring) {
   var i = 0, n = ring.length, area = ring[n - 1][1] * ring[0][0] - ring[n - 1][0] * ring[0][1];
   while (++i < n) area += ring[i - 1][1] * ring[i][0] - ring[i - 1][0] * ring[i][1];
   return area;
-}
+};
 
-function constant(x) {
+var constant = function(x) {
   return function() {
     return x;
   };
-}
+};
 
-function contains(ring, hole) {
+var contains = function(ring, hole) {
   var i = -1, n = hole.length, c;
   while (++i < n) if (c = ringContains(ring, hole[i])) return c;
   return 0;
-}
+};
 
 function ringContains(ring, point) {
   var x = point[0], y = point[1], contains = -1;
@@ -2412,7 +2401,7 @@ function within(p, q, r) {
   return p <= q && q <= r || r <= q && q <= p;
 }
 
-function noop() {}
+var noop = function() {};
 
 var cases = [
   [],
@@ -2433,7 +2422,7 @@ var cases = [
   []
 ];
 
-function contours() {
+var contours = function() {
   var dx = 1,
       dy = 1,
       threshold = d3Array.thresholdSturges,
@@ -2608,7 +2597,7 @@ function contours() {
   };
 
   return contours;
-}
+};
 
 // TODO Optimize edge cases.
 // TODO Optimize index calculation.
@@ -2662,14 +2651,9 @@ function defaultY(d) {
   return d[1];
 }
 
-function defaultWeight() {
-  return 1;
-}
-
-function density() {
+var density = function() {
   var x = defaultX,
       y = defaultY,
-      weight = defaultWeight,
       dx = 960,
       dy = 500,
       r = 20, // blur radius
@@ -2684,11 +2668,10 @@ function density() {
         values1 = new Float32Array(n * m);
 
     data.forEach(function(d, i, data) {
-      var xi = (+x(d, i, data) + o) >> k,
-          yi = (+y(d, i, data) + o) >> k,
-          wi = +weight(d, i, data);
+      var xi = (x(d, i, data) + o) >> k,
+          yi = (y(d, i, data) + o) >> k;
       if (xi >= 0 && xi < n && yi >= 0 && yi < m) {
-        values0[xi + yi * n] += wi;
+        ++values0[xi + yi * n];
       }
     });
 
@@ -2752,10 +2735,6 @@ function density() {
     return arguments.length ? (y = typeof _ === "function" ? _ : constant(+_), density) : y;
   };
 
-  density.weight = function(_) {
-    return arguments.length ? (weight = typeof _ === "function" ? _ : constant(+_), density) : weight;
-  };
-
   density.size = function(_) {
     if (!arguments.length) return [dx, dy];
     var _0 = Math.ceil(_[0]), _1 = Math.ceil(_[1]);
@@ -2780,7 +2759,7 @@ function density() {
   };
 
   return density;
-}
+};
 
 exports.contours = contours;
 exports.contourDensity = density;
@@ -2790,11 +2769,11 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{"d3-array":1}],8:[function(require,module,exports){
-// https://d3js.org/d3-dispatch/ v1.0.5 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-dispatch/ Version 1.0.3. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-typeof define === 'function' && define.amd ? define(['exports'], factory) :
-(factory((global.d3 = global.d3 || {})));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.d3 = global.d3 || {})));
 }(this, (function (exports) { 'use strict';
 
 var noop = {value: function() {}};
@@ -2887,23 +2866,23 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{}],9:[function(require,module,exports){
-// https://d3js.org/d3-drag/ v1.2.3 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-drag/ Version 1.2.1. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-selection'), require('d3-dispatch')) :
-typeof define === 'function' && define.amd ? define(['exports', 'd3-selection', 'd3-dispatch'], factory) :
-(factory((global.d3 = global.d3 || {}),global.d3,global.d3));
-}(this, (function (exports,d3Selection,d3Dispatch) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-dispatch'), require('d3-selection')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-selection'], factory) :
+	(factory((global.d3 = global.d3 || {}),global.d3,global.d3));
+}(this, (function (exports,d3Dispatch,d3Selection) { 'use strict';
 
 function nopropagation() {
   d3Selection.event.stopImmediatePropagation();
 }
 
-function noevent() {
+var noevent = function() {
   d3Selection.event.preventDefault();
   d3Selection.event.stopImmediatePropagation();
-}
+};
 
-function nodrag(view) {
+var nodrag = function(view) {
   var root = view.document.documentElement,
       selection = d3Selection.select(view).on("dragstart.drag", noevent, true);
   if ("onselectstart" in root) {
@@ -2912,7 +2891,7 @@ function nodrag(view) {
     root.__noselect = root.style.MozUserSelect;
     root.style.MozUserSelect = "none";
   }
-}
+};
 
 function yesdrag(view, noclick) {
   var root = view.document.documentElement,
@@ -2929,13 +2908,13 @@ function yesdrag(view, noclick) {
   }
 }
 
-function constant(x) {
+var constant = function(x) {
   return function() {
     return x;
   };
-}
+};
 
-function DragEvent(target, type, subject, id, active, x, y, dx, dy, dispatch) {
+function DragEvent(target, type, subject, id, active, x, y, dx, dy, dispatch$$1) {
   this.target = target;
   this.type = type;
   this.subject = subject;
@@ -2945,7 +2924,7 @@ function DragEvent(target, type, subject, id, active, x, y, dx, dy, dispatch) {
   this.y = y;
   this.dx = dx;
   this.dy = dy;
-  this._ = dispatch;
+  this._ = dispatch$$1;
 }
 
 DragEvent.prototype.on = function() {
@@ -2970,7 +2949,7 @@ function defaultTouchable() {
   return "ontouchstart" in this;
 }
 
-function drag() {
+var drag = function() {
   var filter = defaultFilter,
       container = defaultContainer,
       subject = defaultSubject,
@@ -3112,7 +3091,7 @@ function drag() {
   };
 
   return drag;
-}
+};
 
 exports.drag = drag;
 exports.dragDisable = nodrag;
@@ -3123,18 +3102,18 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{"d3-dispatch":8,"d3-selection":24}],10:[function(require,module,exports){
-// https://d3js.org/d3-dsv/ v1.0.10 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-dsv/ Version 1.0.8. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-typeof define === 'function' && define.amd ? define(['exports'], factory) :
-(factory((global.d3 = global.d3 || {})));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.d3 = global.d3 || {})));
 }(this, (function (exports) { 'use strict';
 
-var EOL = {},
-    EOF = {},
-    QUOTE = 34,
-    NEWLINE = 10,
-    RETURN = 13;
+var EOL = {};
+var EOF = {};
+var QUOTE = 34;
+var NEWLINE = 10;
+var RETURN = 13;
 
 function objectConverter(columns) {
   return new Function("d", "return {" + columns.map(function(name, i) {
@@ -3165,7 +3144,7 @@ function inferColumns(rows) {
   return columns;
 }
 
-function dsv(delimiter) {
+var dsv = function(delimiter) {
   var reFormat = new RegExp("[\"" + delimiter + "\n\r]"),
       DELIMITER = delimiter.charCodeAt(0);
 
@@ -3256,7 +3235,7 @@ function dsv(delimiter) {
     format: format,
     formatRows: formatRows
   };
-}
+};
 
 var csv = dsv(",");
 
@@ -3287,11 +3266,11 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{}],11:[function(require,module,exports){
-// https://d3js.org/d3-ease/ v1.0.5 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-ease/ Version 1.0.3. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-typeof define === 'function' && define.amd ? define(['exports'], factory) :
-(factory((global.d3 = global.d3 || {})));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.d3 = global.d3 || {})));
 }(this, (function (exports) { 'use strict';
 
 function linear(t) {
@@ -3360,8 +3339,8 @@ var polyInOut = (function custom(e) {
   return polyInOut;
 })(exponent);
 
-var pi = Math.PI,
-    halfPi = pi / 2;
+var pi = Math.PI;
+var halfPi = pi / 2;
 
 function sinIn(t) {
   return 1 - Math.cos(t * halfPi);
@@ -3399,16 +3378,16 @@ function circleInOut(t) {
   return ((t *= 2) <= 1 ? 1 - Math.sqrt(1 - t * t) : Math.sqrt(1 - (t -= 2) * t) + 1) / 2;
 }
 
-var b1 = 4 / 11,
-    b2 = 6 / 11,
-    b3 = 8 / 11,
-    b4 = 3 / 4,
-    b5 = 9 / 11,
-    b6 = 10 / 11,
-    b7 = 15 / 16,
-    b8 = 21 / 22,
-    b9 = 63 / 64,
-    b0 = 1 / b1 / b1;
+var b1 = 4 / 11;
+var b2 = 6 / 11;
+var b3 = 8 / 11;
+var b4 = 3 / 4;
+var b5 = 9 / 11;
+var b6 = 10 / 11;
+var b7 = 15 / 16;
+var b8 = 21 / 22;
+var b9 = 63 / 64;
+var b0 = 1 / b1 / b1;
 
 function bounceIn(t) {
   return 1 - bounceOut(1 - t);
@@ -3460,9 +3439,9 @@ var backInOut = (function custom(s) {
   return backInOut;
 })(overshoot);
 
-var tau = 2 * Math.PI,
-    amplitude = 1,
-    period = 0.3;
+var tau = 2 * Math.PI;
+var amplitude = 1;
+var period = 0.3;
 
 var elasticIn = (function custom(a, p) {
   var s = Math.asin(1 / (a = Math.max(1, a))) * (p /= tau);
@@ -3548,11 +3527,11 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{}],12:[function(require,module,exports){
-// https://d3js.org/d3-fetch/ v1.1.2 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-fetch/ Version 1.1.0. Copyright 2018 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-dsv')) :
-typeof define === 'function' && define.amd ? define(['exports', 'd3-dsv'], factory) :
-(factory((global.d3 = global.d3 || {}),global.d3));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-dsv')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'd3-dsv'], factory) :
+	(factory((global.d3 = global.d3 || {}),global.d3));
 }(this, (function (exports,d3Dsv) { 'use strict';
 
 function responseBlob(response) {
@@ -3652,14 +3631,14 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{"d3-dsv":10}],13:[function(require,module,exports){
-// https://d3js.org/d3-force/ v1.1.2 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-force/ Version 1.1.0. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-quadtree'), require('d3-collection'), require('d3-dispatch'), require('d3-timer')) :
-typeof define === 'function' && define.amd ? define(['exports', 'd3-quadtree', 'd3-collection', 'd3-dispatch', 'd3-timer'], factory) :
-(factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-quadtree'), require('d3-collection'), require('d3-dispatch'), require('d3-timer')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'd3-quadtree', 'd3-collection', 'd3-dispatch', 'd3-timer'], factory) :
+	(factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3));
 }(this, (function (exports,d3Quadtree,d3Collection,d3Dispatch,d3Timer) { 'use strict';
 
-function center(x, y) {
+var center = function(x, y) {
   var nodes;
 
   if (x == null) x = 0;
@@ -3694,17 +3673,17 @@ function center(x, y) {
   };
 
   return force;
-}
+};
 
-function constant(x) {
+var constant = function(x) {
   return function() {
     return x;
   };
-}
+};
 
-function jiggle() {
+var jiggle = function() {
   return (Math.random() - 0.5) * 1e-6;
-}
+};
 
 function x(d) {
   return d.x + d.vx;
@@ -3714,7 +3693,7 @@ function y(d) {
   return d.y + d.vy;
 }
 
-function collide(radius) {
+var collide = function(radius) {
   var nodes,
       radii,
       strength = 1,
@@ -3799,7 +3778,7 @@ function collide(radius) {
   };
 
   return force;
-}
+};
 
 function index(d) {
   return d.index;
@@ -3811,7 +3790,7 @@ function find(nodeById, nodeId) {
   return node;
 }
 
-function link(links) {
+var link = function(links) {
   var id = index,
       strength = defaultStrength,
       strengths,
@@ -3912,7 +3891,7 @@ function link(links) {
   };
 
   return force;
-}
+};
 
 function x$1(d) {
   return d.x;
@@ -3922,10 +3901,10 @@ function y$1(d) {
   return d.y;
 }
 
-var initialRadius = 10,
-    initialAngle = Math.PI * (3 - Math.sqrt(5));
+var initialRadius = 10;
+var initialAngle = Math.PI * (3 - Math.sqrt(5));
 
-function simulation(nodes) {
+var simulation = function(nodes) {
   var simulation,
       alpha = 1,
       alphaMin = 0.001,
@@ -4052,9 +4031,9 @@ function simulation(nodes) {
       return arguments.length > 1 ? (event.on(name, _), simulation) : event.on(name);
     }
   };
-}
+};
 
-function manyBody() {
+var manyBody = function() {
   var nodes,
       node,
       alpha,
@@ -4162,9 +4141,9 @@ function manyBody() {
   };
 
   return force;
-}
+};
 
-function radial(radius, x, y) {
+var radial = function(radius, x, y) {
   var nodes,
       strength = constant(0.1),
       strengths,
@@ -4218,9 +4197,9 @@ function radial(radius, x, y) {
   };
 
   return force;
-}
+};
 
-function x$2(x) {
+var x$2 = function(x) {
   var strength = constant(0.1),
       nodes,
       strengths,
@@ -4258,9 +4237,9 @@ function x$2(x) {
   };
 
   return force;
-}
+};
 
-function y$2(y) {
+var y$2 = function(y) {
   var strength = constant(0.1),
       nodes,
       strengths,
@@ -4298,7 +4277,7 @@ function y$2(y) {
   };
 
   return force;
-}
+};
 
 exports.forceCenter = center;
 exports.forceCollide = collide;
@@ -4314,17 +4293,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{"d3-collection":5,"d3-dispatch":8,"d3-quadtree":20,"d3-timer":28}],14:[function(require,module,exports){
-// https://d3js.org/d3-format/ v1.3.2 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-format/ Version 1.2.2. Copyright 2018 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-typeof define === 'function' && define.amd ? define(['exports'], factory) :
-(factory((global.d3 = global.d3 || {})));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.d3 = global.d3 || {})));
 }(this, (function (exports) { 'use strict';
 
 // Computes the decimal coefficient and exponent of the specified number x with
 // significant digits p, where x is positive and p is in [1, 21] or undefined.
 // For example, formatDecimal(1.23) returns ["123", 0].
-function formatDecimal(x, p) {
+var formatDecimal = function(x, p) {
   if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
   var i, coefficient = x.slice(0, i);
 
@@ -4334,13 +4313,13 @@ function formatDecimal(x, p) {
     coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient,
     +x.slice(i + 1)
   ];
-}
+};
 
-function exponent(x) {
+var exponent = function(x) {
   return x = formatDecimal(Math.abs(x)), x ? x[1] : NaN;
-}
+};
 
-function formatGroup(grouping, thousands) {
+var formatGroup = function(grouping, thousands) {
   return function(value, width) {
     var i = value.length,
         t = [],
@@ -4357,68 +4336,34 @@ function formatGroup(grouping, thousands) {
 
     return t.reverse().join(thousands);
   };
-}
+};
 
-function formatNumerals(numerals) {
+var formatNumerals = function(numerals) {
   return function(value) {
     return value.replace(/[0-9]/g, function(i) {
       return numerals[+i];
     });
   };
-}
-
-// [[fill]align][sign][symbol][0][width][,][.precision][~][type]
-var re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
-
-function formatSpecifier(specifier) {
-  return new FormatSpecifier(specifier);
-}
-
-formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
-
-function FormatSpecifier(specifier) {
-  if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
-  var match;
-  this.fill = match[1] || " ";
-  this.align = match[2] || ">";
-  this.sign = match[3] || "-";
-  this.symbol = match[4] || "";
-  this.zero = !!match[5];
-  this.width = match[6] && +match[6];
-  this.comma = !!match[7];
-  this.precision = match[8] && +match[8].slice(1);
-  this.trim = !!match[9];
-  this.type = match[10] || "";
-}
-
-FormatSpecifier.prototype.toString = function() {
-  return this.fill
-      + this.align
-      + this.sign
-      + this.symbol
-      + (this.zero ? "0" : "")
-      + (this.width == null ? "" : Math.max(1, this.width | 0))
-      + (this.comma ? "," : "")
-      + (this.precision == null ? "" : "." + Math.max(0, this.precision | 0))
-      + (this.trim ? "~" : "")
-      + this.type;
 };
 
-// Trims insignificant zeros, e.g., replaces 1.2000k with 1.2k.
-function formatTrim(s) {
-  out: for (var n = s.length, i = 1, i0 = -1, i1; i < n; ++i) {
-    switch (s[i]) {
+var formatDefault = function(x, p) {
+  x = x.toPrecision(p);
+
+  out: for (var n = x.length, i = 1, i0 = -1, i1; i < n; ++i) {
+    switch (x[i]) {
       case ".": i0 = i1 = i; break;
       case "0": if (i0 === 0) i0 = i; i1 = i; break;
-      default: if (i0 > 0) { if (!+s[i]) break out; i0 = 0; } break;
+      case "e": break out;
+      default: if (i0 > 0) i0 = 0; break;
     }
   }
-  return i0 > 0 ? s.slice(0, i0) + s.slice(i1 + 1) : s;
-}
+
+  return i0 > 0 ? x.slice(0, i0) + x.slice(i1 + 1) : x;
+};
 
 var prefixExponent;
 
-function formatPrefixAuto(x, p) {
+var formatPrefixAuto = function(x, p) {
   var d = formatDecimal(x, p);
   if (!d) return x + "";
   var coefficient = d[0],
@@ -4429,9 +4374,9 @@ function formatPrefixAuto(x, p) {
       : i > n ? coefficient + new Array(i - n + 1).join("0")
       : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i)
       : "0." + new Array(1 - i).join("0") + formatDecimal(x, Math.max(0, p + i - 1))[0]; // less than 1y!
-}
+};
 
-function formatRounded(x, p) {
+var formatRounded = function(x, p) {
   var d = formatDecimal(x, p);
   if (!d) return x + "";
   var coefficient = d[0],
@@ -4439,9 +4384,10 @@ function formatRounded(x, p) {
   return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient
       : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1)
       : coefficient + new Array(exponent - coefficient.length + 2).join("0");
-}
+};
 
 var formatTypes = {
+  "": formatDefault,
   "%": function(x, p) { return (x * 100).toFixed(p); },
   "b": function(x) { return Math.round(x).toString(2); },
   "c": function(x) { return x + ""; },
@@ -4457,13 +4403,68 @@ var formatTypes = {
   "x": function(x) { return Math.round(x).toString(16); }
 };
 
-function identity(x) {
-  return x;
+// [[fill]align][sign][symbol][0][width][,][.precision][type]
+var re = /^(?:(.)?([<>=^]))?([+\-\( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?([a-z%])?$/i;
+
+function formatSpecifier(specifier) {
+  return new FormatSpecifier(specifier);
 }
+
+formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
+
+function FormatSpecifier(specifier) {
+  if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
+
+  var match,
+      fill = match[1] || " ",
+      align = match[2] || ">",
+      sign = match[3] || "-",
+      symbol = match[4] || "",
+      zero = !!match[5],
+      width = match[6] && +match[6],
+      comma = !!match[7],
+      precision = match[8] && +match[8].slice(1),
+      type = match[9] || "";
+
+  // The "n" type is an alias for ",g".
+  if (type === "n") comma = true, type = "g";
+
+  // Map invalid types to the default format.
+  else if (!formatTypes[type]) type = "";
+
+  // If zero fill is specified, padding goes after sign and before digits.
+  if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
+
+  this.fill = fill;
+  this.align = align;
+  this.sign = sign;
+  this.symbol = symbol;
+  this.zero = zero;
+  this.width = width;
+  this.comma = comma;
+  this.precision = precision;
+  this.type = type;
+}
+
+FormatSpecifier.prototype.toString = function() {
+  return this.fill
+      + this.align
+      + this.sign
+      + this.symbol
+      + (this.zero ? "0" : "")
+      + (this.width == null ? "" : Math.max(1, this.width | 0))
+      + (this.comma ? "," : "")
+      + (this.precision == null ? "" : "." + Math.max(0, this.precision | 0))
+      + this.type;
+};
+
+var identity = function(x) {
+  return x;
+};
 
 var prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
 
-function formatLocale(locale) {
+var formatLocale = function(locale) {
   var group = locale.grouping && locale.thousands ? formatGroup(locale.grouping, locale.thousands) : identity,
       currency = locale.currency,
       decimal = locale.decimal,
@@ -4481,17 +4482,7 @@ function formatLocale(locale) {
         width = specifier.width,
         comma = specifier.comma,
         precision = specifier.precision,
-        trim = specifier.trim,
         type = specifier.type;
-
-    // The "n" type is an alias for ",g".
-    if (type === "n") comma = true, type = "g";
-
-    // The "" type, and any invalid type, is an alias for ".12~g".
-    else if (!formatTypes[type]) precision == null && (precision = 12), trim = true, type = "g";
-
-    // If zero fill is specified, padding goes after sign and before digits.
-    if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
 
     // Compute the prefix and suffix.
     // For SI-prefix, the suffix is lazily computed.
@@ -4502,13 +4493,13 @@ function formatLocale(locale) {
     // Is this an integer type?
     // Can this type generate exponential notation?
     var formatType = formatTypes[type],
-        maybeSuffix = /[defgprs%]/.test(type);
+        maybeSuffix = !type || /[defgprs%]/.test(type);
 
     // Set the default precision if not specified,
     // or clamp the specified precision to the supported range.
     // For significant precision, it must be in [1, 21].
     // For fixed precision, it must be in [0, 20].
-    precision = precision == null ? 6
+    precision = precision == null ? (type ? 6 : 12)
         : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision))
         : Math.max(0, Math.min(20, precision));
 
@@ -4526,9 +4517,6 @@ function formatLocale(locale) {
         // Perform the initial formatting.
         var valueNegative = value < 0;
         value = formatType(Math.abs(value), precision);
-
-        // Trim insignificant zeros.
-        if (trim) value = formatTrim(value);
 
         // If a negative value rounds to zero during formatting, treat as positive.
         if (valueNegative && +value === 0) valueNegative = false;
@@ -4593,9 +4581,11 @@ function formatLocale(locale) {
     format: newFormat,
     formatPrefix: formatPrefix
   };
-}
+};
 
 var locale;
+
+
 
 defaultLocale({
   decimal: ".",
@@ -4611,18 +4601,18 @@ function defaultLocale(definition) {
   return locale;
 }
 
-function precisionFixed(step) {
+var precisionFixed = function(step) {
   return Math.max(0, -exponent(Math.abs(step)));
-}
+};
 
-function precisionPrefix(step, value) {
+var precisionPrefix = function(step, value) {
   return Math.max(0, Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3 - exponent(Math.abs(step)));
-}
+};
 
-function precisionRound(step, max) {
+var precisionRound = function(step, max) {
   step = Math.abs(step), max = Math.abs(max) - step;
   return Math.max(0, exponent(max) - exponent(step)) + 1;
-}
+};
 
 exports.formatDefaultLocale = defaultLocale;
 exports.formatLocale = formatLocale;
@@ -4636,11 +4626,11 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{}],15:[function(require,module,exports){
-// https://d3js.org/d3-geo/ v1.11.1 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-geo/ Version 1.10.0. Copyright 2018 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-array')) :
-typeof define === 'function' && define.amd ? define(['exports', 'd3-array'], factory) :
-(factory((global.d3 = global.d3 || {}),global.d3));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-array')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'd3-array'], factory) :
+	(factory((global.d3 = global.d3 || {}),global.d3));
 }(this, (function (exports,d3Array) { 'use strict';
 
 // Adds floating point numbers with twice the normal precision.
@@ -4700,6 +4690,7 @@ var atan2 = Math.atan2;
 var cos = Math.cos;
 var ceil = Math.ceil;
 var exp = Math.exp;
+
 var log = Math.log;
 var pow = Math.pow;
 var sin = Math.sin;
@@ -4793,12 +4784,12 @@ function geoStream(object, stream) {
 
 var areaRingSum = adder();
 
-var areaSum = adder(),
-    lambda00,
-    phi00,
-    lambda0,
-    cosPhi0,
-    sinPhi0;
+var areaSum = adder();
+var lambda00;
+var phi00;
+var lambda0;
+var cosPhi0;
+var sinPhi0;
 
 var areaStream = {
   point: noop,
@@ -4893,13 +4884,17 @@ function cartesianNormalizeInPlace(d) {
   d[0] /= l, d[1] /= l, d[2] /= l;
 }
 
-var lambda0$1, phi0, lambda1, phi1, // bounds
-    lambda2, // previous lambda-coordinate
-    lambda00$1, phi00$1, // first point
-    p0, // previous 3D point
-    deltaSum = adder(),
-    ranges,
-    range;
+var lambda0$1;
+var phi0;
+var lambda1;
+var phi1;
+var lambda2;
+var lambda00$1;
+var phi00$1;
+var p0;
+var deltaSum = adder();
+var ranges;
+var range$1;
 
 var boundsStream = {
   point: boundsPoint,
@@ -4920,12 +4915,12 @@ var boundsStream = {
     if (areaRingSum < 0) lambda0$1 = -(lambda1 = 180), phi0 = -(phi1 = 90);
     else if (deltaSum > epsilon) phi1 = 90;
     else if (deltaSum < -epsilon) phi0 = -90;
-    range[0] = lambda0$1, range[1] = lambda1;
+    range$1[0] = lambda0$1, range$1[1] = lambda1;
   }
 };
 
 function boundsPoint(lambda, phi) {
-  ranges.push(range = [lambda0$1 = lambda, lambda1 = lambda]);
+  ranges.push(range$1 = [lambda0$1 = lambda, lambda1 = lambda]);
   if (phi < phi0) phi0 = phi;
   if (phi > phi1) phi1 = phi;
 }
@@ -4972,7 +4967,7 @@ function linePoint(lambda, phi) {
       }
     }
   } else {
-    ranges.push(range = [lambda0$1 = lambda, lambda1 = lambda]);
+    ranges.push(range$1 = [lambda0$1 = lambda, lambda1 = lambda]);
   }
   if (phi < phi0) phi0 = phi;
   if (phi > phi1) phi1 = phi;
@@ -4984,7 +4979,7 @@ function boundsLineStart() {
 }
 
 function boundsLineEnd() {
-  range[0] = lambda0$1, range[1] = lambda1;
+  range$1[0] = lambda0$1, range$1[1] = lambda1;
   boundsStream.point = boundsPoint;
   p0 = null;
 }
@@ -5008,7 +5003,7 @@ function boundsRingEnd() {
   boundsRingPoint(lambda00$1, phi00$1);
   areaStream.lineEnd();
   if (abs(deltaSum) > epsilon) lambda0$1 = -(lambda1 = 180);
-  range[0] = lambda0$1, range[1] = lambda1;
+  range$1[0] = lambda0$1, range$1[1] = lambda1;
   p0 = null;
 }
 
@@ -5023,8 +5018,8 @@ function rangeCompare(a, b) {
   return a[0] - b[0];
 }
 
-function rangeContains(range, x) {
-  return range[0] <= range[1] ? range[0] <= x && x <= range[1] : x < range[0] || range[1] < x;
+function rangeContains(range$$1, x) {
+  return range$$1[0] <= range$$1[1] ? range$$1[0] <= x && x <= range$$1[1] : x < range$$1[0] || range$$1[1] < x;
 }
 
 function bounds(feature) {
@@ -5057,19 +5052,29 @@ function bounds(feature) {
     }
   }
 
-  ranges = range = null;
+  ranges = range$1 = null;
 
   return lambda0$1 === Infinity || phi0 === Infinity
       ? [[NaN, NaN], [NaN, NaN]]
       : [[lambda0$1, phi0], [lambda1, phi1]];
 }
 
-var W0, W1,
-    X0, Y0, Z0,
-    X1, Y1, Z1,
-    X2, Y2, Z2,
-    lambda00$2, phi00$2, // first point
-    x0, y0, z0; // previous point
+var W0;
+var W1;
+var X0;
+var Y0;
+var Z0;
+var X1;
+var Y1;
+var Z1;
+var X2;
+var Y2;
+var Z2;
+var lambda00$2;
+var phi00$2;
+var x0;
+var y0;
+var z0; // previous point
 
 var centroidStream = {
   sphere: noop,
@@ -6011,7 +6016,8 @@ function clipLine(a, b, x0, y0, x1, y1) {
   return true;
 }
 
-var clipMax = 1e9, clipMin = -clipMax;
+var clipMax = 1e9;
+var clipMin = -clipMax;
 
 // TODO Use d3-polygon’s polygonContains here for the ring check?
 // TODO Eliminate duplicate buffering in clipBuffer and polygon.push?
@@ -6193,10 +6199,10 @@ function extent() {
   };
 }
 
-var lengthSum = adder(),
-    lambda0$2,
-    sinPhi0$1,
-    cosPhi0$1;
+var lengthSum = adder();
+var lambda0$2;
+var sinPhi0$1;
+var cosPhi0$1;
 
 var lengthStream = {
   sphere: noop,
@@ -6242,8 +6248,8 @@ function length(object) {
   return +lengthSum;
 }
 
-var coordinates = [null, null],
-    object = {type: "LineString", coordinates: coordinates};
+var coordinates = [null, null];
+var object = {type: "LineString", coordinates: coordinates};
 
 function distance(a, b) {
   coordinates[0] = a;
@@ -6474,12 +6480,12 @@ function identity(x) {
   return x;
 }
 
-var areaSum$1 = adder(),
-    areaRingSum$1 = adder(),
-    x00,
-    y00,
-    x0$1,
-    y0$1;
+var areaSum$1 = adder();
+var areaRingSum$1 = adder();
+var x00;
+var y00;
+var x0$1;
+var y0$1;
 
 var areaStream$1 = {
   point: noop,
@@ -6519,10 +6525,10 @@ function areaRingEnd$1() {
   areaPoint$1(x00, y00);
 }
 
-var x0$2 = Infinity,
-    y0$2 = x0$2,
-    x1 = -x0$2,
-    y1 = x1;
+var x0$2 = Infinity;
+var y0$2 = x0$2;
+var x1 = -x0$2;
+var y1 = x1;
 
 var boundsStream$1 = {
   point: boundsPoint$1,
@@ -6546,19 +6552,19 @@ function boundsPoint$1(x, y) {
 
 // TODO Enforce positive area for exterior, negative area for interior?
 
-var X0$1 = 0,
-    Y0$1 = 0,
-    Z0$1 = 0,
-    X1$1 = 0,
-    Y1$1 = 0,
-    Z1$1 = 0,
-    X2$1 = 0,
-    Y2$1 = 0,
-    Z2$1 = 0,
-    x00$1,
-    y00$1,
-    x0$3,
-    y0$3;
+var X0$1 = 0;
+var Y0$1 = 0;
+var Z0$1 = 0;
+var X1$1 = 0;
+var Y1$1 = 0;
+var Z1$1 = 0;
+var X2$1 = 0;
+var Y2$1 = 0;
+var Z2$1 = 0;
+var x00$1;
+var y00$1;
+var x0$3;
+var y0$3;
 
 var centroidStream$1 = {
   point: centroidPoint$1,
@@ -6684,12 +6690,12 @@ PathContext.prototype = {
   result: noop
 };
 
-var lengthSum$1 = adder(),
-    lengthRing,
-    x00$2,
-    y00$2,
-    x0$4,
-    y0$4;
+var lengthSum$1 = adder();
+var lengthRing;
+var x00$2;
+var y00$2;
+var x0$4;
+var y0$4;
 
 var lengthStream$1 = {
   point: noop,
@@ -6909,8 +6915,8 @@ function fitHeight(projection, height, object) {
   }, object);
 }
 
-var maxDepth = 16, // maximum depth of subdivision
-    cosMinDistance = cos(30 * radians); // cos(minimum angular distance)
+var maxDepth = 16;
+var cosMinDistance = cos(30 * radians); // cos(minimum angular distance)
 
 function resample(project, delta2) {
   return +delta2 ? resample$1(project, delta2) : resampleNone(project);
@@ -7254,8 +7260,7 @@ function albersUsa() {
 
   function albersUsa(coordinates) {
     var x = coordinates[0], y = coordinates[1];
-    return point = null,
-        (lower48Point.point(x, y), point)
+    return point = null, (lower48Point.point(x, y), point)
         || (alaskaPoint.point(x, y), point)
         || (hawaiiPoint.point(x, y), point);
   }
@@ -7419,7 +7424,7 @@ function mercatorProjection(project) {
   };
 
   m.clipExtent = function(_) {
-    return arguments.length ? ((_ == null ? x0 = y0 = x1 = y1 = null : (x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1])), reclip()) : x0 == null ? null : [[x0, y0], [x1, y1]];
+    return arguments.length ? (_ == null ? x0 = y0 = x1 = y1 = null : (x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1]), reclip()) : x0 == null ? null : [[x0, y0], [x1, y1]];
   };
 
   function reclip() {
@@ -7501,40 +7506,6 @@ function conicEquidistant() {
   return conicProjection(conicEquidistantRaw)
       .scale(131.154)
       .center([0, 13.9389]);
-}
-
-var A1 = 1.340264,
-    A2 = -0.081106,
-    A3 = 0.000893,
-    A4 = 0.003796,
-    M = sqrt(3) / 2,
-    iterations = 12;
-
-function equalEarthRaw(lambda, phi) {
-  var l = asin(M * sin(phi)), l2 = l * l, l6 = l2 * l2 * l2;
-  return [
-    lambda * cos(l) / (M * (A1 + 3 * A2 * l2 + l6 * (7 * A3 + 9 * A4 * l2))),
-    l * (A1 + A2 * l2 + l6 * (A3 + A4 * l2))
-  ];
-}
-
-equalEarthRaw.invert = function(x, y) {
-  var l = y, l2 = l * l, l6 = l2 * l2 * l2;
-  for (var i = 0, delta, fy, fpy; i < iterations; ++i) {
-    fy = l * (A1 + A2 * l2 + l6 * (A3 + A4 * l2)) - y;
-    fpy = A1 + 3 * A2 * l2 + l6 * (7 * A3 + 9 * A4 * l2);
-    l -= delta = fy / fpy, l2 = l * l, l6 = l2 * l2 * l2;
-    if (abs(delta) < epsilon2) break;
-  }
-  return [
-    M * x * (A1 + 3 * A2 * l2 + l6 * (7 * A3 + 9 * A4 * l2)) / cos(l),
-    asin(sin(l) / M)
-  ];
-};
-
-function equalEarth() {
-  return projection(equalEarthRaw)
-      .scale(177.158);
 }
 
 function gnomonicRaw(x, y) {
@@ -7713,8 +7684,6 @@ exports.geoConicEqualArea = conicEqualArea;
 exports.geoConicEqualAreaRaw = conicEqualAreaRaw;
 exports.geoConicEquidistant = conicEquidistant;
 exports.geoConicEquidistantRaw = conicEquidistantRaw;
-exports.geoEqualEarth = equalEarth;
-exports.geoEqualEarthRaw = equalEarthRaw;
 exports.geoEquirectangular = equirectangular;
 exports.geoEquirectangularRaw = equirectangularRaw;
 exports.geoGnomonic = gnomonic;
@@ -7741,11 +7710,11 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{"d3-array":1}],16:[function(require,module,exports){
-// https://d3js.org/d3-hierarchy/ v1.1.8 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-hierarchy/ Version 1.1.6. Copyright 2018 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-typeof define === 'function' && define.amd ? define(['exports'], factory) :
-(factory((global.d3 = global.d3 || {})));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.d3 = global.d3 || {})));
 }(this, (function (exports) { 'use strict';
 
 function defaultSeparation(a, b) {
@@ -7780,7 +7749,7 @@ function leafRight(node) {
   return node;
 }
 
-function cluster() {
+var cluster = function() {
   var separation = defaultSeparation,
       dx = 1,
       dy = 1,
@@ -7831,7 +7800,7 @@ function cluster() {
   };
 
   return cluster;
-}
+};
 
 function count(node) {
   var sum = 0,
@@ -7842,11 +7811,11 @@ function count(node) {
   node.value = sum;
 }
 
-function node_count() {
+var node_count = function() {
   return this.eachAfter(count);
-}
+};
 
-function node_each(callback) {
+var node_each = function(callback) {
   var node = this, current, next = [node], children, i, n;
   do {
     current = next.reverse(), next = [];
@@ -7858,9 +7827,9 @@ function node_each(callback) {
     }
   } while (next.length);
   return this;
-}
+};
 
-function node_eachBefore(callback) {
+var node_eachBefore = function(callback) {
   var node = this, nodes = [node], children, i;
   while (node = nodes.pop()) {
     callback(node), children = node.children;
@@ -7869,9 +7838,9 @@ function node_eachBefore(callback) {
     }
   }
   return this;
-}
+};
 
-function node_eachAfter(callback) {
+var node_eachAfter = function(callback) {
   var node = this, nodes = [node], next = [], children, i, n;
   while (node = nodes.pop()) {
     next.push(node), children = node.children;
@@ -7883,9 +7852,9 @@ function node_eachAfter(callback) {
     callback(node);
   }
   return this;
-}
+};
 
-function node_sum(value) {
+var node_sum = function(value) {
   return this.eachAfter(function(node) {
     var sum = +value(node.data) || 0,
         children = node.children,
@@ -7893,17 +7862,17 @@ function node_sum(value) {
     while (--i >= 0) sum += children[i].value;
     node.value = sum;
   });
-}
+};
 
-function node_sort(compare) {
+var node_sort = function(compare) {
   return this.eachBefore(function(node) {
     if (node.children) {
       node.children.sort(compare);
     }
   });
-}
+};
 
-function node_path(end) {
+var node_path = function(end) {
   var start = this,
       ancestor = leastCommonAncestor(start, end),
       nodes = [start];
@@ -7917,7 +7886,7 @@ function node_path(end) {
     end = end.parent;
   }
   return nodes;
-}
+};
 
 function leastCommonAncestor(a, b) {
   if (a === b) return a;
@@ -7934,23 +7903,23 @@ function leastCommonAncestor(a, b) {
   return c;
 }
 
-function node_ancestors() {
+var node_ancestors = function() {
   var node = this, nodes = [node];
   while (node = node.parent) {
     nodes.push(node);
   }
   return nodes;
-}
+};
 
-function node_descendants() {
+var node_descendants = function() {
   var nodes = [];
   this.each(function(node) {
     nodes.push(node);
   });
   return nodes;
-}
+};
 
-function node_leaves() {
+var node_leaves = function() {
   var leaves = [];
   this.eachBefore(function(node) {
     if (!node.children) {
@@ -7958,9 +7927,9 @@ function node_leaves() {
     }
   });
   return leaves;
-}
+};
 
-function node_links() {
+var node_links = function() {
   var root = this, links = [];
   root.each(function(node) {
     if (node !== root) { // Don’t include the root’s parent, if any.
@@ -7968,7 +7937,7 @@ function node_links() {
     }
   });
   return links;
-}
+};
 
 function hierarchy(data, children) {
   var root = new Node(data),
@@ -8055,7 +8024,7 @@ function shuffle(array) {
   return array;
 }
 
-function enclose(circles) {
+var enclose = function(circles) {
   var i = 0, n = (circles = shuffle(slice.call(circles))).length, B = [], p, e;
 
   while (i < n) {
@@ -8065,7 +8034,7 @@ function enclose(circles) {
   }
 
   return e;
-}
+};
 
 function extendBasis(B, p) {
   var i, j;
@@ -8284,10 +8253,10 @@ function packEnclose(circles) {
   return c.r;
 }
 
-function siblings(circles) {
+var siblings = function(circles) {
   packEnclose(circles);
   return circles;
-}
+};
 
 function optional(f) {
   return f == null ? null : required(f);
@@ -8302,17 +8271,17 @@ function constantZero() {
   return 0;
 }
 
-function constant(x) {
+var constant = function(x) {
   return function() {
     return x;
   };
-}
+};
 
 function defaultRadius(d) {
   return Math.sqrt(d.value);
 }
 
-function index() {
+var index = function() {
   var radius = null,
       dx = 1,
       dy = 1,
@@ -8346,7 +8315,7 @@ function index() {
   };
 
   return pack;
-}
+};
 
 function radiusLeaf(radius) {
   return function(node) {
@@ -8384,14 +8353,14 @@ function translateChild(k) {
   };
 }
 
-function roundNode(node) {
+var roundNode = function(node) {
   node.x0 = Math.round(node.x0);
   node.y0 = Math.round(node.y0);
   node.x1 = Math.round(node.x1);
   node.y1 = Math.round(node.y1);
-}
+};
 
-function treemapDice(parent, x0, y0, x1, y1) {
+var treemapDice = function(parent, x0, y0, x1, y1) {
   var nodes = parent.children,
       node,
       i = -1,
@@ -8402,9 +8371,9 @@ function treemapDice(parent, x0, y0, x1, y1) {
     node = nodes[i], node.y0 = y0, node.y1 = y1;
     node.x0 = x0, node.x1 = x0 += node.value * k;
   }
-}
+};
 
-function partition() {
+var partition = function() {
   var dx = 1,
       dy = 1,
       padding = 0,
@@ -8452,11 +8421,11 @@ function partition() {
   };
 
   return partition;
-}
+};
 
-var keyPrefix = "$", // Protect against keys like “__proto__”.
-    preroot = {depth: -1},
-    ambiguous = {};
+var keyPrefix = "$";
+var preroot = {depth: -1};
+var ambiguous = {};
 
 function defaultId(d) {
   return d.id;
@@ -8466,7 +8435,7 @@ function defaultParentId(d) {
   return d.parentId;
 }
 
-function stratify() {
+var stratify = function() {
   var id = defaultId,
       parentId = defaultParentId;
 
@@ -8523,7 +8492,7 @@ function stratify() {
   };
 
   return stratify;
-}
+};
 
 function defaultSeparation$1(a, b) {
   return a.parent === b.parent ? 1 : 2;
@@ -8622,7 +8591,7 @@ function treeRoot(root) {
 }
 
 // Node-link tree diagram using the Reingold-Tilford "tidy" algorithm
-function tree() {
+var tree = function() {
   var separation = defaultSeparation$1,
       dx = 1,
       dy = 1,
@@ -8759,9 +8728,9 @@ function tree() {
   };
 
   return tree;
-}
+};
 
-function treemapSlice(parent, x0, y0, x1, y1) {
+var treemapSlice = function(parent, x0, y0, x1, y1) {
   var nodes = parent.children,
       node,
       i = -1,
@@ -8772,7 +8741,7 @@ function treemapSlice(parent, x0, y0, x1, y1) {
     node = nodes[i], node.x0 = x0, node.x1 = x1;
     node.y0 = y0, node.y1 = y0 += node.value * k;
   }
-}
+};
 
 var phi = (1 + Math.sqrt(5)) / 2;
 
@@ -8825,7 +8794,7 @@ function squarifyRatio(ratio, parent, x0, y0, x1, y1) {
   return rows;
 }
 
-var squarify = (function custom(ratio) {
+var squarify = ((function custom(ratio) {
 
   function squarify(parent, x0, y0, x1, y1) {
     squarifyRatio(ratio, parent, x0, y0, x1, y1);
@@ -8836,9 +8805,9 @@ var squarify = (function custom(ratio) {
   };
 
   return squarify;
-})(phi);
+}))(phi);
 
-function index$1() {
+var index$1 = function() {
   var tile = squarify,
       round = false,
       dx = 1,
@@ -8926,9 +8895,9 @@ function index$1() {
   };
 
   return treemap;
-}
+};
 
-function binary(parent, x0, y0, x1, y1) {
+var binary = function(parent, x0, y0, x1, y1) {
   var nodes = parent.children,
       i, n = nodes.length,
       sum, sums = new Array(n + 1);
@@ -8973,13 +8942,13 @@ function binary(parent, x0, y0, x1, y1) {
       partition(k, j, valueRight, x0, yk, x1, y1);
     }
   }
-}
+};
 
-function sliceDice(parent, x0, y0, x1, y1) {
+var sliceDice = function(parent, x0, y0, x1, y1) {
   (parent.depth & 1 ? treemapSlice : treemapDice)(parent, x0, y0, x1, y1);
-}
+};
 
-var resquarify = (function custom(ratio) {
+var resquarify = ((function custom(ratio) {
 
   function resquarify(parent, x0, y0, x1, y1) {
     if ((rows = parent._squarify) && (rows.ratio === ratio)) {
@@ -9010,7 +8979,7 @@ var resquarify = (function custom(ratio) {
   };
 
   return resquarify;
-})(phi);
+}))(phi);
 
 exports.cluster = cluster;
 exports.hierarchy = hierarchy;
@@ -9033,11 +9002,11 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{}],17:[function(require,module,exports){
-// https://d3js.org/d3-interpolate/ v1.3.2 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-interpolate/ Version 1.1.6. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-color')) :
-typeof define === 'function' && define.amd ? define(['exports', 'd3-color'], factory) :
-(factory((global.d3 = global.d3 || {}),global.d3));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-color')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'd3-color'], factory) :
+	(factory((global.d3 = global.d3 || {}),global.d3));
 }(this, (function (exports,d3Color) { 'use strict';
 
 function basis(t1, v0, v1, v2, v3) {
@@ -9048,7 +9017,7 @@ function basis(t1, v0, v1, v2, v3) {
       + t3 * v3) / 6;
 }
 
-function basis$1(values) {
+var basis$1 = function(values) {
   var n = values.length - 1;
   return function(t) {
     var i = t <= 0 ? (t = 0) : t >= 1 ? (t = 1, n - 1) : Math.floor(t * n),
@@ -9058,9 +9027,9 @@ function basis$1(values) {
         v3 = i < n - 1 ? values[i + 2] : 2 * v2 - v1;
     return basis((t - i / n) * n, v0, v1, v2, v3);
   };
-}
+};
 
-function basisClosed(values) {
+var basisClosed = function(values) {
   var n = values.length;
   return function(t) {
     var i = Math.floor(((t %= 1) < 0 ? ++t : t) * n),
@@ -9070,13 +9039,13 @@ function basisClosed(values) {
         v3 = values[(i + 2) % n];
     return basis((t - i / n) * n, v0, v1, v2, v3);
   };
-}
+};
 
-function constant(x) {
+var constant = function(x) {
   return function() {
     return x;
   };
-}
+};
 
 function linear(a, d) {
   return function(t) {
@@ -9106,13 +9075,13 @@ function nogamma(a, b) {
   return d ? linear(a, d) : constant(isNaN(a) ? b : a);
 }
 
-var rgb = (function rgbGamma(y) {
-  var color = gamma(y);
+var rgb$1 = ((function rgbGamma(y) {
+  var color$$1 = gamma(y);
 
-  function rgb(start, end) {
-    var r = color((start = d3Color.rgb(start)).r, (end = d3Color.rgb(end)).r),
-        g = color(start.g, end.g),
-        b = color(start.b, end.b),
+  function rgb$$1(start, end) {
+    var r = color$$1((start = d3Color.rgb(start)).r, (end = d3Color.rgb(end)).r),
+        g = color$$1(start.g, end.g),
+        b = color$$1(start.b, end.b),
         opacity = nogamma(start.opacity, end.opacity);
     return function(t) {
       start.r = r(t);
@@ -9123,10 +9092,10 @@ var rgb = (function rgbGamma(y) {
     };
   }
 
-  rgb.gamma = rgbGamma;
+  rgb$$1.gamma = rgbGamma;
 
-  return rgb;
-})(1);
+  return rgb$$1;
+}))(1);
 
 function rgbSpline(spline) {
   return function(colors) {
@@ -9134,22 +9103,22 @@ function rgbSpline(spline) {
         r = new Array(n),
         g = new Array(n),
         b = new Array(n),
-        i, color;
+        i, color$$1;
     for (i = 0; i < n; ++i) {
-      color = d3Color.rgb(colors[i]);
-      r[i] = color.r || 0;
-      g[i] = color.g || 0;
-      b[i] = color.b || 0;
+      color$$1 = d3Color.rgb(colors[i]);
+      r[i] = color$$1.r || 0;
+      g[i] = color$$1.g || 0;
+      b[i] = color$$1.b || 0;
     }
     r = spline(r);
     g = spline(g);
     b = spline(b);
-    color.opacity = 1;
+    color$$1.opacity = 1;
     return function(t) {
-      color.r = r(t);
-      color.g = g(t);
-      color.b = b(t);
-      return color + "";
+      color$$1.r = r(t);
+      color$$1.g = g(t);
+      color$$1.b = b(t);
+      return color$$1 + "";
     };
   };
 }
@@ -9157,7 +9126,7 @@ function rgbSpline(spline) {
 var rgbBasis = rgbSpline(basis$1);
 var rgbBasisClosed = rgbSpline(basisClosed);
 
-function array(a, b) {
+var array = function(a, b) {
   var nb = b ? b.length : 0,
       na = a ? Math.min(nb, a.length) : 0,
       x = new Array(na),
@@ -9171,22 +9140,22 @@ function array(a, b) {
     for (i = 0; i < na; ++i) c[i] = x[i](t);
     return c;
   };
-}
+};
 
-function date(a, b) {
+var date = function(a, b) {
   var d = new Date;
   return a = +a, b -= a, function(t) {
     return d.setTime(a + b * t), d;
   };
-}
+};
 
-function number(a, b) {
+var number = function(a, b) {
   return a = +a, b -= a, function(t) {
     return a + b * t;
   };
-}
+};
 
-function object(a, b) {
+var object = function(a, b) {
   var i = {},
       c = {},
       k;
@@ -9206,10 +9175,10 @@ function object(a, b) {
     for (k in i) c[k] = i[k](t);
     return c;
   };
-}
+};
 
-var reA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
-    reB = new RegExp(reA.source, "g");
+var reA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g;
+var reB = new RegExp(reA.source, "g");
 
 function zero(b) {
   return function() {
@@ -9223,7 +9192,7 @@ function one(b) {
   };
 }
 
-function string(a, b) {
+var string = function(a, b) {
   var bi = reA.lastIndex = reB.lastIndex = 0, // scan index for next number in b
       am, // current match in a
       bm, // current match in b
@@ -9269,40 +9238,25 @@ function string(a, b) {
           for (var i = 0, o; i < b; ++i) s[(o = q[i]).i] = o.x(t);
           return s.join("");
         });
-}
+};
 
-function value(a, b) {
+var value = function(a, b) {
   var t = typeof b, c;
   return b == null || t === "boolean" ? constant(b)
       : (t === "number" ? number
-      : t === "string" ? ((c = d3Color.color(b)) ? (b = c, rgb) : string)
-      : b instanceof d3Color.color ? rgb
+      : t === "string" ? ((c = d3Color.color(b)) ? (b = c, rgb$1) : string)
+      : b instanceof d3Color.color ? rgb$1
       : b instanceof Date ? date
       : Array.isArray(b) ? array
       : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
       : number)(a, b);
-}
+};
 
-function discrete(range) {
-  var n = range.length;
-  return function(t) {
-    return range[Math.max(0, Math.min(n - 1, Math.floor(t * n)))];
-  };
-}
-
-function hue$1(a, b) {
-  var i = hue(+a, +b);
-  return function(t) {
-    var x = i(t);
-    return x - 360 * Math.floor(x / 360);
-  };
-}
-
-function round(a, b) {
+var round = function(a, b) {
   return a = +a, b -= a, function(t) {
     return Math.round(a + b * t);
   };
-}
+};
 
 var degrees = 180 / Math.PI;
 
@@ -9315,7 +9269,7 @@ var identity = {
   scaleY: 1
 };
 
-function decompose(a, b, c, d, e, f) {
+var decompose = function(a, b, c, d, e, f) {
   var scaleX, scaleY, skewX;
   if (scaleX = Math.sqrt(a * a + b * b)) a /= scaleX, b /= scaleX;
   if (skewX = a * c + b * d) c -= a * skewX, d -= b * skewX;
@@ -9329,12 +9283,12 @@ function decompose(a, b, c, d, e, f) {
     scaleX: scaleX,
     scaleY: scaleY
   };
-}
+};
 
-var cssNode,
-    cssRoot,
-    cssView,
-    svgNode;
+var cssNode;
+var cssRoot;
+var cssView;
+var svgNode;
 
 function parseCss(value) {
   if (value === "none") return identity;
@@ -9416,10 +9370,10 @@ function interpolateTransform(parse, pxComma, pxParen, degParen) {
 var interpolateTransformCss = interpolateTransform(parseCss, "px, ", "px)", "deg)");
 var interpolateTransformSvg = interpolateTransform(parseSvg, ", ", ")", ")");
 
-var rho = Math.SQRT2,
-    rho2 = 2,
-    rho4 = 4,
-    epsilon2 = 1e-12;
+var rho = Math.SQRT2;
+var rho2 = 2;
+var rho4 = 4;
+var epsilon2 = 1e-12;
 
 function cosh(x) {
   return ((x = Math.exp(x)) + 1 / x) / 2;
@@ -9435,7 +9389,7 @@ function tanh(x) {
 
 // p0 = [ux0, uy0, w0]
 // p1 = [ux1, uy1, w1]
-function zoom(p0, p1) {
+var zoom = function(p0, p1) {
   var ux0 = p0[0], uy0 = p0[1], w0 = p0[2],
       ux1 = p1[0], uy1 = p1[1], w1 = p1[2],
       dx = ux1 - ux0,
@@ -9479,9 +9433,9 @@ function zoom(p0, p1) {
   i.duration = S * 1000;
 
   return i;
-}
+};
 
-function hsl(hue$$1) {
+function hsl$1(hue$$1) {
   return function(start, end) {
     var h = hue$$1((start = d3Color.hsl(start)).h, (end = d3Color.hsl(end)).h),
         s = nogamma(start.s, end.s),
@@ -9497,10 +9451,10 @@ function hsl(hue$$1) {
   }
 }
 
-var hsl$1 = hsl(hue);
-var hslLong = hsl(nogamma);
+var hsl$2 = hsl$1(hue);
+var hslLong = hsl$1(nogamma);
 
-function lab(start, end) {
+function lab$1(start, end) {
   var l = nogamma((start = d3Color.lab(start)).l, (end = d3Color.lab(end)).l),
       a = nogamma(start.a, end.a),
       b = nogamma(start.b, end.b),
@@ -9514,7 +9468,7 @@ function lab(start, end) {
   };
 }
 
-function hcl(hue$$1) {
+function hcl$1(hue$$1) {
   return function(start, end) {
     var h = hue$$1((start = d3Color.hcl(start)).h, (end = d3Color.hcl(end)).h),
         c = nogamma(start.c, end.c),
@@ -9530,14 +9484,14 @@ function hcl(hue$$1) {
   }
 }
 
-var hcl$1 = hcl(hue);
-var hclLong = hcl(nogamma);
+var hcl$2 = hcl$1(hue);
+var hclLong = hcl$1(nogamma);
 
-function cubehelix(hue$$1) {
+function cubehelix$1(hue$$1) {
   return (function cubehelixGamma(y) {
     y = +y;
 
-    function cubehelix(start, end) {
+    function cubehelix$$1(start, end) {
       var h = hue$$1((start = d3Color.cubehelix(start)).h, (end = d3Color.cubehelix(end)).h),
           s = nogamma(start.s, end.s),
           l = nogamma(start.l, end.l),
@@ -9551,37 +9505,26 @@ function cubehelix(hue$$1) {
       };
     }
 
-    cubehelix.gamma = cubehelixGamma;
+    cubehelix$$1.gamma = cubehelixGamma;
 
-    return cubehelix;
+    return cubehelix$$1;
   })(1);
 }
 
-var cubehelix$1 = cubehelix(hue);
-var cubehelixLong = cubehelix(nogamma);
+var cubehelix$2 = cubehelix$1(hue);
+var cubehelixLong = cubehelix$1(nogamma);
 
-function piecewise(interpolate, values) {
-  var i = 0, n = values.length - 1, v = values[0], I = new Array(n < 0 ? 0 : n);
-  while (i < n) I[i] = interpolate(v, v = values[++i]);
-  return function(t) {
-    var i = Math.max(0, Math.min(n - 1, Math.floor(t *= n)));
-    return I[i](t - i);
-  };
-}
-
-function quantize(interpolator, n) {
+var quantize = function(interpolator, n) {
   var samples = new Array(n);
   for (var i = 0; i < n; ++i) samples[i] = interpolator(i / (n - 1));
   return samples;
-}
+};
 
 exports.interpolate = value;
 exports.interpolateArray = array;
 exports.interpolateBasis = basis$1;
 exports.interpolateBasisClosed = basisClosed;
 exports.interpolateDate = date;
-exports.interpolateDiscrete = discrete;
-exports.interpolateHue = hue$1;
 exports.interpolateNumber = number;
 exports.interpolateObject = object;
 exports.interpolateRound = round;
@@ -9589,17 +9532,16 @@ exports.interpolateString = string;
 exports.interpolateTransformCss = interpolateTransformCss;
 exports.interpolateTransformSvg = interpolateTransformSvg;
 exports.interpolateZoom = zoom;
-exports.interpolateRgb = rgb;
+exports.interpolateRgb = rgb$1;
 exports.interpolateRgbBasis = rgbBasis;
 exports.interpolateRgbBasisClosed = rgbBasisClosed;
-exports.interpolateHsl = hsl$1;
+exports.interpolateHsl = hsl$2;
 exports.interpolateHslLong = hslLong;
-exports.interpolateLab = lab;
-exports.interpolateHcl = hcl$1;
+exports.interpolateLab = lab$1;
+exports.interpolateHcl = hcl$2;
 exports.interpolateHclLong = hclLong;
-exports.interpolateCubehelix = cubehelix$1;
+exports.interpolateCubehelix = cubehelix$2;
 exports.interpolateCubehelixLong = cubehelixLong;
-exports.piecewise = piecewise;
 exports.quantize = quantize;
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -9607,17 +9549,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{"d3-color":6}],18:[function(require,module,exports){
-// https://d3js.org/d3-path/ v1.0.7 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-path/ Version 1.0.5. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-typeof define === 'function' && define.amd ? define(['exports'], factory) :
-(factory((global.d3 = global.d3 || {})));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.d3 = global.d3 || {})));
 }(this, (function (exports) { 'use strict';
 
-var pi = Math.PI,
-    tau = 2 * pi,
-    epsilon = 1e-6,
-    tauEpsilon = tau - epsilon;
+var pi = Math.PI;
+var tau = 2 * pi;
+var epsilon = 1e-6;
+var tauEpsilon = tau - epsilon;
 
 function Path() {
   this._x0 = this._y0 = // start of current subpath
@@ -9668,7 +9610,7 @@ Path.prototype = path.prototype = {
     }
 
     // Or, is (x1,y1) coincident with (x0,y0)? Do nothing.
-    else if (!(l01_2 > epsilon));
+    else if (!(l01_2 > epsilon)) {}
 
     // Or, are (x0,y0), (x1,y1) and (x2,y2) collinear?
     // Equivalently, is (x1,y1) coincident with (x2,y2)?
@@ -9750,14 +9692,14 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{}],19:[function(require,module,exports){
-// https://d3js.org/d3-polygon/ v1.0.5 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-polygon/ Version 1.0.3. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-typeof define === 'function' && define.amd ? define(['exports'], factory) :
-(factory((global.d3 = global.d3 || {})));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.d3 = global.d3 || {})));
 }(this, (function (exports) { 'use strict';
 
-function area(polygon) {
+var area = function(polygon) {
   var i = -1,
       n = polygon.length,
       a,
@@ -9771,9 +9713,9 @@ function area(polygon) {
   }
 
   return area / 2;
-}
+};
 
-function centroid(polygon) {
+var centroid = function(polygon) {
   var i = -1,
       n = polygon.length,
       x = 0,
@@ -9792,15 +9734,15 @@ function centroid(polygon) {
   }
 
   return k *= 3, [x / k, y / k];
-}
+};
 
 // Returns the 2D cross product of AB and AC vectors, i.e., the z-component of
 // the 3D cross product in a quadrant I Cartesian coordinate system (+x is
 // right, +y is up). Returns a positive value if ABC is counter-clockwise,
 // negative if clockwise, and zero if the points are collinear.
-function cross(a, b, c) {
+var cross = function(a, b, c) {
   return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]);
-}
+};
 
 function lexicographicOrder(a, b) {
   return a[0] - b[0] || a[1] - b[1];
@@ -9822,7 +9764,7 @@ function computeUpperHullIndexes(points) {
   return indexes.slice(0, size); // remove popped points
 }
 
-function hull(points) {
+var hull = function(points) {
   if ((n = points.length) < 3) return null;
 
   var i,
@@ -9848,9 +9790,9 @@ function hull(points) {
   for (i = +skipLeft; i < lowerIndexes.length - skipRight; ++i) hull.push(points[sortedPoints[lowerIndexes[i]][2]]);
 
   return hull;
-}
+};
 
-function contains(polygon, point) {
+var contains = function(polygon, point) {
   var n = polygon.length,
       p = polygon[n - 1],
       x = point[0], y = point[1],
@@ -9865,9 +9807,9 @@ function contains(polygon, point) {
   }
 
   return inside;
-}
+};
 
-function length(polygon) {
+var length = function(polygon) {
   var i = -1,
       n = polygon.length,
       b = polygon[n - 1],
@@ -9889,7 +9831,7 @@ function length(polygon) {
   }
 
   return perimeter;
-}
+};
 
 exports.polygonArea = area;
 exports.polygonCentroid = centroid;
@@ -9902,18 +9844,18 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{}],20:[function(require,module,exports){
-// https://d3js.org/d3-quadtree/ v1.0.5 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-quadtree/ Version 1.0.3. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-typeof define === 'function' && define.amd ? define(['exports'], factory) :
-(factory((global.d3 = global.d3 || {})));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.d3 = global.d3 || {})));
 }(this, (function (exports) { 'use strict';
 
-function tree_add(d) {
+var tree_add = function(d) {
   var x = +this._x.call(null, d),
       y = +this._y.call(null, d);
   return add(this.cover(x, y), x, y, d);
-}
+};
 
 function add(tree, x, y, d) {
   if (isNaN(x) || isNaN(y)) return tree; // ignore invalid points
@@ -9995,7 +9937,7 @@ function addAll(data) {
   return this;
 }
 
-function tree_cover(x, y) {
+var tree_cover = function(x, y) {
   if (isNaN(x = +x) || isNaN(y = +y)) return this; // ignore invalid points
 
   var x0 = this._x0,
@@ -10052,31 +9994,31 @@ function tree_cover(x, y) {
   this._x1 = x1;
   this._y1 = y1;
   return this;
-}
+};
 
-function tree_data() {
+var tree_data = function() {
   var data = [];
   this.visit(function(node) {
     if (!node.length) do data.push(node.data); while (node = node.next)
   });
   return data;
-}
+};
 
-function tree_extent(_) {
+var tree_extent = function(_) {
   return arguments.length
       ? this.cover(+_[0][0], +_[0][1]).cover(+_[1][0], +_[1][1])
       : isNaN(this._x0) ? undefined : [[this._x0, this._y0], [this._x1, this._y1]];
-}
+};
 
-function Quad(node, x0, y0, x1, y1) {
+var Quad = function(node, x0, y0, x1, y1) {
   this.node = node;
   this.x0 = x0;
   this.y0 = y0;
   this.x1 = x1;
   this.y1 = y1;
-}
+};
 
-function tree_find(x, y, radius) {
+var tree_find = function(x, y, radius) {
   var data,
       x0 = this._x0,
       y0 = this._y0,
@@ -10143,9 +10085,9 @@ function tree_find(x, y, radius) {
   }
 
   return data;
-}
+};
 
-function tree_remove(d) {
+var tree_remove = function(d) {
   if (isNaN(x = +this._x.call(null, d)) || isNaN(y = +this._y.call(null, d))) return this; // ignore invalid points
 
   var parent,
@@ -10201,26 +10143,26 @@ function tree_remove(d) {
   }
 
   return this;
-}
+};
 
 function removeAll(data) {
   for (var i = 0, n = data.length; i < n; ++i) this.remove(data[i]);
   return this;
 }
 
-function tree_root() {
+var tree_root = function() {
   return this._root;
-}
+};
 
-function tree_size() {
+var tree_size = function() {
   var size = 0;
   this.visit(function(node) {
     if (!node.length) do ++size; while (node = node.next)
   });
   return size;
-}
+};
 
-function tree_visit(callback) {
+var tree_visit = function(callback) {
   var quads = [], q, node = this._root, child, x0, y0, x1, y1;
   if (node) quads.push(new Quad(node, this._x0, this._y0, this._x1, this._y1));
   while (q = quads.pop()) {
@@ -10233,9 +10175,9 @@ function tree_visit(callback) {
     }
   }
   return this;
-}
+};
 
-function tree_visitAfter(callback) {
+var tree_visitAfter = function(callback) {
   var quads = [], next = [], q;
   if (this._root) quads.push(new Quad(this._root, this._x0, this._y0, this._x1, this._y1));
   while (q = quads.pop()) {
@@ -10253,23 +10195,23 @@ function tree_visitAfter(callback) {
     callback(q.node, q.x0, q.y0, q.x1, q.y1);
   }
   return this;
-}
+};
 
 function defaultX(d) {
   return d[0];
 }
 
-function tree_x(_) {
+var tree_x = function(_) {
   return arguments.length ? (this._x = _, this) : this._x;
-}
+};
 
 function defaultY(d) {
   return d[1];
 }
 
-function tree_y(_) {
+var tree_y = function(_) {
   return arguments.length ? (this._y = _, this) : this._y;
-}
+};
 
 function quadtree(nodes, x, y) {
   var tree = new Quadtree(x == null ? defaultX : x, y == null ? defaultY : y, NaN, NaN, NaN, NaN);
@@ -10339,18 +10281,18 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{}],21:[function(require,module,exports){
-// https://d3js.org/d3-random/ v1.1.2 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-random/ Version 1.1.0. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-typeof define === 'function' && define.amd ? define(['exports'], factory) :
-(factory((global.d3 = global.d3 || {})));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.d3 = global.d3 || {})));
 }(this, (function (exports) { 'use strict';
 
-function defaultSource() {
+var defaultSource = function() {
   return Math.random();
-}
+};
 
-var uniform = (function sourceRandomUniform(source) {
+var uniform = ((function sourceRandomUniform(source) {
   function randomUniform(min, max) {
     min = min == null ? 0 : +min;
     max = max == null ? 1 : +max;
@@ -10364,9 +10306,9 @@ var uniform = (function sourceRandomUniform(source) {
   randomUniform.source = sourceRandomUniform;
 
   return randomUniform;
-})(defaultSource);
+}))(defaultSource);
 
-var normal = (function sourceRandomNormal(source) {
+var normal = ((function sourceRandomNormal(source) {
   function randomNormal(mu, sigma) {
     var x, r;
     mu = mu == null ? 0 : +mu;
@@ -10391,9 +10333,9 @@ var normal = (function sourceRandomNormal(source) {
   randomNormal.source = sourceRandomNormal;
 
   return randomNormal;
-})(defaultSource);
+}))(defaultSource);
 
-var logNormal = (function sourceRandomLogNormal(source) {
+var logNormal = ((function sourceRandomLogNormal(source) {
   function randomLogNormal() {
     var randomNormal = normal.source(source).apply(this, arguments);
     return function() {
@@ -10404,9 +10346,9 @@ var logNormal = (function sourceRandomLogNormal(source) {
   randomLogNormal.source = sourceRandomLogNormal;
 
   return randomLogNormal;
-})(defaultSource);
+}))(defaultSource);
 
-var irwinHall = (function sourceRandomIrwinHall(source) {
+var irwinHall = ((function sourceRandomIrwinHall(source) {
   function randomIrwinHall(n) {
     return function() {
       for (var sum = 0, i = 0; i < n; ++i) sum += source();
@@ -10417,9 +10359,9 @@ var irwinHall = (function sourceRandomIrwinHall(source) {
   randomIrwinHall.source = sourceRandomIrwinHall;
 
   return randomIrwinHall;
-})(defaultSource);
+}))(defaultSource);
 
-var bates = (function sourceRandomBates(source) {
+var bates = ((function sourceRandomBates(source) {
   function randomBates(n) {
     var randomIrwinHall = irwinHall.source(source)(n);
     return function() {
@@ -10430,9 +10372,9 @@ var bates = (function sourceRandomBates(source) {
   randomBates.source = sourceRandomBates;
 
   return randomBates;
-})(defaultSource);
+}))(defaultSource);
 
-var exponential = (function sourceRandomExponential(source) {
+var exponential = ((function sourceRandomExponential(source) {
   function randomExponential(lambda) {
     return function() {
       return -Math.log(1 - source()) / lambda;
@@ -10442,7 +10384,7 @@ var exponential = (function sourceRandomExponential(source) {
   randomExponential.source = sourceRandomExponential;
 
   return randomExponential;
-})(defaultSource);
+}))(defaultSource);
 
 exports.randomUniform = uniform;
 exports.randomNormal = normal;
@@ -10456,11 +10398,11 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{}],22:[function(require,module,exports){
-// https://d3js.org/d3-scale-chromatic/ v1.3.3 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-scale-chromatic/ Version 1.2.0. Copyright 2018 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-interpolate'), require('d3-color')) :
-typeof define === 'function' && define.amd ? define(['exports', 'd3-interpolate', 'd3-color'], factory) :
-(factory((global.d3 = global.d3 || {}),global.d3,global.d3));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-interpolate'), require('d3-color')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'd3-interpolate', 'd3-color'], factory) :
+	(factory((global.d3 = global.d3 || {}),global.d3,global.d3));
 }(this, (function (exports,d3Interpolate,d3Color) { 'use strict';
 
 function colors(specifier) {
@@ -10629,7 +10571,7 @@ var scheme$9 = new Array(3).concat(
 
 var BuGn = ramp(scheme$9);
 
-var scheme$a = new Array(3).concat(
+var scheme$10 = new Array(3).concat(
   "e0ecf49ebcda8856a7",
   "edf8fbb3cde38c96c688419d",
   "edf8fbb3cde38c96c68856a7810f7c",
@@ -10639,9 +10581,9 @@ var scheme$a = new Array(3).concat(
   "f7fcfde0ecf4bfd3e69ebcda8c96c68c6bb188419d810f7c4d004b"
 ).map(colors);
 
-var BuPu = ramp(scheme$a);
+var BuPu = ramp(scheme$10);
 
-var scheme$b = new Array(3).concat(
+var scheme$11 = new Array(3).concat(
   "e0f3dba8ddb543a2ca",
   "f0f9e8bae4bc7bccc42b8cbe",
   "f0f9e8bae4bc7bccc443a2ca0868ac",
@@ -10651,9 +10593,9 @@ var scheme$b = new Array(3).concat(
   "f7fcf0e0f3dbccebc5a8ddb57bccc44eb3d32b8cbe0868ac084081"
 ).map(colors);
 
-var GnBu = ramp(scheme$b);
+var GnBu = ramp(scheme$11);
 
-var scheme$c = new Array(3).concat(
+var scheme$12 = new Array(3).concat(
   "fee8c8fdbb84e34a33",
   "fef0d9fdcc8afc8d59d7301f",
   "fef0d9fdcc8afc8d59e34a33b30000",
@@ -10663,9 +10605,9 @@ var scheme$c = new Array(3).concat(
   "fff7ecfee8c8fdd49efdbb84fc8d59ef6548d7301fb300007f0000"
 ).map(colors);
 
-var OrRd = ramp(scheme$c);
+var OrRd = ramp(scheme$12);
 
-var scheme$d = new Array(3).concat(
+var scheme$13 = new Array(3).concat(
   "ece2f0a6bddb1c9099",
   "f6eff7bdc9e167a9cf02818a",
   "f6eff7bdc9e167a9cf1c9099016c59",
@@ -10675,9 +10617,9 @@ var scheme$d = new Array(3).concat(
   "fff7fbece2f0d0d1e6a6bddb67a9cf3690c002818a016c59014636"
 ).map(colors);
 
-var PuBuGn = ramp(scheme$d);
+var PuBuGn = ramp(scheme$13);
 
-var scheme$e = new Array(3).concat(
+var scheme$14 = new Array(3).concat(
   "ece7f2a6bddb2b8cbe",
   "f1eef6bdc9e174a9cf0570b0",
   "f1eef6bdc9e174a9cf2b8cbe045a8d",
@@ -10687,9 +10629,9 @@ var scheme$e = new Array(3).concat(
   "fff7fbece7f2d0d1e6a6bddb74a9cf3690c00570b0045a8d023858"
 ).map(colors);
 
-var PuBu = ramp(scheme$e);
+var PuBu = ramp(scheme$14);
 
-var scheme$f = new Array(3).concat(
+var scheme$15 = new Array(3).concat(
   "e7e1efc994c7dd1c77",
   "f1eef6d7b5d8df65b0ce1256",
   "f1eef6d7b5d8df65b0dd1c77980043",
@@ -10699,9 +10641,9 @@ var scheme$f = new Array(3).concat(
   "f7f4f9e7e1efd4b9dac994c7df65b0e7298ace125698004367001f"
 ).map(colors);
 
-var PuRd = ramp(scheme$f);
+var PuRd = ramp(scheme$15);
 
-var scheme$g = new Array(3).concat(
+var scheme$16 = new Array(3).concat(
   "fde0ddfa9fb5c51b8a",
   "feebe2fbb4b9f768a1ae017e",
   "feebe2fbb4b9f768a1c51b8a7a0177",
@@ -10711,9 +10653,9 @@ var scheme$g = new Array(3).concat(
   "fff7f3fde0ddfcc5c0fa9fb5f768a1dd3497ae017e7a017749006a"
 ).map(colors);
 
-var RdPu = ramp(scheme$g);
+var RdPu = ramp(scheme$16);
 
-var scheme$h = new Array(3).concat(
+var scheme$17 = new Array(3).concat(
   "edf8b17fcdbb2c7fb8",
   "ffffcca1dab441b6c4225ea8",
   "ffffcca1dab441b6c42c7fb8253494",
@@ -10723,9 +10665,9 @@ var scheme$h = new Array(3).concat(
   "ffffd9edf8b1c7e9b47fcdbb41b6c41d91c0225ea8253494081d58"
 ).map(colors);
 
-var YlGnBu = ramp(scheme$h);
+var YlGnBu = ramp(scheme$17);
 
-var scheme$i = new Array(3).concat(
+var scheme$18 = new Array(3).concat(
   "f7fcb9addd8e31a354",
   "ffffccc2e69978c679238443",
   "ffffccc2e69978c67931a354006837",
@@ -10735,9 +10677,9 @@ var scheme$i = new Array(3).concat(
   "ffffe5f7fcb9d9f0a3addd8e78c67941ab5d238443006837004529"
 ).map(colors);
 
-var YlGn = ramp(scheme$i);
+var YlGn = ramp(scheme$18);
 
-var scheme$j = new Array(3).concat(
+var scheme$19 = new Array(3).concat(
   "fff7bcfec44fd95f0e",
   "ffffd4fed98efe9929cc4c02",
   "ffffd4fed98efe9929d95f0e993404",
@@ -10747,9 +10689,9 @@ var scheme$j = new Array(3).concat(
   "ffffe5fff7bcfee391fec44ffe9929ec7014cc4c02993404662506"
 ).map(colors);
 
-var YlOrBr = ramp(scheme$j);
+var YlOrBr = ramp(scheme$19);
 
-var scheme$k = new Array(3).concat(
+var scheme$20 = new Array(3).concat(
   "ffeda0feb24cf03b20",
   "ffffb2fecc5cfd8d3ce31a1c",
   "ffffb2fecc5cfd8d3cf03b20bd0026",
@@ -10759,9 +10701,9 @@ var scheme$k = new Array(3).concat(
   "ffffccffeda0fed976feb24cfd8d3cfc4e2ae31a1cbd0026800026"
 ).map(colors);
 
-var YlOrRd = ramp(scheme$k);
+var YlOrRd = ramp(scheme$20);
 
-var scheme$l = new Array(3).concat(
+var scheme$21 = new Array(3).concat(
   "deebf79ecae13182bd",
   "eff3ffbdd7e76baed62171b5",
   "eff3ffbdd7e76baed63182bd08519c",
@@ -10771,9 +10713,9 @@ var scheme$l = new Array(3).concat(
   "f7fbffdeebf7c6dbef9ecae16baed64292c62171b508519c08306b"
 ).map(colors);
 
-var Blues = ramp(scheme$l);
+var Blues = ramp(scheme$21);
 
-var scheme$m = new Array(3).concat(
+var scheme$22 = new Array(3).concat(
   "e5f5e0a1d99b31a354",
   "edf8e9bae4b374c476238b45",
   "edf8e9bae4b374c47631a354006d2c",
@@ -10783,9 +10725,9 @@ var scheme$m = new Array(3).concat(
   "f7fcf5e5f5e0c7e9c0a1d99b74c47641ab5d238b45006d2c00441b"
 ).map(colors);
 
-var Greens = ramp(scheme$m);
+var Greens = ramp(scheme$22);
 
-var scheme$n = new Array(3).concat(
+var scheme$23 = new Array(3).concat(
   "f0f0f0bdbdbd636363",
   "f7f7f7cccccc969696525252",
   "f7f7f7cccccc969696636363252525",
@@ -10795,9 +10737,9 @@ var scheme$n = new Array(3).concat(
   "fffffff0f0f0d9d9d9bdbdbd969696737373525252252525000000"
 ).map(colors);
 
-var Greys = ramp(scheme$n);
+var Greys = ramp(scheme$23);
 
-var scheme$o = new Array(3).concat(
+var scheme$24 = new Array(3).concat(
   "efedf5bcbddc756bb1",
   "f2f0f7cbc9e29e9ac86a51a3",
   "f2f0f7cbc9e29e9ac8756bb154278f",
@@ -10807,9 +10749,9 @@ var scheme$o = new Array(3).concat(
   "fcfbfdefedf5dadaebbcbddc9e9ac8807dba6a51a354278f3f007d"
 ).map(colors);
 
-var Purples = ramp(scheme$o);
+var Purples = ramp(scheme$24);
 
-var scheme$p = new Array(3).concat(
+var scheme$25 = new Array(3).concat(
   "fee0d2fc9272de2d26",
   "fee5d9fcae91fb6a4acb181d",
   "fee5d9fcae91fb6a4ade2d26a50f15",
@@ -10819,9 +10761,9 @@ var scheme$p = new Array(3).concat(
   "fff5f0fee0d2fcbba1fc9272fb6a4aef3b2ccb181da50f1567000d"
 ).map(colors);
 
-var Reds = ramp(scheme$p);
+var Reds = ramp(scheme$25);
 
-var scheme$q = new Array(3).concat(
+var scheme$26 = new Array(3).concat(
   "fee6cefdae6be6550d",
   "feeddefdbe85fd8d3cd94701",
   "feeddefdbe85fd8d3ce6550da63603",
@@ -10831,36 +10773,23 @@ var scheme$q = new Array(3).concat(
   "fff5ebfee6cefdd0a2fdae6bfd8d3cf16913d94801a636037f2704"
 ).map(colors);
 
-var Oranges = ramp(scheme$q);
+var Oranges = ramp(scheme$26);
 
-var cubehelix = d3Interpolate.interpolateCubehelixLong(d3Color.cubehelix(300, 0.5, 0.0), d3Color.cubehelix(-240, 0.5, 1.0));
+var cubehelix$1 = d3Interpolate.interpolateCubehelixLong(d3Color.cubehelix(300, 0.5, 0.0), d3Color.cubehelix(-240, 0.5, 1.0));
 
 var warm = d3Interpolate.interpolateCubehelixLong(d3Color.cubehelix(-100, 0.75, 0.35), d3Color.cubehelix(80, 1.50, 0.8));
 
 var cool = d3Interpolate.interpolateCubehelixLong(d3Color.cubehelix(260, 0.75, 0.35), d3Color.cubehelix(80, 1.50, 0.8));
 
-var c = d3Color.cubehelix();
+var rainbow = d3Color.cubehelix();
 
-function rainbow(t) {
+function rainbow$1(t) {
   if (t < 0 || t > 1) t -= Math.floor(t);
   var ts = Math.abs(t - 0.5);
-  c.h = 360 * t - 100;
-  c.s = 1.5 - 1.5 * ts;
-  c.l = 0.8 - 0.9 * ts;
-  return c + "";
-}
-
-var c$1 = d3Color.rgb(),
-    pi_1_3 = Math.PI / 3,
-    pi_2_3 = Math.PI * 2 / 3;
-
-function sinebow(t) {
-  var x;
-  t = (0.5 - t) * Math.PI;
-  c$1.r = 255 * (x = Math.sin(t)) * x;
-  c$1.g = 255 * (x = Math.sin(t + pi_1_3)) * x;
-  c$1.b = 255 * (x = Math.sin(t + pi_2_3)) * x;
-  return c$1 + "";
+  rainbow.h = 360 * t - 100;
+  rainbow.s = 1.5 - 1.5 * ts;
+  rainbow.l = 0.8 - 0.9 * ts;
+  return rainbow + "";
 }
 
 function ramp$1(range) {
@@ -10908,44 +10837,43 @@ exports.schemeSpectral = scheme$8;
 exports.interpolateBuGn = BuGn;
 exports.schemeBuGn = scheme$9;
 exports.interpolateBuPu = BuPu;
-exports.schemeBuPu = scheme$a;
+exports.schemeBuPu = scheme$10;
 exports.interpolateGnBu = GnBu;
-exports.schemeGnBu = scheme$b;
+exports.schemeGnBu = scheme$11;
 exports.interpolateOrRd = OrRd;
-exports.schemeOrRd = scheme$c;
+exports.schemeOrRd = scheme$12;
 exports.interpolatePuBuGn = PuBuGn;
-exports.schemePuBuGn = scheme$d;
+exports.schemePuBuGn = scheme$13;
 exports.interpolatePuBu = PuBu;
-exports.schemePuBu = scheme$e;
+exports.schemePuBu = scheme$14;
 exports.interpolatePuRd = PuRd;
-exports.schemePuRd = scheme$f;
+exports.schemePuRd = scheme$15;
 exports.interpolateRdPu = RdPu;
-exports.schemeRdPu = scheme$g;
+exports.schemeRdPu = scheme$16;
 exports.interpolateYlGnBu = YlGnBu;
-exports.schemeYlGnBu = scheme$h;
+exports.schemeYlGnBu = scheme$17;
 exports.interpolateYlGn = YlGn;
-exports.schemeYlGn = scheme$i;
+exports.schemeYlGn = scheme$18;
 exports.interpolateYlOrBr = YlOrBr;
-exports.schemeYlOrBr = scheme$j;
+exports.schemeYlOrBr = scheme$19;
 exports.interpolateYlOrRd = YlOrRd;
-exports.schemeYlOrRd = scheme$k;
+exports.schemeYlOrRd = scheme$20;
 exports.interpolateBlues = Blues;
-exports.schemeBlues = scheme$l;
+exports.schemeBlues = scheme$21;
 exports.interpolateGreens = Greens;
-exports.schemeGreens = scheme$m;
+exports.schemeGreens = scheme$22;
 exports.interpolateGreys = Greys;
-exports.schemeGreys = scheme$n;
+exports.schemeGreys = scheme$23;
 exports.interpolatePurples = Purples;
-exports.schemePurples = scheme$o;
+exports.schemePurples = scheme$24;
 exports.interpolateReds = Reds;
-exports.schemeReds = scheme$p;
+exports.schemeReds = scheme$25;
 exports.interpolateOranges = Oranges;
-exports.schemeOranges = scheme$q;
-exports.interpolateCubehelixDefault = cubehelix;
-exports.interpolateRainbow = rainbow;
+exports.schemeOranges = scheme$26;
+exports.interpolateCubehelixDefault = cubehelix$1;
+exports.interpolateRainbow = rainbow$1;
 exports.interpolateWarm = warm;
 exports.interpolateCool = cool;
-exports.interpolateSinebow = sinebow;
 exports.interpolateViridis = viridis;
 exports.interpolateMagma = magma;
 exports.interpolateInferno = inferno;
@@ -11883,11 +11811,11 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{"d3-array":1,"d3-collection":5,"d3-color":6,"d3-format":14,"d3-interpolate":17,"d3-time":27,"d3-time-format":26}],24:[function(require,module,exports){
-// https://d3js.org/d3-selection/ v1.3.2 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-selection/ Version 1.3.0. Copyright 2018 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-typeof define === 'function' && define.amd ? define(['exports'], factory) :
-(factory((global.d3 = global.d3 || {})));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.d3 = global.d3 || {})));
 }(this, (function (exports) { 'use strict';
 
 var xhtml = "http://www.w3.org/1999/xhtml";
@@ -12880,18 +12808,18 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{}],25:[function(require,module,exports){
-// https://d3js.org/d3-shape/ v1.2.2 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-shape/ Version 1.2.0. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-path')) :
-typeof define === 'function' && define.amd ? define(['exports', 'd3-path'], factory) :
-(factory((global.d3 = global.d3 || {}),global.d3));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-path')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'd3-path'], factory) :
+	(factory((global.d3 = global.d3 || {}),global.d3));
 }(this, (function (exports,d3Path) { 'use strict';
 
-function constant(x) {
+var constant = function(x) {
   return function constant() {
     return x;
   };
-}
+};
 
 var abs = Math.abs;
 var atan2 = Math.atan2;
@@ -12984,7 +12912,7 @@ function cornerTangents(x0, y0, x1, y1, r1, rc, cw) {
   };
 }
 
-function arc() {
+var arc = function() {
   var innerRadius = arcInnerRadius,
       outerRadius = arcOuterRadius,
       cornerRadius = constant(0),
@@ -13168,7 +13096,7 @@ function arc() {
   };
 
   return arc;
-}
+};
 
 function Linear(context) {
   this._context = context;
@@ -13198,9 +13126,9 @@ Linear.prototype = {
   }
 };
 
-function curveLinear(context) {
+var curveLinear = function(context) {
   return new Linear(context);
-}
+};
 
 function x(p) {
   return p[0];
@@ -13210,7 +13138,7 @@ function y(p) {
   return p[1];
 }
 
-function line() {
+var line = function() {
   var x$$1 = x,
       y$$1 = y,
       defined = constant(true),
@@ -13259,9 +13187,9 @@ function line() {
   };
 
   return line;
-}
+};
 
-function area() {
+var area = function() {
   var x0 = x,
       x1 = null,
       y0 = constant(0),
@@ -13363,17 +13291,17 @@ function area() {
   };
 
   return area;
-}
+};
 
-function descending(a, b) {
+var descending = function(a, b) {
   return b < a ? -1 : b > a ? 1 : b >= a ? 0 : NaN;
-}
+};
 
-function identity(d) {
+var identity = function(d) {
   return d;
-}
+};
 
-function pie() {
+var pie = function() {
   var value = identity,
       sortValues = descending,
       sort = null,
@@ -13446,7 +13374,7 @@ function pie() {
   };
 
   return pie;
-}
+};
 
 var curveRadialLinear = curveRadial(curveLinear);
 
@@ -13496,11 +13424,11 @@ function lineRadial(l) {
   return l;
 }
 
-function lineRadial$1() {
+var lineRadial$1 = function() {
   return lineRadial(line().curve(curveRadialLinear));
-}
+};
 
-function areaRadial() {
+var areaRadial = function() {
   var a = area().curve(curveRadialLinear),
       c = a.curve,
       x0 = a.lineX0,
@@ -13524,11 +13452,11 @@ function areaRadial() {
   };
 
   return a;
-}
+};
 
-function pointRadial(x, y) {
+var pointRadial = function(x, y) {
   return [(y = +y) * Math.cos(x -= Math.PI / 2), y * Math.sin(x)];
-}
+};
 
 var slice = Array.prototype.slice;
 
@@ -13638,8 +13566,8 @@ var cross = {
   }
 };
 
-var tan30 = Math.sqrt(1 / 3),
-    tan30_2 = tan30 * 2;
+var tan30 = Math.sqrt(1 / 3);
+var tan30_2 = tan30 * 2;
 
 var diamond = {
   draw: function(context, size) {
@@ -13653,10 +13581,10 @@ var diamond = {
   }
 };
 
-var ka = 0.89081309152928522810,
-    kr = Math.sin(pi / 10) / Math.sin(7 * pi / 10),
-    kx = Math.sin(tau / 10) * kr,
-    ky = -Math.cos(tau / 10) * kr;
+var ka = 0.89081309152928522810;
+var kr = Math.sin(pi / 10) / Math.sin(7 * pi / 10);
+var kx = Math.sin(tau / 10) * kr;
+var ky = -Math.cos(tau / 10) * kr;
 
 var star = {
   draw: function(context, size) {
@@ -13696,10 +13624,10 @@ var triangle = {
   }
 };
 
-var c = -0.5,
-    s = Math.sqrt(3) / 2,
-    k = 1 / Math.sqrt(12),
-    a = (k / 2 + 1) * 3;
+var c = -0.5;
+var s = Math.sqrt(3) / 2;
+var k = 1 / Math.sqrt(12);
+var a = (k / 2 + 1) * 3;
 
 var wye = {
   draw: function(context, size) {
@@ -13733,7 +13661,7 @@ var symbols = [
   wye
 ];
 
-function symbol() {
+var symbol = function() {
   var type = constant(circle),
       size = constant(64),
       context = null;
@@ -13758,9 +13686,9 @@ function symbol() {
   };
 
   return symbol;
-}
+};
 
-function noop() {}
+var noop = function() {};
 
 function point(that, x, y) {
   that._context.bezierCurveTo(
@@ -13810,9 +13738,9 @@ Basis.prototype = {
   }
 };
 
-function basis(context) {
+var basis = function(context) {
   return new Basis(context);
-}
+};
 
 function BasisClosed(context) {
   this._context = context;
@@ -13860,9 +13788,9 @@ BasisClosed.prototype = {
   }
 };
 
-function basisClosed(context) {
+var basisClosed = function(context) {
   return new BasisClosed(context);
-}
+};
 
 function BasisOpen(context) {
   this._context = context;
@@ -13898,9 +13826,9 @@ BasisOpen.prototype = {
   }
 };
 
-function basisOpen(context) {
+var basisOpen = function(context) {
   return new BasisOpen(context);
-}
+};
 
 function Bundle(context, beta) {
   this._basis = new Basis(context);
@@ -13944,7 +13872,7 @@ Bundle.prototype = {
   }
 };
 
-var bundle = (function custom(beta) {
+var bundle = ((function custom(beta) {
 
   function bundle(context) {
     return beta === 1 ? new Basis(context) : new Bundle(context, beta);
@@ -13955,7 +13883,7 @@ var bundle = (function custom(beta) {
   };
 
   return bundle;
-})(0.85);
+}))(0.85);
 
 function point$1(that, x, y) {
   that._context.bezierCurveTo(
@@ -14006,7 +13934,7 @@ Cardinal.prototype = {
   }
 };
 
-var cardinal = (function custom(tension) {
+var cardinal = ((function custom(tension) {
 
   function cardinal(context) {
     return new Cardinal(context, tension);
@@ -14017,7 +13945,7 @@ var cardinal = (function custom(tension) {
   };
 
   return cardinal;
-})(0);
+}))(0);
 
 function CardinalClosed(context, tension) {
   this._context = context;
@@ -14065,18 +13993,18 @@ CardinalClosed.prototype = {
   }
 };
 
-var cardinalClosed = (function custom(tension) {
+var cardinalClosed = ((function custom(tension) {
 
-  function cardinal$$1(context) {
+  function cardinal(context) {
     return new CardinalClosed(context, tension);
   }
 
-  cardinal$$1.tension = function(tension) {
+  cardinal.tension = function(tension) {
     return custom(+tension);
   };
 
-  return cardinal$$1;
-})(0);
+  return cardinal;
+}))(0);
 
 function CardinalOpen(context, tension) {
   this._context = context;
@@ -14113,18 +14041,18 @@ CardinalOpen.prototype = {
   }
 };
 
-var cardinalOpen = (function custom(tension) {
+var cardinalOpen = ((function custom(tension) {
 
-  function cardinal$$1(context) {
+  function cardinal(context) {
     return new CardinalOpen(context, tension);
   }
 
-  cardinal$$1.tension = function(tension) {
+  cardinal.tension = function(tension) {
     return custom(+tension);
   };
 
-  return cardinal$$1;
-})(0);
+  return cardinal;
+}))(0);
 
 function point$2(that, x, y) {
   var x1 = that._x1,
@@ -14199,7 +14127,7 @@ CatmullRom.prototype = {
   }
 };
 
-var catmullRom = (function custom(alpha) {
+var catmullRom = ((function custom(alpha) {
 
   function catmullRom(context) {
     return alpha ? new CatmullRom(context, alpha) : new Cardinal(context, 0);
@@ -14210,7 +14138,7 @@ var catmullRom = (function custom(alpha) {
   };
 
   return catmullRom;
-})(0.5);
+}))(0.5);
 
 function CatmullRomClosed(context, alpha) {
   this._context = context;
@@ -14270,18 +14198,18 @@ CatmullRomClosed.prototype = {
   }
 };
 
-var catmullRomClosed = (function custom(alpha) {
+var catmullRomClosed = ((function custom(alpha) {
 
-  function catmullRom$$1(context) {
+  function catmullRom(context) {
     return alpha ? new CatmullRomClosed(context, alpha) : new CardinalClosed(context, 0);
   }
 
-  catmullRom$$1.alpha = function(alpha) {
+  catmullRom.alpha = function(alpha) {
     return custom(+alpha);
   };
 
-  return catmullRom$$1;
-})(0.5);
+  return catmullRom;
+}))(0.5);
 
 function CatmullRomOpen(context, alpha) {
   this._context = context;
@@ -14330,18 +14258,18 @@ CatmullRomOpen.prototype = {
   }
 };
 
-var catmullRomOpen = (function custom(alpha) {
+var catmullRomOpen = ((function custom(alpha) {
 
-  function catmullRom$$1(context) {
+  function catmullRom(context) {
     return alpha ? new CatmullRomOpen(context, alpha) : new CardinalOpen(context, 0);
   }
 
-  catmullRom$$1.alpha = function(alpha) {
+  catmullRom.alpha = function(alpha) {
     return custom(+alpha);
   };
 
-  return catmullRom$$1;
-})(0.5);
+  return catmullRom;
+}))(0.5);
 
 function LinearClosed(context) {
   this._context = context;
@@ -14363,9 +14291,9 @@ LinearClosed.prototype = {
   }
 };
 
-function linearClosed(context) {
+var linearClosed = function(context) {
   return new LinearClosed(context);
-}
+};
 
 function sign(x) {
   return x < 0 ? -1 : 1;
@@ -14534,9 +14462,9 @@ function controlPoints(x) {
   return [a, b];
 }
 
-function natural(context) {
+var natural = function(context) {
   return new Natural(context);
-}
+};
 
 function Step(context, t) {
   this._context = context;
@@ -14580,9 +14508,9 @@ Step.prototype = {
   }
 };
 
-function step(context) {
+var step = function(context) {
   return new Step(context, 0.5);
-}
+};
 
 function stepBefore(context) {
   return new Step(context, 0);
@@ -14592,7 +14520,7 @@ function stepAfter(context) {
   return new Step(context, 1);
 }
 
-function none(series, order) {
+var none = function(series, order) {
   if (!((n = series.length) > 1)) return;
   for (var i = 1, j, s0, s1 = series[order[0]], n, m = s1.length; i < n; ++i) {
     s0 = s1, s1 = series[order[i]];
@@ -14600,19 +14528,19 @@ function none(series, order) {
       s1[j][1] += s1[j][0] = isNaN(s0[j][1]) ? s0[j][0] : s0[j][1];
     }
   }
-}
+};
 
-function none$1(series) {
+var none$1 = function(series) {
   var n = series.length, o = new Array(n);
   while (--n >= 0) o[n] = n;
   return o;
-}
+};
 
 function stackValue(d, key) {
   return d[key];
 }
 
-function stack() {
+var stack = function() {
   var keys = constant([]),
       order = none$1,
       offset = none,
@@ -14659,18 +14587,18 @@ function stack() {
   };
 
   return stack;
-}
+};
 
-function expand(series, order) {
+var expand = function(series, order) {
   if (!((n = series.length) > 0)) return;
   for (var i, n, j = 0, m = series[0].length, y; j < m; ++j) {
     for (y = i = 0; i < n; ++i) y += series[i][j][1] || 0;
     if (y) for (i = 0; i < n; ++i) series[i][j][1] /= y;
   }
   none(series, order);
-}
+};
 
-function diverging(series, order) {
+var diverging = function(series, order) {
   if (!((n = series.length) > 1)) return;
   for (var i, j = 0, d, dy, yp, yn, n, m = series[order[0]].length; j < m; ++j) {
     for (yp = yn = 0, i = 0; i < n; ++i) {
@@ -14683,18 +14611,18 @@ function diverging(series, order) {
       }
     }
   }
-}
+};
 
-function silhouette(series, order) {
+var silhouette = function(series, order) {
   if (!((n = series.length) > 0)) return;
   for (var j = 0, s0 = series[order[0]], n, m = s0.length; j < m; ++j) {
     for (var i = 0, y = 0; i < n; ++i) y += series[i][j][1] || 0;
     s0[j][1] += s0[j][0] = -y / 2;
   }
   none(series, order);
-}
+};
 
-function wiggle(series, order) {
+var wiggle = function(series, order) {
   if (!((n = series.length) > 0) || !((m = (s0 = series[order[0]]).length) > 0)) return;
   for (var y = 0, j = 1, s0, m, n; j < m; ++j) {
     for (var i = 0, s1 = 0, s2 = 0; i < n; ++i) {
@@ -14715,12 +14643,12 @@ function wiggle(series, order) {
   }
   s0[j - 1][1] += s0[j - 1][0] = y;
   none(series, order);
-}
+};
 
-function ascending(series) {
+var ascending = function(series) {
   var sums = series.map(sum);
   return none$1(series).sort(function(a, b) { return sums[a] - sums[b]; });
-}
+};
 
 function sum(series) {
   var s = 0, i = -1, n = series.length, v;
@@ -14728,11 +14656,11 @@ function sum(series) {
   return s;
 }
 
-function descending$1(series) {
+var descending$1 = function(series) {
   return ascending(series).reverse();
-}
+};
 
-function insideOut(series) {
+var insideOut = function(series) {
   var n = series.length,
       i,
       j,
@@ -14755,11 +14683,11 @@ function insideOut(series) {
   }
 
   return bottoms.reverse().concat(tops);
-}
+};
 
-function reverse(series) {
+var reverse = function(series) {
   return none$1(series).reverse();
-}
+};
 
 exports.arc = arc;
 exports.area = area;
@@ -14817,11 +14745,11 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{"d3-path":18}],26:[function(require,module,exports){
-// https://d3js.org/d3-time-format/ v2.1.3 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-time-format/ Version 2.1.1. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-time')) :
-typeof define === 'function' && define.amd ? define(['exports', 'd3-time'], factory) :
-(factory((global.d3 = global.d3 || {}),global.d3));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-time')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'd3-time'], factory) :
+	(factory((global.d3 = global.d3 || {}),global.d3));
 }(this, (function (exports,d3Time) { 'use strict';
 
 function localDate(d) {
@@ -15174,10 +15102,10 @@ function formatLocale(locale) {
   };
 }
 
-var pads = {"-": "", "_": " ", "0": "0"},
-    numberRe = /^\s*\d+/, // note: ignores next directive
-    percentRe = /^%/,
-    requoteRe = /[\\^$*+?|[\]().{}]/g;
+var pads = {"-": "", "_": " ", "0": "0"};
+var numberRe = /^\s*\d+/;
+var percentRe = /^%/;
+var requoteRe = /[\\^$*+?|[\]().{}]/g;
 
 function pad(value, fill, width) {
   var sign = value < 0 ? "-" : "",
@@ -15454,6 +15382,10 @@ function formatUnixTimestampSeconds(d) {
 
 var locale;
 
+
+
+
+
 defaultLocale({
   dateTime: "%x, %X",
   date: "%-m/%-d/%Y",
@@ -15503,15 +15435,15 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{"d3-time":27}],27:[function(require,module,exports){
-// https://d3js.org/d3-time/ v1.0.10 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-time/ Version 1.0.8. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-typeof define === 'function' && define.amd ? define(['exports'], factory) :
-(factory((global.d3 = global.d3 || {})));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.d3 = global.d3 || {})));
 }(this, (function (exports) { 'use strict';
 
-var t0 = new Date,
-    t1 = new Date;
+var t0 = new Date;
+var t1 = new Date;
 
 function newInterval(floori, offseti, count, field) {
 
@@ -15600,6 +15532,7 @@ millisecond.every = function(k) {
     return (end - start) / k;
   });
 };
+
 var milliseconds = millisecond.range;
 
 var durationSecond = 1e3;
@@ -15617,6 +15550,7 @@ var second = newInterval(function(date) {
 }, function(date) {
   return date.getUTCSeconds();
 });
+
 var seconds = second.range;
 
 var minute = newInterval(function(date) {
@@ -15628,6 +15562,7 @@ var minute = newInterval(function(date) {
 }, function(date) {
   return date.getMinutes();
 });
+
 var minutes = minute.range;
 
 var hour = newInterval(function(date) {
@@ -15641,6 +15576,7 @@ var hour = newInterval(function(date) {
 }, function(date) {
   return date.getHours();
 });
+
 var hours = hour.range;
 
 var day = newInterval(function(date) {
@@ -15652,6 +15588,7 @@ var day = newInterval(function(date) {
 }, function(date) {
   return date.getDate() - 1;
 });
+
 var days = day.range;
 
 function weekday(i) {
@@ -15691,6 +15628,7 @@ var month = newInterval(function(date) {
 }, function(date) {
   return date.getMonth();
 });
+
 var months = month.range;
 
 var year = newInterval(function(date) {
@@ -15714,6 +15652,7 @@ year.every = function(k) {
     date.setFullYear(date.getFullYear() + step * k);
   });
 };
+
 var years = year.range;
 
 var utcMinute = newInterval(function(date) {
@@ -15725,6 +15664,7 @@ var utcMinute = newInterval(function(date) {
 }, function(date) {
   return date.getUTCMinutes();
 });
+
 var utcMinutes = utcMinute.range;
 
 var utcHour = newInterval(function(date) {
@@ -15736,6 +15676,7 @@ var utcHour = newInterval(function(date) {
 }, function(date) {
   return date.getUTCHours();
 });
+
 var utcHours = utcHour.range;
 
 var utcDay = newInterval(function(date) {
@@ -15747,6 +15688,7 @@ var utcDay = newInterval(function(date) {
 }, function(date) {
   return date.getUTCDate() - 1;
 });
+
 var utcDays = utcDay.range;
 
 function utcWeekday(i) {
@@ -15786,6 +15728,7 @@ var utcMonth = newInterval(function(date) {
 }, function(date) {
   return date.getUTCMonth();
 });
+
 var utcMonths = utcMonth.range;
 
 var utcYear = newInterval(function(date) {
@@ -15809,6 +15752,7 @@ utcYear.every = function(k) {
     date.setUTCFullYear(date.getUTCFullYear() + step * k);
   });
 };
+
 var utcYears = utcYear.range;
 
 exports.timeInterval = newInterval;
@@ -15878,24 +15822,24 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{}],28:[function(require,module,exports){
-// https://d3js.org/d3-timer/ v1.0.9 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-timer/ Version 1.0.7. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-typeof define === 'function' && define.amd ? define(['exports'], factory) :
-(factory((global.d3 = global.d3 || {})));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.d3 = global.d3 || {})));
 }(this, (function (exports) { 'use strict';
 
-var frame = 0, // is an animation frame pending?
-    timeout = 0, // is a timeout pending?
-    interval = 0, // are any timers active?
-    pokeDelay = 1000, // how frequently we check for clock skew
-    taskHead,
-    taskTail,
-    clockLast = 0,
-    clockNow = 0,
-    clockSkew = 0,
-    clock = typeof performance === "object" && performance.now ? performance : Date,
-    setFrame = typeof window === "object" && window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : function(f) { setTimeout(f, 17); };
+var frame = 0;
+var timeout = 0;
+var interval = 0;
+var pokeDelay = 1000;
+var taskHead;
+var taskTail;
+var clockLast = 0;
+var clockNow = 0;
+var clockSkew = 0;
+var clock = typeof performance === "object" && performance.now ? performance : Date;
+var setFrame = typeof window === "object" && window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : function(f) { setTimeout(f, 17); };
 
 function now() {
   return clockNow || (setFrame(clearNow), clockNow = clock.now() + clockSkew);
@@ -15996,7 +15940,7 @@ function sleep(time) {
   }
 }
 
-function timeout$1(callback, delay, time) {
+var timeout$1 = function(callback, delay, time) {
   var t = new Timer;
   delay = delay == null ? 0 : +delay;
   t.restart(function(elapsed) {
@@ -16004,9 +15948,9 @@ function timeout$1(callback, delay, time) {
     callback(elapsed + delay);
   }, delay, time);
   return t;
-}
+};
 
-function interval$1(callback, delay, time) {
+var interval$1 = function(callback, delay, time) {
   var t = new Timer, total = delay;
   if (delay == null) return t.restart(callback, delay, time), t;
   delay = +delay, time = time == null ? now() : +time;
@@ -16016,7 +15960,7 @@ function interval$1(callback, delay, time) {
     callback(elapsed);
   }, delay, time);
   return t;
-}
+};
 
 exports.now = now;
 exports.timer = timer;
@@ -16029,12 +15973,12 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{}],29:[function(require,module,exports){
-// https://d3js.org/d3-transition/ v1.1.3 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-transition/ Version 1.1.1. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-dispatch'), require('d3-timer'), require('d3-color'), require('d3-interpolate'), require('d3-selection'), require('d3-ease')) :
-typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-timer', 'd3-color', 'd3-interpolate', 'd3-selection', 'd3-ease'], factory) :
-(factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3,global.d3));
-}(this, (function (exports,d3Dispatch,d3Timer,d3Color,d3Interpolate,d3Selection,d3Ease) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-selection'), require('d3-dispatch'), require('d3-timer'), require('d3-interpolate'), require('d3-color'), require('d3-ease')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'd3-selection', 'd3-dispatch', 'd3-timer', 'd3-interpolate', 'd3-color', 'd3-ease'], factory) :
+	(factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3,global.d3));
+}(this, (function (exports,d3Selection,d3Dispatch,d3Timer,d3Interpolate,d3Color,d3Ease) { 'use strict';
 
 var emptyOn = d3Dispatch.dispatch("start", "end", "interrupt");
 var emptyTween = [];
@@ -16047,7 +15991,7 @@ var RUNNING = 4;
 var ENDING = 5;
 var ENDED = 6;
 
-function schedule(node, name, id, index, group, timing) {
+var schedule = function(node, name, id, index, group, timing) {
   var schedules = node.__transition;
   if (!schedules) node.__transition = {};
   else if (id in schedules) return;
@@ -16064,7 +16008,7 @@ function schedule(node, name, id, index, group, timing) {
     timer: null,
     state: CREATED
   });
-}
+};
 
 function init(node, id) {
   var schedule = get(node, id);
@@ -16189,9 +16133,9 @@ function create(node, id, self) {
   }
 }
 
-function interrupt(node, name) {
+var interrupt = function(node, name) {
   var schedules = node.__transition,
-      schedule$$1,
+      schedule,
       active,
       empty = true,
       i;
@@ -16201,28 +16145,28 @@ function interrupt(node, name) {
   name = name == null ? null : name + "";
 
   for (i in schedules) {
-    if ((schedule$$1 = schedules[i]).name !== name) { empty = false; continue; }
-    active = schedule$$1.state > STARTING && schedule$$1.state < ENDING;
-    schedule$$1.state = ENDED;
-    schedule$$1.timer.stop();
-    if (active) schedule$$1.on.call("interrupt", node, node.__data__, schedule$$1.index, schedule$$1.group);
+    if ((schedule = schedules[i]).name !== name) { empty = false; continue; }
+    active = schedule.state > STARTING && schedule.state < ENDING;
+    schedule.state = ENDED;
+    schedule.timer.stop();
+    if (active) schedule.on.call("interrupt", node, node.__data__, schedule.index, schedule.group);
     delete schedules[i];
   }
 
   if (empty) delete node.__transition;
-}
+};
 
-function selection_interrupt(name) {
+var selection_interrupt = function(name) {
   return this.each(function() {
     interrupt(this, name);
   });
-}
+};
 
 function tweenRemove(id, name) {
   var tween0, tween1;
   return function() {
-    var schedule$$1 = set(this, id),
-        tween = schedule$$1.tween;
+    var schedule = set(this, id),
+        tween = schedule.tween;
 
     // If this node shared tween with the previous node,
     // just assign the updated shared tween and we’re done!
@@ -16238,7 +16182,7 @@ function tweenRemove(id, name) {
       }
     }
 
-    schedule$$1.tween = tween1;
+    schedule.tween = tween1;
   };
 }
 
@@ -16246,8 +16190,8 @@ function tweenFunction(id, name, value) {
   var tween0, tween1;
   if (typeof value !== "function") throw new Error;
   return function() {
-    var schedule$$1 = set(this, id),
-        tween = schedule$$1.tween;
+    var schedule = set(this, id),
+        tween = schedule.tween;
 
     // If this node shared tween with the previous node,
     // just assign the updated shared tween and we’re done!
@@ -16263,11 +16207,11 @@ function tweenFunction(id, name, value) {
       if (i === n) tween1.push(t);
     }
 
-    schedule$$1.tween = tween1;
+    schedule.tween = tween1;
   };
 }
 
-function transition_tween(name, value) {
+var transition_tween = function(name, value) {
   var id = this._id;
 
   name += "";
@@ -16283,14 +16227,14 @@ function transition_tween(name, value) {
   }
 
   return this.each((value == null ? tweenRemove : tweenFunction)(id, name, value));
-}
+};
 
 function tweenValue(transition, name, value) {
   var id = transition._id;
 
   transition.each(function() {
-    var schedule$$1 = set(this, id);
-    (schedule$$1.value || (schedule$$1.value = {}))[name] = value.apply(this, arguments);
+    var schedule = set(this, id);
+    (schedule.value || (schedule.value = {}))[name] = value.apply(this, arguments);
   });
 
   return function(node) {
@@ -16298,13 +16242,13 @@ function tweenValue(transition, name, value) {
   };
 }
 
-function interpolate(a, b) {
+var interpolate = function(a, b) {
   var c;
   return (typeof b === "number" ? d3Interpolate.interpolateNumber
       : b instanceof d3Color.color ? d3Interpolate.interpolateRgb
       : (c = d3Color.color(b)) ? (b = c, d3Interpolate.interpolateRgb)
       : d3Interpolate.interpolateString)(a, b);
-}
+};
 
 function attrRemove(name) {
   return function() {
@@ -16368,13 +16312,13 @@ function attrFunctionNS(fullname, interpolate$$1, value) {
   };
 }
 
-function transition_attr(name, value) {
+var transition_attr = function(name, value) {
   var fullname = d3Selection.namespace(name), i = fullname === "transform" ? d3Interpolate.interpolateTransformSvg : interpolate;
   return this.attrTween(name, typeof value === "function"
       ? (fullname.local ? attrFunctionNS : attrFunction)(fullname, i, tweenValue(this, "attr." + name, value))
       : value == null ? (fullname.local ? attrRemoveNS : attrRemove)(fullname)
       : (fullname.local ? attrConstantNS : attrConstant)(fullname, i, value + ""));
-}
+};
 
 function attrTweenNS(fullname, value) {
   function tween() {
@@ -16398,14 +16342,14 @@ function attrTween(name, value) {
   return tween;
 }
 
-function transition_attrTween(name, value) {
+var transition_attrTween = function(name, value) {
   var key = "attr." + name;
   if (arguments.length < 2) return (key = this.tween(key)) && key._value;
   if (value == null) return this.tween(key, null);
   if (typeof value !== "function") throw new Error;
   var fullname = d3Selection.namespace(name);
   return this.tween(key, (fullname.local ? attrTweenNS : attrTween)(fullname, value));
-}
+};
 
 function delayFunction(id, value) {
   return function() {
@@ -16419,7 +16363,7 @@ function delayConstant(id, value) {
   };
 }
 
-function transition_delay(value) {
+var transition_delay = function(value) {
   var id = this._id;
 
   return arguments.length
@@ -16427,7 +16371,7 @@ function transition_delay(value) {
           ? delayFunction
           : delayConstant)(id, value))
       : get(this.node(), id).delay;
-}
+};
 
 function durationFunction(id, value) {
   return function() {
@@ -16441,7 +16385,7 @@ function durationConstant(id, value) {
   };
 }
 
-function transition_duration(value) {
+var transition_duration = function(value) {
   var id = this._id;
 
   return arguments.length
@@ -16449,7 +16393,7 @@ function transition_duration(value) {
           ? durationFunction
           : durationConstant)(id, value))
       : get(this.node(), id).duration;
-}
+};
 
 function easeConstant(id, value) {
   if (typeof value !== "function") throw new Error;
@@ -16458,15 +16402,15 @@ function easeConstant(id, value) {
   };
 }
 
-function transition_ease(value) {
+var transition_ease = function(value) {
   var id = this._id;
 
   return arguments.length
       ? this.each(easeConstant(id, value))
       : get(this.node(), id).ease;
-}
+};
 
-function transition_filter(match) {
+var transition_filter = function(match) {
   if (typeof match !== "function") match = d3Selection.matcher(match);
 
   for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
@@ -16478,12 +16422,12 @@ function transition_filter(match) {
   }
 
   return new Transition(subgroups, this._parents, this._name, this._id);
-}
+};
 
-function transition_merge(transition$$1) {
-  if (transition$$1._id !== this._id) throw new Error;
+var transition_merge = function(transition) {
+  if (transition._id !== this._id) throw new Error;
 
-  for (var groups0 = this._groups, groups1 = transition$$1._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
+  for (var groups0 = this._groups, groups1 = transition._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
     for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
       if (node = group0[i] || group1[i]) {
         merge[i] = node;
@@ -16496,7 +16440,7 @@ function transition_merge(transition$$1) {
   }
 
   return new Transition(merges, this._parents, this._name, this._id);
-}
+};
 
 function start(name) {
   return (name + "").trim().split(/^|\s+/).every(function(t) {
@@ -16509,25 +16453,25 @@ function start(name) {
 function onFunction(id, name, listener) {
   var on0, on1, sit = start(name) ? init : set;
   return function() {
-    var schedule$$1 = sit(this, id),
-        on = schedule$$1.on;
+    var schedule = sit(this, id),
+        on = schedule.on;
 
     // If this node shared a dispatch with the previous node,
     // just assign the updated shared dispatch and we’re done!
     // Otherwise, copy-on-write.
     if (on !== on0) (on1 = (on0 = on).copy()).on(name, listener);
 
-    schedule$$1.on = on1;
+    schedule.on = on1;
   };
 }
 
-function transition_on(name, listener) {
+var transition_on = function(name, listener) {
   var id = this._id;
 
   return arguments.length < 2
       ? get(this.node(), id).on.on(name)
       : this.each(onFunction(id, name, listener));
-}
+};
 
 function removeFunction(id) {
   return function() {
@@ -16537,11 +16481,11 @@ function removeFunction(id) {
   };
 }
 
-function transition_remove() {
+var transition_remove = function() {
   return this.on("end.remove", removeFunction(this._id));
-}
+};
 
-function transition_select(select) {
+var transition_select = function(select) {
   var name = this._name,
       id = this._id;
 
@@ -16558,9 +16502,9 @@ function transition_select(select) {
   }
 
   return new Transition(subgroups, this._parents, name, id);
-}
+};
 
-function transition_selectAll(select) {
+var transition_selectAll = function(select) {
   var name = this._name,
       id = this._id;
 
@@ -16581,13 +16525,13 @@ function transition_selectAll(select) {
   }
 
   return new Transition(subgroups, parents, name, id);
-}
+};
 
 var Selection = d3Selection.selection.prototype.constructor;
 
-function transition_selection() {
+var transition_selection = function() {
   return new Selection(this._groups, this._parents);
-}
+};
 
 function styleRemove(name, interpolate$$1) {
   var value00,
@@ -16633,7 +16577,7 @@ function styleFunction(name, interpolate$$1, value) {
   };
 }
 
-function transition_style(name, value, priority) {
+var transition_style = function(name, value, priority) {
   var i = (name += "") === "transform" ? d3Interpolate.interpolateTransformCss : interpolate;
   return value == null ? this
           .styleTween(name, styleRemove(name, i))
@@ -16641,7 +16585,7 @@ function transition_style(name, value, priority) {
       : this.styleTween(name, typeof value === "function"
           ? styleFunction(name, i, tweenValue(this, "style." + name, value))
           : styleConstant(name, i, value + ""), priority);
-}
+};
 
 function styleTween(name, value, priority) {
   function tween() {
@@ -16654,13 +16598,13 @@ function styleTween(name, value, priority) {
   return tween;
 }
 
-function transition_styleTween(name, value, priority) {
+var transition_styleTween = function(name, value, priority) {
   var key = "style." + (name += "");
   if (arguments.length < 2) return (key = this.tween(key)) && key._value;
   if (value == null) return this.tween(key, null);
   if (typeof value !== "function") throw new Error;
   return this.tween(key, styleTween(name, value, priority == null ? "" : priority));
-}
+};
 
 function textConstant(value) {
   return function() {
@@ -16675,13 +16619,13 @@ function textFunction(value) {
   };
 }
 
-function transition_text(value) {
+var transition_text = function(value) {
   return this.tween("text", typeof value === "function"
       ? textFunction(tweenValue(this, "text", value))
       : textConstant(value == null ? "" : value + ""));
-}
+};
 
-function transition_transition() {
+var transition_transition = function() {
   var name = this._name,
       id0 = this._id,
       id1 = newId();
@@ -16701,7 +16645,7 @@ function transition_transition() {
   }
 
   return new Transition(groups, this._parents, name, id1);
-}
+};
 
 var id = 0;
 
@@ -16766,7 +16710,7 @@ function inherit(node, id) {
   return timing;
 }
 
-function selection_transition(name) {
+var selection_transition = function(name) {
   var id,
       timing;
 
@@ -16785,29 +16729,29 @@ function selection_transition(name) {
   }
 
   return new Transition(groups, this._parents, name, id);
-}
+};
 
 d3Selection.selection.prototype.interrupt = selection_interrupt;
 d3Selection.selection.prototype.transition = selection_transition;
 
 var root = [null];
 
-function active(node, name) {
+var active = function(node, name) {
   var schedules = node.__transition,
-      schedule$$1,
+      schedule,
       i;
 
   if (schedules) {
     name = name == null ? null : name + "";
     for (i in schedules) {
-      if ((schedule$$1 = schedules[i]).state > SCHEDULED && schedule$$1.name === name) {
+      if ((schedule = schedules[i]).state > SCHEDULED && schedule.name === name) {
         return new Transition([[node]], root, name, +i);
       }
     }
   }
 
   return null;
-}
+};
 
 exports.transition = transition;
 exports.active = active;
@@ -16818,18 +16762,18 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{"d3-color":6,"d3-dispatch":8,"d3-ease":11,"d3-interpolate":17,"d3-selection":24,"d3-timer":28}],30:[function(require,module,exports){
-// https://d3js.org/d3-voronoi/ v1.1.4 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-voronoi/ Version 1.1.2. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-typeof define === 'function' && define.amd ? define(['exports'], factory) :
-(factory((global.d3 = global.d3 || {})));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.d3 = global.d3 || {})));
 }(this, (function (exports) { 'use strict';
 
-function constant(x) {
+var constant = function(x) {
   return function() {
     return x;
   };
-}
+};
 
 function x(d) {
   return d[0];
@@ -17767,7 +17711,7 @@ Diagram.prototype = {
   }
 };
 
-function voronoi() {
+var voronoi = function() {
   var x$$1 = x,
       y$$1 = y,
       extent = null;
@@ -17810,7 +17754,7 @@ function voronoi() {
   };
 
   return voronoi;
-}
+};
 
 exports.voronoi = voronoi;
 
@@ -17819,18 +17763,18 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{}],31:[function(require,module,exports){
-// https://d3js.org/d3-zoom/ v1.7.3 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-zoom/ Version 1.7.1. Copyright 2017 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-selection'), require('d3-dispatch'), require('d3-drag'), require('d3-interpolate'), require('d3-transition')) :
-typeof define === 'function' && define.amd ? define(['exports', 'd3-selection', 'd3-dispatch', 'd3-drag', 'd3-interpolate', 'd3-transition'], factory) :
-(factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3));
-}(this, (function (exports,d3Selection,d3Dispatch,d3Drag,d3Interpolate,d3Transition) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-dispatch'), require('d3-drag'), require('d3-interpolate'), require('d3-selection'), require('d3-transition')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-drag', 'd3-interpolate', 'd3-selection', 'd3-transition'], factory) :
+	(factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3));
+}(this, (function (exports,d3Dispatch,d3Drag,d3Interpolate,d3Selection,d3Transition) { 'use strict';
 
-function constant(x) {
+var constant = function(x) {
   return function() {
     return x;
   };
-}
+};
 
 function ZoomEvent(target, type, transform) {
   this.target = target;
@@ -17893,10 +17837,10 @@ function nopropagation() {
   d3Selection.event.stopImmediatePropagation();
 }
 
-function noevent() {
+var noevent = function() {
   d3Selection.event.preventDefault();
   d3Selection.event.stopImmediatePropagation();
-}
+};
 
 // Ignore right-click, since that should open the context menu.
 function defaultFilter() {
@@ -17939,7 +17883,7 @@ function defaultConstrain(transform$$1, extent, translateExtent) {
   );
 }
 
-function zoom() {
+var zoom = function() {
   var filter = defaultFilter,
       extent = defaultExtent,
       constrain = defaultConstrain,
@@ -18312,7 +18256,7 @@ function zoom() {
   };
 
   return zoom;
-}
+};
 
 exports.zoom = zoom;
 exports.zoomTransform = transform;
@@ -18359,7 +18303,7 @@ var d3Transition = require('d3-transition');
 var d3Voronoi = require('d3-voronoi');
 var d3Zoom = require('d3-zoom');
 
-var version = "5.7.0";
+var version = "5.1.0";
 
 Object.keys(d3Array).forEach(function (key) { exports[key] = d3Array[key]; });
 Object.keys(d3Axis).forEach(function (key) { exports[key] = d3Axis[key]; });
@@ -18396,26 +18340,26 @@ exports.version = version;
 Object.defineProperty(exports, "event", {get: function() { return d3Selection.event; }});
 
 },{"d3-array":1,"d3-axis":2,"d3-brush":3,"d3-chord":4,"d3-collection":5,"d3-color":6,"d3-contour":7,"d3-dispatch":8,"d3-drag":9,"d3-dsv":10,"d3-ease":11,"d3-fetch":12,"d3-force":13,"d3-format":14,"d3-geo":15,"d3-hierarchy":16,"d3-interpolate":17,"d3-path":18,"d3-polygon":19,"d3-quadtree":20,"d3-random":21,"d3-scale":33,"d3-scale-chromatic":22,"d3-selection":24,"d3-shape":25,"d3-time":27,"d3-time-format":26,"d3-timer":28,"d3-transition":29,"d3-voronoi":30,"d3-zoom":31}],33:[function(require,module,exports){
-// https://d3js.org/d3-scale/ v2.1.2 Copyright 2018 Mike Bostock
+// https://d3js.org/d3-scale/ Version 2.0.0. Copyright 2018 Mike Bostock.
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-collection'), require('d3-array'), require('d3-interpolate'), require('d3-format'), require('d3-time'), require('d3-time-format')) :
-typeof define === 'function' && define.amd ? define(['exports', 'd3-collection', 'd3-array', 'd3-interpolate', 'd3-format', 'd3-time', 'd3-time-format'], factory) :
-(factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3,global.d3));
-}(this, (function (exports,d3Collection,d3Array,d3Interpolate,d3Format,d3Time,d3TimeFormat) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-array'), require('d3-collection'), require('d3-interpolate'), require('d3-format'), require('d3-time'), require('d3-time-format')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'd3-array', 'd3-collection', 'd3-interpolate', 'd3-format', 'd3-time', 'd3-time-format'], factory) :
+	(factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3,global.d3));
+}(this, (function (exports,d3Array,d3Collection,d3Interpolate,d3Format,d3Time,d3TimeFormat) { 'use strict';
 
 var array = Array.prototype;
 
-var map = array.map;
+var map$1 = array.map;
 var slice = array.slice;
 
 var implicit = {name: "implicit"};
 
-function ordinal(range) {
+function ordinal(range$$1) {
   var index = d3Collection.map(),
       domain = [],
       unknown = implicit;
 
-  range = range == null ? [] : slice.call(range);
+  range$$1 = range$$1 == null ? [] : slice.call(range$$1);
 
   function scale(d) {
     var key = d + "", i = index.get(key);
@@ -18423,7 +18367,7 @@ function ordinal(range) {
       if (unknown !== implicit) return unknown;
       index.set(key, i = domain.push(d));
     }
-    return range[(i - 1) % range.length];
+    return range$$1[(i - 1) % range$$1.length];
   }
 
   scale.domain = function(_) {
@@ -18435,7 +18379,7 @@ function ordinal(range) {
   };
 
   scale.range = function(_) {
-    return arguments.length ? (range = slice.call(_), scale) : range.slice();
+    return arguments.length ? (range$$1 = slice.call(_), scale) : range$$1.slice();
   };
 
   scale.unknown = function(_) {
@@ -18445,7 +18389,7 @@ function ordinal(range) {
   scale.copy = function() {
     return ordinal()
         .domain(domain)
-        .range(range)
+        .range(range$$1)
         .unknown(unknown);
   };
 
@@ -18456,7 +18400,7 @@ function band() {
   var scale = ordinal().unknown(undefined),
       domain = scale.domain,
       ordinalRange = scale.range,
-      range = [0, 1],
+      range$$1 = [0, 1],
       step,
       bandwidth,
       round = false,
@@ -18468,9 +18412,9 @@ function band() {
 
   function rescale() {
     var n = domain().length,
-        reverse = range[1] < range[0],
-        start = range[reverse - 0],
-        stop = range[1 - reverse];
+        reverse = range$$1[1] < range$$1[0],
+        start = range$$1[reverse - 0],
+        stop = range$$1[1 - reverse];
     step = (stop - start) / Math.max(1, n - paddingInner + paddingOuter * 2);
     if (round) step = Math.floor(step);
     start += (stop - start - step * (n - paddingInner)) * align;
@@ -18485,11 +18429,11 @@ function band() {
   };
 
   scale.range = function(_) {
-    return arguments.length ? (range = [+_[0], +_[1]], rescale()) : range.slice();
+    return arguments.length ? (range$$1 = [+_[0], +_[1]], rescale()) : range$$1.slice();
   };
 
   scale.rangeRound = function(_) {
-    return range = [+_[0], +_[1]], round = true, rescale();
+    return range$$1 = [+_[0], +_[1]], round = true, rescale();
   };
 
   scale.bandwidth = function() {
@@ -18523,7 +18467,7 @@ function band() {
   scale.copy = function() {
     return band()
         .domain(domain())
-        .range(range)
+        .range(range$$1)
         .round(round)
         .paddingInner(paddingInner)
         .paddingOuter(paddingOuter)
@@ -18583,15 +18527,15 @@ function reinterpolateClamp(reinterpolate) {
   };
 }
 
-function bimap(domain, range, deinterpolate, reinterpolate) {
-  var d0 = domain[0], d1 = domain[1], r0 = range[0], r1 = range[1];
+function bimap(domain, range$$1, deinterpolate, reinterpolate) {
+  var d0 = domain[0], d1 = domain[1], r0 = range$$1[0], r1 = range$$1[1];
   if (d1 < d0) d0 = deinterpolate(d1, d0), r0 = reinterpolate(r1, r0);
   else d0 = deinterpolate(d0, d1), r0 = reinterpolate(r0, r1);
   return function(x) { return r0(d0(x)); };
 }
 
-function polymap(domain, range, deinterpolate, reinterpolate) {
-  var j = Math.min(domain.length, range.length) - 1,
+function polymap(domain, range$$1, deinterpolate, reinterpolate) {
+  var j = Math.min(domain.length, range$$1.length) - 1,
       d = new Array(j),
       r = new Array(j),
       i = -1;
@@ -18599,12 +18543,12 @@ function polymap(domain, range, deinterpolate, reinterpolate) {
   // Reverse descending domains.
   if (domain[j] < domain[0]) {
     domain = domain.slice().reverse();
-    range = range.slice().reverse();
+    range$$1 = range$$1.slice().reverse();
   }
 
   while (++i < j) {
     d[i] = deinterpolate(domain[i], domain[i + 1]);
-    r[i] = reinterpolate(range[i], range[i + 1]);
+    r[i] = reinterpolate(range$$1[i], range$$1[i + 1]);
   }
 
   return function(x) {
@@ -18625,37 +18569,37 @@ function copy(source, target) {
 // reinterpolate(a, b)(t) takes a parameter t in [0,1] and returns the corresponding domain value x in [a,b].
 function continuous(deinterpolate, reinterpolate) {
   var domain = unit,
-      range = unit,
-      interpolate = d3Interpolate.interpolate,
+      range$$1 = unit,
+      interpolate$$1 = d3Interpolate.interpolate,
       clamp = false,
       piecewise,
       output,
       input;
 
   function rescale() {
-    piecewise = Math.min(domain.length, range.length) > 2 ? polymap : bimap;
+    piecewise = Math.min(domain.length, range$$1.length) > 2 ? polymap : bimap;
     output = input = null;
     return scale;
   }
 
   function scale(x) {
-    return (output || (output = piecewise(domain, range, clamp ? deinterpolateClamp(deinterpolate) : deinterpolate, interpolate)))(+x);
+    return (output || (output = piecewise(domain, range$$1, clamp ? deinterpolateClamp(deinterpolate) : deinterpolate, interpolate$$1)))(+x);
   }
 
   scale.invert = function(y) {
-    return (input || (input = piecewise(range, domain, deinterpolateLinear, clamp ? reinterpolateClamp(reinterpolate) : reinterpolate)))(+y);
+    return (input || (input = piecewise(range$$1, domain, deinterpolateLinear, clamp ? reinterpolateClamp(reinterpolate) : reinterpolate)))(+y);
   };
 
   scale.domain = function(_) {
-    return arguments.length ? (domain = map.call(_, number), rescale()) : domain.slice();
+    return arguments.length ? (domain = map$1.call(_, number), rescale()) : domain.slice();
   };
 
   scale.range = function(_) {
-    return arguments.length ? (range = slice.call(_), rescale()) : range.slice();
+    return arguments.length ? (range$$1 = slice.call(_), rescale()) : range$$1.slice();
   };
 
   scale.rangeRound = function(_) {
-    return range = slice.call(_), interpolate = d3Interpolate.interpolateRound, rescale();
+    return range$$1 = slice.call(_), interpolate$$1 = d3Interpolate.interpolateRound, rescale();
   };
 
   scale.clamp = function(_) {
@@ -18663,7 +18607,7 @@ function continuous(deinterpolate, reinterpolate) {
   };
 
   scale.interpolate = function(_) {
-    return arguments.length ? (interpolate = _, rescale()) : interpolate;
+    return arguments.length ? (interpolate$$1 = _, rescale()) : interpolate$$1;
   };
 
   return rescale();
@@ -18773,7 +18717,7 @@ function identity() {
   scale.invert = scale;
 
   scale.domain = scale.range = function(_) {
-    return arguments.length ? (domain = map.call(_, number), scale) : domain.slice();
+    return arguments.length ? (domain = map$1.call(_, number), scale) : domain.slice();
   };
 
   scale.copy = function() {
@@ -18960,24 +18904,24 @@ function sqrt() {
   return pow().exponent(0.5);
 }
 
-function quantile() {
+function quantile$1() {
   var domain = [],
-      range = [],
+      range$$1 = [],
       thresholds = [];
 
   function rescale() {
-    var i = 0, n = Math.max(1, range.length);
+    var i = 0, n = Math.max(1, range$$1.length);
     thresholds = new Array(n - 1);
     while (++i < n) thresholds[i - 1] = d3Array.quantile(domain, i / n);
     return scale;
   }
 
   function scale(x) {
-    if (!isNaN(x = +x)) return range[d3Array.bisect(thresholds, x)];
+    if (!isNaN(x = +x)) return range$$1[d3Array.bisect(thresholds, x)];
   }
 
   scale.invertExtent = function(y) {
-    var i = range.indexOf(y);
+    var i = range$$1.indexOf(y);
     return i < 0 ? [NaN, NaN] : [
       i > 0 ? thresholds[i - 1] : domain[0],
       i < thresholds.length ? thresholds[i] : domain[domain.length - 1]
@@ -18993,7 +18937,7 @@ function quantile() {
   };
 
   scale.range = function(_) {
-    return arguments.length ? (range = slice.call(_), rescale()) : range.slice();
+    return arguments.length ? (range$$1 = slice.call(_), rescale()) : range$$1.slice();
   };
 
   scale.quantiles = function() {
@@ -19001,9 +18945,9 @@ function quantile() {
   };
 
   scale.copy = function() {
-    return quantile()
+    return quantile$1()
         .domain(domain)
-        .range(range);
+        .range(range$$1);
   };
 
   return scale;
@@ -19014,10 +18958,10 @@ function quantize() {
       x1 = 1,
       n = 1,
       domain = [0.5],
-      range = [0, 1];
+      range$$1 = [0, 1];
 
   function scale(x) {
-    if (x <= x) return range[d3Array.bisect(domain, x, 0, n)];
+    if (x <= x) return range$$1[d3Array.bisect(domain, x, 0, n)];
   }
 
   function rescale() {
@@ -19032,11 +18976,11 @@ function quantize() {
   };
 
   scale.range = function(_) {
-    return arguments.length ? (n = (range = slice.call(_)).length - 1, rescale()) : range.slice();
+    return arguments.length ? (n = (range$$1 = slice.call(_)).length - 1, rescale()) : range$$1.slice();
   };
 
   scale.invertExtent = function(y) {
-    var i = range.indexOf(y);
+    var i = range$$1.indexOf(y);
     return i < 0 ? [NaN, NaN]
         : i < 1 ? [x0, domain[0]]
         : i >= n ? [domain[n - 1], x1]
@@ -19046,7 +18990,7 @@ function quantize() {
   scale.copy = function() {
     return quantize()
         .domain([x0, x1])
-        .range(range);
+        .range(range$$1);
   };
 
   return linearish(scale);
@@ -19054,42 +18998,42 @@ function quantize() {
 
 function threshold() {
   var domain = [0.5],
-      range = [0, 1],
+      range$$1 = [0, 1],
       n = 1;
 
   function scale(x) {
-    if (x <= x) return range[d3Array.bisect(domain, x, 0, n)];
+    if (x <= x) return range$$1[d3Array.bisect(domain, x, 0, n)];
   }
 
   scale.domain = function(_) {
-    return arguments.length ? (domain = slice.call(_), n = Math.min(domain.length, range.length - 1), scale) : domain.slice();
+    return arguments.length ? (domain = slice.call(_), n = Math.min(domain.length, range$$1.length - 1), scale) : domain.slice();
   };
 
   scale.range = function(_) {
-    return arguments.length ? (range = slice.call(_), n = Math.min(domain.length, range.length - 1), scale) : range.slice();
+    return arguments.length ? (range$$1 = slice.call(_), n = Math.min(domain.length, range$$1.length - 1), scale) : range$$1.slice();
   };
 
   scale.invertExtent = function(y) {
-    var i = range.indexOf(y);
+    var i = range$$1.indexOf(y);
     return [domain[i - 1], domain[i]];
   };
 
   scale.copy = function() {
     return threshold()
         .domain(domain)
-        .range(range);
+        .range(range$$1);
   };
 
   return scale;
 }
 
-var durationSecond = 1000,
-    durationMinute = durationSecond * 60,
-    durationHour = durationMinute * 60,
-    durationDay = durationHour * 24,
-    durationWeek = durationDay * 7,
-    durationMonth = durationDay * 30,
-    durationYear = durationDay * 365;
+var durationSecond = 1000;
+var durationMinute = durationSecond * 60;
+var durationHour = durationMinute * 60;
+var durationDay = durationHour * 24;
+var durationWeek = durationDay * 7;
+var durationMonth = durationDay * 30;
+var durationYear = durationDay * 365;
 
 function date(t) {
   return new Date(t);
@@ -19099,19 +19043,19 @@ function number$1(t) {
   return t instanceof Date ? +t : +new Date(+t);
 }
 
-function calendar(year, month, week, day, hour, minute, second, millisecond, format) {
+function calendar(year, month, week, day, hour, minute, second, millisecond, format$$1) {
   var scale = continuous(deinterpolateLinear, d3Interpolate.interpolateNumber),
       invert = scale.invert,
       domain = scale.domain;
 
-  var formatMillisecond = format(".%L"),
-      formatSecond = format(":%S"),
-      formatMinute = format("%I:%M"),
-      formatHour = format("%I %p"),
-      formatDay = format("%a %d"),
-      formatWeek = format("%b %d"),
-      formatMonth = format("%B"),
-      formatYear = format("%Y");
+  var formatMillisecond = format$$1(".%L"),
+      formatSecond = format$$1(":%S"),
+      formatMinute = format$$1("%I:%M"),
+      formatHour = format$$1("%I %p"),
+      formatDay = format$$1("%a %d"),
+      formatWeek = format$$1("%b %d"),
+      formatMonth = format$$1("%B"),
+      formatYear = format$$1("%Y");
 
   var tickIntervals = [
     [second,  1,      durationSecond],
@@ -19174,7 +19118,7 @@ function calendar(year, month, week, day, hour, minute, second, millisecond, for
   };
 
   scale.domain = function(_) {
-    return arguments.length ? domain(map.call(_, number$1)) : domain().map(date);
+    return arguments.length ? domain(map$1.call(_, number$1)) : domain().map(date);
   };
 
   scale.ticks = function(interval, step) {
@@ -19190,7 +19134,7 @@ function calendar(year, month, week, day, hour, minute, second, millisecond, for
   };
 
   scale.tickFormat = function(count, specifier) {
-    return specifier == null ? tickFormat : format(specifier);
+    return specifier == null ? tickFormat : format$$1(specifier);
   };
 
   scale.nice = function(interval, step) {
@@ -19201,7 +19145,7 @@ function calendar(year, month, week, day, hour, minute, second, millisecond, for
   };
 
   scale.copy = function() {
-    return copy(scale, calendar(year, month, week, day, hour, minute, second, millisecond, format));
+    return copy(scale, calendar(year, month, week, day, hour, minute, second, millisecond, format$$1));
   };
 
   return scale;
@@ -19218,16 +19162,15 @@ function utcTime() {
 function sequential(interpolator) {
   var x0 = 0,
       x1 = 1,
-      k10 = 1,
       clamp = false;
 
   function scale(x) {
-    var t = (x - x0) * k10;
+    var t = (x - x0) / (x1 - x0);
     return interpolator(clamp ? Math.max(0, Math.min(1, t)) : t);
   }
 
   scale.domain = function(_) {
-    return arguments.length ? (x0 = +_[0], x1 = +_[1], k10 = x0 === x1 ? 0 : 1 / (x1 - x0), scale) : [x0, x1];
+    return arguments.length ? (x0 = +_[0], x1 = +_[1], scale) : [x0, x1];
   };
 
   scale.clamp = function(_) {
@@ -19245,38 +19188,6 @@ function sequential(interpolator) {
   return linearish(scale);
 }
 
-function diverging(interpolator) {
-  var x0 = 0,
-      x1 = 0.5,
-      x2 = 1,
-      k10 = 1,
-      k21 = 1,
-      clamp = false;
-
-  function scale(x) {
-    var t = 0.5 + ((x = +x) - x1) * (x < x1 ? k10 : k21);
-    return interpolator(clamp ? Math.max(0, Math.min(1, t)) : t);
-  }
-
-  scale.domain = function(_) {
-    return arguments.length ? (x0 = +_[0], x1 = +_[1], x2 = +_[2], k10 = x0 === x1 ? 0 : 0.5 / (x1 - x0), k21 = x1 === x2 ? 0 : 0.5 / (x2 - x1), scale) : [x0, x1, x2];
-  };
-
-  scale.clamp = function(_) {
-    return arguments.length ? (clamp = !!_, scale) : clamp;
-  };
-
-  scale.interpolator = function(_) {
-    return arguments.length ? (interpolator = _, scale) : interpolator;
-  };
-
-  scale.copy = function() {
-    return diverging(interpolator).domain([x0, x1, x2]).clamp(clamp);
-  };
-
-  return linearish(scale);
-}
-
 exports.scaleBand = band;
 exports.scalePoint = point;
 exports.scaleIdentity = identity;
@@ -19286,13 +19197,12 @@ exports.scaleOrdinal = ordinal;
 exports.scaleImplicit = implicit;
 exports.scalePow = pow;
 exports.scaleSqrt = sqrt;
-exports.scaleQuantile = quantile;
+exports.scaleQuantile = quantile$1;
 exports.scaleQuantize = quantize;
 exports.scaleThreshold = threshold;
 exports.scaleTime = time;
 exports.scaleUtc = utcTime;
 exports.scaleSequential = sequential;
-exports.scaleDiverging = diverging;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
@@ -25113,53 +25023,51 @@ let ScrollOver = require("./lib/ScrollOver.js");
 let animateScroll = require("./lib/animatescroll.js");
 let d3 = require("d3");
 
-let heroImage = document.querySelectorAll(".hero-image")[0];
+let sectionOne = document.querySelectorAll(".section--one")[0];
+let sectionThree = document.querySelectorAll(".section--three")[0];
 
-setTimeout(function () {
-  addClassToElement(heroImage, "active");
-}, 200);
+let button = document.querySelectorAll(".intro .button")[0];
+let pattern = document.querySelectorAll(".pattern")[0];
+let homeCover = document.querySelectorAll(".home-cover")[0];
+let header = document.querySelectorAll(".header")[0];
+let intro = document.querySelectorAll(".intro")[0];
+let wrap = document.querySelectorAll(".wrap")[0];
 
-// let sectionThree = document.querySelectorAll(".section--three")[0]
+/* Scroll Buttons */
 
-// let button = document.querySelectorAll(".intro .button")[0]
-// let pattern = document.querySelectorAll(".pattern")[0]
-// let homeCover = document.querySelectorAll(".home-cover")[0]
-// let header = document.querySelectorAll(".header")[0]
-// let intro = document.querySelectorAll(".intro")[0]
-// let wrap = document.querySelectorAll(".wrap")[0]
+let navLinkPositions = document.querySelectorAll(".nav-link--positions")[0];
+let navLinkPeople = document.querySelectorAll(".nav-link--people")[0];
+let navLinkBlog = document.querySelectorAll(".nav-link--blog")[0];
+let buttonPositions = document.querySelectorAll(".button--positions")[0];
 
+let sectionPositions = document.querySelectorAll(".section-header--positions")[0];
+let sectionPeople = document.querySelectorAll(".section-header--people")[0];
+let sectionBlog = document.querySelectorAll(".section-header--blog")[0];
 
-// /* Scroll Buttons */
-
-// let navLinkPositions = document.querySelectorAll(".nav-link--positions")[0]
-// let navLinkPeople = document.querySelectorAll(".nav-link--people")[0]
-// let navLinkBlog = document.querySelectorAll(".nav-link--blog")[0]
-// let buttonPositions = document.querySelectorAll(".button--positions")[0]
-
-// let sectionPositions = document.querySelectorAll(".section-header--positions")[0]
-// let sectionPeople = document.querySelectorAll(".section-header--people")[0]
-// let sectionBlog = document.querySelectorAll(".section-header--blog")[0]
-
-// if(buttonPositions) { buttonPositions.addEventListener('click', function(event){
-//     animateScroll(sectionPositions, 1800, "easeInOutCubic", 0)
-//     event.preventDefault()
-//   })
-// }
-// if(navLinkPositions) { navLinkPositions.addEventListener('click', function(event){
-//     animateScroll(sectionPositions, 1800, "easeInOutCubic", 0)
-//     event.preventDefault()
-//   })
-// }
-// if(navLinkPeople) { navLinkPeople.addEventListener('click', function(event){
-//     animateScroll(sectionPeople, 1800, "easeInOutCubic", 0)
-//     event.preventDefault()
-//   })
-// }
-// if(navLinkBlog) { navLinkBlog.addEventListener('click', function(event){
-//     animateScroll(sectionBlog, 1800, "easeInOutCubic", 0)
-//     event.preventDefault()
-//   })
-// }
+if (buttonPositions) {
+  buttonPositions.addEventListener('click', function (event) {
+    animateScroll(sectionPositions, 1800, "easeInOutCubic", 0);
+    event.preventDefault();
+  });
+}
+if (navLinkPositions) {
+  navLinkPositions.addEventListener('click', function (event) {
+    animateScroll(sectionPositions, 1800, "easeInOutCubic", 0);
+    event.preventDefault();
+  });
+}
+if (navLinkPeople) {
+  navLinkPeople.addEventListener('click', function (event) {
+    animateScroll(sectionPeople, 1800, "easeInOutCubic", 0);
+    event.preventDefault();
+  });
+}
+if (navLinkBlog) {
+  navLinkBlog.addEventListener('click', function (event) {
+    animateScroll(sectionBlog, 1800, "easeInOutCubic", 0);
+    event.preventDefault();
+  });
+}
 
 /* Demo Scroll */
 //
@@ -25176,17 +25084,17 @@ setTimeout(function () {
 
 /* Popups */
 
-// let vacancys = document.querySelectorAll(".positions-item")
-// let popups = document.querySelectorAll(".popup")
-// let overlays = document.querySelectorAll(".overlay")
-// let closeButtons = document.querySelectorAll(".popup__button--close")
-// let activePopup = null;
-// let activeOverlay = null;
+let vacancys = document.querySelectorAll(".positions-item");
+let popups = document.querySelectorAll(".popup");
+let overlays = document.querySelectorAll(".overlay");
+let closeButtons = document.querySelectorAll(".popup__button--close");
+let activePopup = null;
+let activeOverlay = null;
 
-// vacancys[0].addEventListener('click', function(event){
-//     showPopup(overlays[0], popups[0])
-//     event.preventDefault()
-// })
+vacancys[0].addEventListener('click', function (event) {
+  showPopup(overlays[0], popups[0]);
+  event.preventDefault();
+});
 
 // vacancys[1].addEventListener('click', function(event){
 //     showPopup(overlays[1], popups[1])
@@ -25194,37 +25102,78 @@ setTimeout(function () {
 // })
 
 
-// closeButtons.forEach((button) => {
-//   button.addEventListener('click', closeActivePopup)
-// })
+closeButtons.forEach(button => {
+  button.addEventListener('click', closeActivePopup);
+});
 
-// function showPopup(whichOverlay, whichPopup) {
-//   activePopup = whichPopup
-//   activeOverlay = whichOverlay
-//   addClassToElement(whichOverlay, "overlay--shown");
-//   addClassToElement(whichPopup, "popup--shown");
-// }
+function showPopup(whichOverlay, whichPopup) {
+  activePopup = whichPopup;
+  activeOverlay = whichOverlay;
+  addClassToElement(whichOverlay, "overlay--shown");
+  addClassToElement(whichPopup, "popup--shown");
+}
 
-// function closeActivePopup() {
-//   removeClassFromElement(activeOverlay, "overlay--shown");
-//   removeClassFromElement(activePopup, "popup--shown");
-//   activePopup = null;
-//   activeOverlay = null;
-// }
+function closeActivePopup() {
+  removeClassFromElement(activeOverlay, "overlay--shown");
+  removeClassFromElement(activePopup, "popup--shown");
+  activePopup = null;
+  activeOverlay = null;
+}
 
-// new ScrollOver({
-//   keyframes : [
-//     {
-//       element : sectionOne,
-//       reveal:
-//         {
-//           when : 300,
-//           className: "section--shown"
-//         }
-//     }
-//   ]
-//  }).init()
-
+new ScrollOver({
+  keyframes: [{
+    element: sectionOne,
+    reveal: {
+      when: 300,
+      className: "section--shown"
+    }
+  }, {
+    run: {
+      when: 800,
+      callback: showCircles
+    }
+  }, {
+    element: sectionThree,
+    reveal: {
+      when: 1200,
+      className: "section--shown"
+    }
+  }, {
+    element: wrap,
+    domain: [250, 400],
+    animate: [{
+      property: "backgroundColor",
+      range: ["rgb(67, 96, 223)", "rgb(238, 242, 245)"]
+    }]
+  }, {
+    element: pattern,
+    domain: [200, 250],
+    animate: [{
+      property: "opacity",
+      range: ["1", "0"]
+    }]
+  }, {
+    element: intro,
+    domain: [0, 650],
+    animate: [{
+      property: "opacity",
+      range: ["1", "0"]
+    }, {
+      property: "translateY",
+      range: ["0", "20"]
+    }]
+  }, {
+    element: header,
+    domain: [300, 480],
+    animate: [{
+      property: "opacity",
+      range: ["1", "0"]
+    }, {
+      property: "translateY",
+      range: ["0", "-40"]
+    }]
+  }]
+}).init();
 
 /*--- Utils ---*/
 function addClassToElement(element, className) {
@@ -25239,6 +25188,63 @@ function removeClassFromElement(element, className) {
     element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
   }
   return element;
+}
+
+/*--- CIrcles ---*/
+
+let nodes = [{ originX: 11.447998046875, x: 11.447998046875, originY: -83.36199951171875, y: -83.36199951171875, opacity: 1, radius: 7.564000129699707 }, { originX: -16.287994384765625, x: -16.287994384765625, originY: -85.87699890136719, y: -85.87699890136719, opacity: 0.4, radius: 15.128999710083008 }, { originX: 77.84698486328125, x: 77.84698486328125, originY: -59.045997619628906, y: -59.045997619628906, opacity: 0.4, radius: 15.128999710083008 }, { originX: 69.44200134277344, x: 69.44200134277344, originY: -100.9689998626709, y: -100.9689998626709, opacity: 0.2, radius: 23.534000396728516 }, { originX: 22.035003662109375, x: 22.035003662109375, originY: -114.43200016021729, y: -114.43200016021729, opacity: 0.2, radius: 14.420999526977539 }, { originX: 113.14700317382812, x: 113.14700317382812, originY: 13.061996459960938, y: 13.061996459960938, opacity: 0.4, radius: 15.128999710083008 }, { originX: 170.12899780273438, x: 170.12899780273438, originY: -45.907997131347656, y: -45.907997131347656, opacity: 0.1, radius: 15.128999710083008 }, { originX: 107.1400146484375, x: 107.1400146484375, originY: 70.65800476074219, y: 70.65800476074219, opacity: 0.2, radius: 19.937000274658203 }, { originX: -113.05999755859375, x: -113.05999755859375, originY: -7.08599853515625, y: -7.08599853515625, opacity: 0.4, radius: 13.130000114440918 }, { originX: -123.87099838256836, x: -123.87099838256836, originY: 71.75399780273438, y: 71.75399780273438, opacity: 0.2, radius: 15.128999710083008 }, { originX: -170.871000289917, x: -170.871000289917, originY: -10.907997131347656, y: -10.907997131347656, opacity: 0.1, radius: 15.128999710083008 }, { originX: -17.968994140625, x: -17.968994140625, originY: -60.722999572753906, y: -60.722999572753906, opacity: 1, radius: 5.043000221252441 }, { originX: 52.63200378417969, x: 52.63200378417969, originY: -69.10800170898438, y: -69.10800170898438, opacity: 1, radius: 5.043000221252441 }, { originX: 13.968994140625, x: 13.968994140625, originY: -69.10800170898438, y: -69.10800170898438, opacity: 0.4, radius: 3.361999988555908 }, { originX: 45.06700134277344, x: 45.06700134277344, originY: -54.85399627685547, y: -54.85399627685547, opacity: 0.4, radius: 5.882999897003174 }, { originX: -2.839996337890625, x: -2.839996337890625, originY: -52.33799743652344, y: -52.33799743652344, opacity: 1, radius: 6.723999977111816 }, { originX: -17.968994140625, x: -17.968994140625, originY: -43.954002380371094, y: -43.954002380371094, opacity: 0.2, radius: 8.404999732971191 }, { originX: -31.417007446289062, x: -31.417007446289062, originY: -27.18499755859375, y: -27.18499755859375, opacity: 1, radius: 10.086000442504883 }, { originX: -49.90800476074219, x: -49.90800476074219, originY: 8.031005859375, y: 8.031005859375, opacity: 1, radius: 10.086000442504883 }, { originX: -59.99400329589844, x: -59.99400329589844, originY: 48.27699279785156, y: 48.27699279785156, opacity: 1, radius: 10.086000442504883 }, { originX: -70.91999816894531, x: -70.91999816894531, originY: 28.99200439453125, y: 28.99200439453125, opacity: 1, radius: 7.564000129699707 }, { originX: -52.42900085449219, x: -52.42900085449219, originY: -14.608001708984375, y: -14.608001708984375, opacity: 1, radius: 7.564000129699707 }, { originX: -44.86500549316406, x: -44.86500549316406, originY: 68.39999389648438, y: 68.39999389648438, opacity: 1, radius: 10.086000442504883 }, { originX: 52.63200378417969, x: 52.63200378417969, originY: 26.477005004882812, y: 26.477005004882812, opacity: 1, radius: 10.086000442504883 }, { originX: 47.58900451660156, x: 47.58900451660156, originY: 73.43099975585938, y: 73.43099975585938, opacity: 0.4, radius: 10.086000442504883 }, { originX: -26.373992919921875, x: -26.373992919921875, originY: 86.84599304199219, y: 86.84599304199219, opacity: 0.4, radius: 10.086000442504883 }, { originX: -13.766998291015625, x: -13.766998291015625, originY: 116.19200134277344, y: 116.19200134277344, opacity: 1, radius: 12.607000350952148 }, { originX: -86.04900360107422, x: -86.04900360107422, originY: 84.33099365234375, y: 84.33099365234375, opacity: 1, radius: 12.607000350952148 }, { originX: 107.26400756835938, x: 107.26400756835938, originY: -46.46900177001953, y: -46.46900177001953, opacity: 1, radius: 12.607000350952148 }, { originX: 110.62600708007812, x: 110.62600708007812, originY: -80.00799942016602, y: -80.00799942016602, opacity: 0.4, radius: 12.607000350952148 }, { originX: 141.62298583984375, x: 141.62298583984375, originY: -72.99800109863281, y: -72.99800109863281, opacity: 0.3, radius: 7.605000019073486 }, { originX: 64.39900207519531, x: 64.39900207519531, originY: -10.415000915527344, y: -10.415000915527344, opacity: 1, radius: 5.043000221252441 }, { originX: 57.67500305175781, x: 57.67500305175781, originY: -0.35400390625, y: -0.35400390625, opacity: 1, radius: 3.361999988555908 }, { originX: 44.22700500488281, x: 44.22700500488281, originY: 41.569000244140625, y: 41.569000244140625, opacity: 1, radius: 3.361999988555908 }, { originX: 24.05499267578125, x: 24.05499267578125, originY: 61.69200134277344, y: 61.69200134277344, opacity: 1, radius: 3.361999988555908 }, { originX: 17.33099365234375, x: 17.33099365234375, originY: 54.98500061035156, y: 54.98500061035156, opacity: 1, radius: 3.361999988555908 }, { originX: 72.80398559570312, x: 72.80398559570312, originY: 23.123001098632812, y: 23.123001098632812, opacity: 1, radius: 3.361999988555908 }, { originX: 15.649993896484375, x: 15.649993896484375, originY: 70.07699584960938, y: 70.07699584960938, opacity: 1, radius: 3.361999988555908 }, { originX: 72.80398559570312, x: 72.80398559570312, originY: -0.35400390625, y: -0.35400390625, opacity: 1, radius: 3.361999988555908 }, { originX: 87.93301391601562, x: 87.93301391601562, originY: -0.35400390625, y: -0.35400390625, opacity: 1, radius: 3.361999988555908 }, { originX: 67.76100158691406, x: 67.76100158691406, originY: -23.83100128173828, y: -23.83100128173828, opacity: 1, radius: 6.723999977111816 }, { originX: 66.08000183105469, x: 66.08000183105469, originY: 11.384994506835938, y: 11.384994506835938, opacity: 0.4, radius: 6.723999977111816 }, { originX: 39.18400573730469, x: 39.18400573730469, originY: 56.66200256347656, y: 56.66200256347656, opacity: 0.4, radius: 6.723999977111816 }, { originX: 55.99400329589844, x: 55.99400329589844, originY: 46.600006103515625, y: 46.600006103515625, opacity: 0.4, radius: 6.723999977111816 }, { originX: -66.71800231933594, x: -66.71800231933594, originY: -55.69200134277344, y: -55.69200134277344, opacity: 0.4, radius: 8.404999732971191 }, { originX: -59.99400329589844, x: -59.99400329589844, originY: -90.90800094604492, y: -90.90800094604492, opacity: 1, radius: 8.404999732971191 }, { originX: -34.77900695800781, x: -34.77900695800781, originY: -116.0620002746582, y: -116.0620002746582, opacity: 1, radius: 8.404999732971191 }, { originX: 79.52801513671875, x: 79.52801513671875, originY: -12.092002868652344, y: -12.092002868652344, opacity: 1, radius: 6.723999977111816 }, { originX: 82.8900146484375, x: 82.8900146484375, originY: 11.384994506835938, y: 11.384994506835938, opacity: 0.4, radius: 6.723999977111816 }, { originX: 67.76100158691406, x: 67.76100158691406, originY: 60.01499938964844, y: 60.01499938964844, opacity: 0.4, radius: 6.723999977111816 }, { originX: 72.80398559570312, x: 72.80398559570312, originY: 48.27699279785156, y: 48.27699279785156, opacity: 1, radius: 3.361999988555908 }, { originX: 84.57101440429688, x: 84.57101440429688, originY: -33.891998291015625, y: -33.891998291015625, opacity: 1, radius: 6.723999977111816 }, { originX: -39.82200622558594, x: -39.82200622558594, originY: 106.968994140625, y: 106.968994140625, opacity: 1, radius: 6.723999977111816 }, { originX: -48.22700500488281, x: -48.22700500488281, originY: -67.43099975585938, y: -67.43099975585938, opacity: 1, radius: 6.723999977111816 }, { originX: -63.35600280761719, x: -63.35600280761719, originY: -30.538002014160156, y: -30.538002014160156, opacity: 1, radius: 6.723999977111816 }, { originX: -73.44200134277344, x: -73.44200134277344, originY: -15.445999145507812, y: -15.445999145507812, opacity: 1, radius: 6.723999977111816 }, { originX: 71.12298583984375, x: 71.12298583984375, originY: 34.86199951171875, y: 34.86199951171875, opacity: 1, radius: 6.723999977111816 }, { originX: 87.93301391601562, x: 87.93301391601562, originY: 28.154006958007812, y: 28.154006958007812, opacity: 1, radius: 6.723999977111816 }, { originX: -36.46000671386719, x: -36.46000671386719, originY: -48.98500061035156, y: -48.98500061035156, opacity: 0.3, radius: 6.723999977111816 }, { originX: 62.71800231933594, x: 62.71800231933594, originY: -37.246002197265625, y: -37.246002197265625, opacity: 1, radius: 5.043000221252441 }, { originX: 55.15299987792969, x: 55.15299987792969, originY: -46.46900177001953, y: -46.46900177001953, opacity: 1, radius: 4.202000141143799 }, { originX: 34.14100646972656, x: 34.14100646972656, originY: 23.123001098632812, y: 23.123001098632812, opacity: 1, radius: 5.043000221252441 }, { originX: 32.46000671386719, x: 32.46000671386719, originY: 36.537994384765625, y: 36.537994384765625, opacity: 1, radius: 5.043000221252441 }, { originX: 27.417007446289062, x: 27.417007446289062, originY: 48.27699279785156, y: 48.27699279785156, opacity: 1, radius: 5.043000221252441 }, { originX: -26.373992919921875, x: -26.373992919921875, originY: 68.39999389648438, y: 68.39999389648438, opacity: 1, radius: 3.361999988555908 }, { originX: -9.563995361328125, x: -9.563995361328125, originY: 81.81500244140625, y: 81.81500244140625, opacity: 1, radius: 3.361999988555908 }, { originX: -1.160003662109375, x: -1.160003662109375, originY: 70.07699584960938, y: 70.07699584960938, opacity: 1, radius: 6.723999977111816 }, { originX: 47.58900451660156, x: 47.58900451660156, originY: 8.031005859375, y: 8.031005859375, opacity: 1, radius: 6.723999977111816 }, { originX: 18.1719970703125, x: 18.1719970703125, originY: 7.1920013427734375, y: 7.1920013427734375, opacity: 1, radius: 4.202000141143799 }, { originX: 6.404998779296875, x: 6.404998779296875, originY: 5.5149993896484375, y: 5.5149993896484375, opacity: 1, radius: 4.202000141143799 }, { originX: -5.36199951171875, x: -5.36199951171875, originY: 3.8379974365234375, y: 3.8379974365234375, opacity: 1, radius: 4.202000141143799 }, { originX: -18.80999755859375, x: -18.80999755859375, originY: 5.5149993896484375, y: 5.5149993896484375, opacity: 1, radius: 5.882999897003174 }, { originX: -32.25799560546875, x: -32.25799560546875, originY: 10.546005249023438, y: 10.546005249023438, opacity: 1, radius: 4.202000141143799 }, { originX: -47.386993408203125, x: -47.386993408203125, originY: -34.73100280761719, y: -34.73100280761719, opacity: 1, radius: 4.202000141143799 }, { originX: 11.447998046875, x: 11.447998046875, originY: -56.53099822998047, y: -56.53099822998047, opacity: 1, radius: 4.202000141143799 }, { originX: 22.373992919921875, x: 22.373992919921875, originY: -57.36900329589844, y: -57.36900329589844, opacity: 1, radius: 3.361999988555908 }, { originX: 32.46000671386719, x: 32.46000671386719, originY: -55.69200134277344, y: -55.69200134277344, opacity: 1, radius: 3.361999988555908 }, { originX: -13.766998291015625, x: -13.766998291015625, originY: 70.91499328613281, y: 70.91499328613281, opacity: 1, radius: 4.202000141143799 }, { originX: 9.766998291015625, x: 9.766998291015625, originY: 62.531005859375, y: 62.531005859375, opacity: 1, radius: 4.202000141143799 }, { originX: -55.79100036621094, x: -55.79100036621094, originY: 25.63800048828125, y: 25.63800048828125, opacity: 1, radius: 4.202000141143799 }, { originX: 32.46000671386719, x: 32.46000671386719, originY: -74.13800048828125, y: -74.13800048828125, opacity: 1, radius: 10.086000442504883 }, { originX: 1.36199951171875, x: 1.36199951171875, originY: -66.59199905395508, y: -66.59199905395508, opacity: 1, radius: 5.882999897003174 }, { originX: 1.36199951171875, x: 1.36199951171875, originY: -66.59199905395508, y: -66.59199905395508, opacity: 1, radius: 5.882999897003174 }, { originX: -35.6199951171875, x: -35.6199951171875, originY: -7.900001525878906, y: -7.900001525878906, opacity: 1, radius: 5.882999897003174 }, { originX: 6.404998779296875, x: 6.404998779296875, originY: 82.65400695800781, y: 82.65400695800781, opacity: 1, radius: 5.882999897003174 }, { originX: 14.80999755859375, x: 14.80999755859375, originY: 104.45399475097656, y: 104.45399475097656, opacity: 1, radius: 10.925999641418457 }, { originX: 28.25799560546875, x: 28.25799560546875, originY: 72.59199523925781, y: 72.59199523925781, opacity: 1, radius: 5.882999897003174 }, { originX: -75.96299743652344, x: -75.96299743652344, originY: -39.762001037597656, y: -39.762001037597656, opacity: 1, radius: 5.882999897003174 }, { originX: -5.36199951171875, x: -5.36199951171875, originY: 92.71499633789062, y: 92.71499633789062, opacity: 1, radius: 5.882999897003174 }, { originX: 21.53399658203125, x: 21.53399658203125, originY: 86.00799560546875, y: 86.00799560546875, opacity: 1, radius: 5.882999897003174 }, { originX: -64.19599914550781, x: -64.19599914550781, originY: 67.56199645996094, y: 67.56199645996094, opacity: 1, radius: 5.882999897003174 }, { originX: -57.47200012207031, x: -57.47200012207031, originY: 94.39199829101562, y: 94.39199829101562, opacity: 1, radius: 5.882999897003174 }, { originX: 38.343994140625, x: 38.343994140625, originY: 92.71499633789062, y: 92.71499633789062, opacity: 1, radius: 5.882999897003174 }, { originX: -45.70599365234375, x: -45.70599365234375, originY: 87.68499755859375, y: 87.68499755859375, opacity: 1, radius: 5.882999897003174 }, { originX: -60.83399963378906, x: -60.83399963378906, originY: 80.97700500488281, y: 80.97700500488281, opacity: 1, radius: 4.202000141143799 }, { originX: -79.32499694824219, x: -79.32499694824219, originY: 59.177001953125, y: 59.177001953125, opacity: 0.4, radius: 5.882999897003174 }, { originX: -65.87699890136719, x: -65.87699890136719, originY: -1.1920013427734375, y: -1.1920013427734375, opacity: 1, radius: 5.882999897003174 }, { originX: -67.55799865722656, x: -67.55799865722656, originY: 13.899993896484375, y: 13.899993896484375, opacity: 1, radius: 4.202000141143799 }, { originX: -79.32499694824219, x: -79.32499694824219, originY: 0.4850006103515625, y: 0.4850006103515625, opacity: 1, radius: 4.202000141143799 }, { originX: -32.25799560546875, x: -32.25799560546875, originY: -63.237998962402344, y: -63.237998962402344, opacity: 0.4, radius: 4.202000141143799 }, { originX: -52.42900085449219, x: -52.42900085449219, originY: -46.46900177001953, y: -46.46900177001953, opacity: 1, radius: 4.202000141143799 }, { originX: 31.6199951171875, x: 31.6199951171875, originY: 10.546005249023438, y: 10.546005249023438, opacity: 1, radius: 5.882999897003174 }];
+nodes.map(o => {
+  o.x = o.x + (Math.random() - 0.5) * 400; // Play with me (450)
+  o.y = o.y + (Math.random() - 0.5) * 400; // Play with me (450)
+});
+
+let disturbanceNodes = [];
+nodes.filter(o => o.radius > 12).map(o => disturbanceNodes.push(o));
+
+let svg = d3.select("svg");
+let circles = svg.append("g");
+
+let drag = d3.drag().on("drag", dragged).on("end", dragended);
+
+let selection = circles.selectAll("circle").data(nodes).enter().append("circle").attr("cx", d => d.x).attr("cy", d => d.y).attr("r", d => d.radius).attr("opacity", 0).attr("fill", d => "#4360DF").call(drag);
+
+window.circles = circles;
+
+var simulation = d3.forceSimulation(nodes).alphaDecay(0).alpha(0.42) // Play with me (total speed)
+.force("charge", d3.forceCollide().radius(d => d.radius * 1.1)).force("x", d3.forceX(d => d.originX).strength(0.08)) // Play with me (force for target position)
+.force("y", d3.forceY(d => d.originY).strength(0.08)) // Play with me (force for target position)
+.on("tick", ticked).stop();
+
+function dragged(d) {
+  let node = d3.select(this).data()[0];
+  node.fx = d3.event.x;
+  node.fy = d3.event.y;
+}
+
+function dragended(d) {
+  let node = d3.select(this).data()[0];
+  delete node.fx;
+  delete node.fy;
+}
+
+function ticked(o) {
+  disturbanceNodes.map((o, i) => {
+    o.vx += Math.sin(Date.now() * 0.0001 + i * 2) * (0.42 + i * 0.1);
+    o.vy += Math.cos(Date.now() * 0.0001 + i * 2) * (0.42 + i * 0.1);
+  });
+
+  selection.attr("cx", function (d) {
+    return d.x;
+  }).attr("cy", function (d) {
+    return d.y;
+  });
+}
+
+/*--- CIrcles ---*/
+function showCircles() {
+  simulation.restart();
+
+  selection.transition(d3.transition().duration(750)).delay((d, i) => Math.floor(i / 10) * 100).attr("opacity", d => d.invisible ? 0 : d.opacity);
 }
 
 },{"./lib/ScrollOver.js":41,"./lib/animatescroll.js":42,"d3":32}]},{},[43])

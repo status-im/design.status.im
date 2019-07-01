@@ -25037,37 +25037,34 @@ let wrap = document.querySelectorAll(".wrap")[0];
 
 let navLinkPositions = document.querySelectorAll(".nav-link--positions")[0];
 let navLinkPeople = document.querySelectorAll(".nav-link--people")[0];
-let navLinkBlog = document.querySelectorAll(".nav-link--blog")[0];
-let buttonPositions = document.querySelectorAll(".button--positions")[0];
+//let navLinkBlog = document.querySelectorAll(".nav-link--blog")[0]
+//let buttonPositions = document.querySelectorAll(".button--positions")[0]
 
-let sectionPositions = document.querySelectorAll(".section-header--positions")[0];
+//let sectionPositions = document.querySelectorAll(".section-header--positions")[0]
 let sectionPeople = document.querySelectorAll(".section-header--people")[0];
-let sectionBlog = document.querySelectorAll(".section-header--blog")[0];
+//let sectionBlog = document.querySelectorAll(".section-header--blog")[0]
 
-if (buttonPositions) {
-  buttonPositions.addEventListener('click', function (event) {
-    animateScroll(sectionPositions, 1800, "easeInOutCubic", 0);
-    event.preventDefault();
-  });
-}
-if (navLinkPositions) {
-  navLinkPositions.addEventListener('click', function (event) {
-    animateScroll(sectionPositions, 1800, "easeInOutCubic", 0);
-    event.preventDefault();
-  });
-}
+// if(buttonPositions) { buttonPositions.addEventListener('click', function(event){
+//     animateScroll(sectionPositions, 1800, "easeInOutCubic", 0)
+//     event.preventDefault()
+//   })
+// }
+// if(navLinkPositions) { navLinkPositions.addEventListener('click', function(event){
+//     animateScroll(sectionPositions, 1800, "easeInOutCubic", 0)
+//     event.preventDefault()
+//   })
+// }
 if (navLinkPeople) {
   navLinkPeople.addEventListener('click', function (event) {
     animateScroll(sectionPeople, 1800, "easeInOutCubic", 0);
     event.preventDefault();
   });
 }
-if (navLinkBlog) {
-  navLinkBlog.addEventListener('click', function (event) {
-    animateScroll(sectionBlog, 1800, "easeInOutCubic", 0);
-    event.preventDefault();
-  });
-}
+// if(navLinkBlog) { navLinkBlog.addEventListener('click', function(event){
+//     animateScroll(sectionBlog, 1800, "easeInOutCubic", 0)
+//     event.preventDefault()
+//   })
+// }
 
 /* Demo Scroll */
 //
@@ -25084,17 +25081,18 @@ if (navLinkBlog) {
 
 /* Popups */
 
-let vacancys = document.querySelectorAll(".positions-item");
+//let vacancys = document.querySelectorAll(".positions-item")
 let popups = document.querySelectorAll(".popup");
 let overlays = document.querySelectorAll(".overlay");
 let closeButtons = document.querySelectorAll(".popup__button--close");
 let activePopup = null;
 let activeOverlay = null;
 
-vacancys[0].addEventListener('click', function (event) {
-  showPopup(overlays[0], popups[0]);
-  event.preventDefault();
-});
+// vacancys[0].addEventListener('click', function(event){
+//     showPopup(overlays[0], popups[0])
+//     event.preventDefault()
+// })
+
 
 closeButtons.forEach(button => {
   button.addEventListener('click', closeActivePopup);

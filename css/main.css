@@ -999,6 +999,9 @@ select[multiple] {
 .person--philip {
   background-image: url("../img/philip.png"); }
 
+.person--simon {
+  background-image: url("../img/simon.jpg"); }
+
 .person:nth-child(1),
 .person:nth-child(4),
 .person:nth-child(7) {

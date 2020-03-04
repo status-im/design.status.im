@@ -1000,7 +1000,10 @@ select[multiple] {
   background-image: url("../img/philip.png"); }
 
 .person--simon {
-  background-image: url("../img/simon.jpg"); }
+  background-image: url("../img/simon.png"); }
+
+.person--gheorghe {
+  background-image: url("../img/gheorghe.jpeg"); }
 
 .person:nth-child(1),
 .person:nth-child(4),
@@ -1681,7 +1684,8 @@ input[type=checkbox] {
   justify-content: center;
   background-color: #262A39;
   position: relative;
-  z-index: 998; }
+  z-index: 998;
+  margin-top: 10vh; }
 
 .footer-inner {
   display: flex;
